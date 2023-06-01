@@ -5,16 +5,9 @@
             <script>
                 document.write(new Date().getFullYear());
             </script>
-            , made with ❤️ by
-            <a href="javscript:void(0)" class="footer-link fw-bolder">ThemeSelection</a>
         </div>
         <div>
-            <a href="javscript:void(0)" class="footer-link me-4">License</a>
-            <a href="javscript:void(0)" class="footer-link me-4">More Themes</a>
-
-            <a href="javscript:void(0)" class="footer-link me-4">Documentation</a>
-
-            <a href="javscript:void(0)" class="footer-link me-4">Support</a>
+            <a href="javscript:void(0)" class="footer-link me-4">Version 1.0</a>
         </div>
     </div>
 </footer>

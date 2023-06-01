@@ -1,26 +1,18 @@
 @extends('layouts.main')
-
+@section('page_title', 'Profile')
 @section('content')
     <div class="content-wrapper">
         <!-- Content -->
 
         <div class="container-xxl flex-grow-1 container-p-y">
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
-
+            <x-alert></x-alert>
             <div class="row">
                 <div class="col-md-12">
                     <ul class="nav nav-pills flex-column flex-md-row mb-3">
                         <li class="nav-item">
                             <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> Account</a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="pages-account-settings-notifications.html"><i
-                                    class="bx bx-bell me-1"></i> Notifications</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="pages-account-settings-connections.html"><i
-                                    class="bx bx-link-alt me-1"></i> Connections</a>
-                        </li> --}}
                     </ul>
                     <div class="card mb-4">
                         <h5 class="card-header">Profile Details</h5>
@@ -31,8 +23,8 @@
                                 @csrf
 
                                 <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                    <img src="{{ asset('uploads/' . $user->image) }}" alt="user-avatar"
-                                        class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
+                                    <img src="{{ getUserImage() }}" alt="user-avatar" class="d-block rounded" height="100"
+                                        width="100" id="uploadedAvatar" />
                                     <div class="button-wrapper">
                                         <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                                             <span class="d-none d-sm-block">Upload new photo</span>
@@ -56,6 +48,11 @@
                                     <label for="firstName" class="form-label">First Name</label>
                                     <input class="form-control" type="text" id="firstName" name="firstName" required
                                         value="{{ $user->first_name }}" autofocus />
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="lastName" class="form-label">Last Name</label>
@@ -75,7 +72,6 @@
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label" for="phoneNumber">Phone Number</label>
                                     <div class="input-group input-group-merge">
-                                        <span class="input-group-text">US (+1)</span>
                                         <input type="text" id="phoneNumber" name="phoneNumber" required
                                             value="{{ $user->phone_number }}" class="form-control"
                                             placeholder="202 555 0111" />

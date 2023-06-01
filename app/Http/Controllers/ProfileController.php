@@ -13,7 +13,6 @@ class ProfileController extends Controller
         return view('profile_edit',compact('user'));
     }
     public function addprofiledetail(Request $req,$id){
-        return $req;
         $user_id = $id;
         $profile = User::find($user_id);
         $profile->first_name = $req->firstName;
@@ -23,13 +22,13 @@ class ProfileController extends Controller
         $profile->address = $req->address;
         if ($req->hasFile('profile_image')) {
             $image = $req->file('profile_image');
-            $fileName = date('dmY').time().'.'.$image->getClientOriginalExtension();
-            $image->move(public_path("/uploads"),$fileName);
+            $fileName = Auth::user()->id.time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path("/uploads/profile"),$fileName);
             $profile->image = $fileName;
         }
 
         $profile->save();
-        return redirect()->route('home');
+        return back()->with('success','Profile updated successfully');
     }
     public function deleteprofile(Request $req, $id){
 
