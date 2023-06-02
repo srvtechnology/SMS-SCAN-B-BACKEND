@@ -19,6 +19,12 @@
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
+        <li class="menu-item {{ request()->segment(1) == 'schools' ? 'active' : '' }}">
+            <a href="{{ route('superadmin.schools') }}" class="menu-link">
+                <i class='menu-icon bx bxs-school'></i>
+                <div data-i18n="Analytics">Schools</div>
+            </a>
+        </li>
         {{-- <!-- Layouts -->
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">

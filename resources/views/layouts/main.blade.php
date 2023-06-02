@@ -29,6 +29,11 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
     <script src="{{ asset('assets/js/config.js') }}"></script>
+    <style>
+        #example_wrapper {
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body>

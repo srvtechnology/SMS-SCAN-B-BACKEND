@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ManagepasswordController;
+use App\Http\Controllers\SuperAdmin\SchoolController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +25,17 @@ Route::get('/login', function () {
 });
 
 Auth::routes();
+
+//Schools
+Route::controller(SchoolController::class)->as("superadmin.")->group(function () {
+    Route::get('/schools', 'index')->name('schools');
+    Route::get('/schools/create', 'create')->name('schools.create');
+    Route::post('/schools/store', 'store')->name('schools.store');
+    Route::get('/schools/{id}/edit', 'edit')->name('schools.edit');
+    Route::post('/schools/update', 'update')->name('schools.update');
+});
+
+
 // main routes
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('profile/{id}',[ProfileController::class,'ShowProfile'])->name('profile');
