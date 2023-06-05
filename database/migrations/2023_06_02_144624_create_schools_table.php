@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger("created_by")->unsigned();
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->string("username");
             $table->string("name");
             $table->string("email");
             $table->string("password");
@@ -28,7 +29,7 @@ return new class extends Migration
             $table->enum("medium",["english","bhutness","both"]);
             $table->longText("address");
             $table->string("image");
-            $table->enum("is_active",["0","1"])->default('1');
+            $table->enum("status",['active','pending','blocked'])->default('active');
             $table->enum("is_deleted",["0","1"])->default('0');
             $table->timestamps();
         });

@@ -29,9 +29,11 @@
                                     <thead>
                                         <tr>
                                             <th>Sr No</th>
-                                            <th>Image</th>
+                                            <th>Logo</th>
                                             <th>Name</th>
+                                            <th>Username</th>
                                             <th>Email</th>
+                                            <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -44,7 +46,15 @@
                                                         width="50" height="50" alt="">
                                                 </td>
                                                 <td>{{ $school->name }}</td>
+                                                <td>{{ $school->username }}</td>
                                                 <td>{{ $school->email }}</td>
+                                                @if(getSchoolStatus($school->id) == "active")
+                                                <td><span class="badge bg-success">{{ ucwords(getSchoolStatus($school->id)) }}</span></td>
+                                                @elseif(getSchoolStatus($school->id) == "pending")
+                                                <td><span class="badge bg-warning">{{ ucwords(getSchoolStatus($school->id)) }}</span></td>
+                                                @elseif(getSchoolStatus($school->id) == "blocked")
+                                                <td><span class="badge bg-danger">{{ ucwords(getSchoolStatus($school->id)) }}</span></td>
+                                                @endif
                                                 <td>
                                                     <button type="button" class="btn btn-outline-primary dropdown-toggle"
                                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -54,6 +64,21 @@
                                                         <li>
                                                             <a class="dropdown-item" href="{{ route("superadmin.schools.edit",$school->id) }}">Edit</a>
                                                         </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ route("superadmin.schools.detail",$school->id) }}">View Detail</a>
+                                                        </li>
+                                                        @if(getSchoolStatus($school->id) == "blocked")
+                                                        <li>
+                                                            <a class="dropdown-item blockSchoolBtn" data-id={{ $school->id }} data-url={{ route("superadmin.schools.block") }} data-status = {{ getSchoolStatus($school->id) }}>Activate School</a>
+                                                        </li>
+                                                        @else
+                                                        <li>
+                                                            <a class="dropdown-item blockSchoolBtn" data-id={{ $school->id }} data-url={{ route("superadmin.schools.block") }} data-status = {{ getSchoolStatus($school->id) }}>Block School</a>
+                                                        </li>
+                                                        @endif
+                                                        <li>
+                                                            <a class="dropdown-item deleteBtn" data-id={{ $school->id }} data-url={{ route("superadmin.schools.delete") }}>Delete</a>
+                                                        </li>
                                                     </ul>
                                                 </td>
                                             </tr>
@@ -61,6 +86,9 @@
                                     </tbody>
                                 </table>
                             </div>
+                            @if(count($schools) > 0)
+                            {{ $schools->links() }}
+                            @endif
                         </div>
                         <!--/ Basic Bootstrap Table -->
                     </div>
@@ -72,12 +100,5 @@
     </div>
 
     @push('footer-script')
-        <script>
-            $(document).ready(function() {
-                $('#example').DataTable({
-                    responsive: true
-                });
-            });
-        </script>
     @endpush
 @endsection

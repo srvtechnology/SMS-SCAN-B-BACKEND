@@ -14,7 +14,7 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('superadmin.schools') }}">Schools</a>
                         </li>
-                        <li class="breadcrumb-item active">Create School</li>
+                        <li class="breadcrumb-item active">Edit School</li>
                     </ol>
                 </nav>
                 <a href="{{ route('superadmin.schools') }}" class="btn rounded-pill btn-primary text-white">Back</a>
@@ -22,6 +22,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="my-3">
+                        <x-alert></x-alert>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <form action="{{ route('superadmin.schools.update') }}" method="POST"
@@ -29,7 +30,7 @@
                                     <input type="hidden" name="id" value="{{ $school->id }}">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-md-12 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <div class="d-flex align-items-start align-items-sm-center gap-4">
                                                 <img src="{{ getSchoolLogo($school->id) }}" alt="user-avatar"
                                                     class="d-block img-fluid rounded" height="100" width="100"
@@ -50,6 +51,11 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="name">Username</label>
+                                            <h5>{{ $school->username }}</h5>
+
+                                        </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label" for="name">School Name</label>
                                             <input type="text" name="name"
@@ -61,7 +67,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label" for="email">Email</label>
                                             <div class="input-group input-group-merge">
-                                                <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email',$school->email) }}" readonly>
+                                                <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email',$school->email) }}">
                                             </div>
                                             @error('email')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -139,14 +145,4 @@
         <!-- / Content -->
         <div class="content-backdrop fade"></div>
     </div>
-
-    @push('footer-script')
-        <script>
-            $(document).ready(function() {
-                $('#example').DataTable({
-                    responsive: true
-                });
-            });
-        </script>
-    @endpush
 @endsection

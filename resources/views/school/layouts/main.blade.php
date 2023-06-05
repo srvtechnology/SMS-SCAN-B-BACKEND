@@ -42,11 +42,11 @@
 <body>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-            @include('include.sidebar')
+            @include('school.include.sidebar')
             <div class="layout-page">
-                @include('include.header')
+                @include('school.include.header')
                 @yield('content')
-                @include('include.footer')
+                @include('school.include.footer')
             </div>
         </div>
         <div class="layout-overlay layout-menu-toggle"></div>

@@ -10,6 +10,7 @@ class School extends Model
     use HasFactory;
     protected $fillable = [
         'created_by',
+        'username',
         'name',
         'email',
         'password',
@@ -20,8 +21,6 @@ class School extends Model
         'type',
         'medium',
         'address',
-        'image',
-        'is_active',
-        'is_deleted'
+        'image'
     ];
 }

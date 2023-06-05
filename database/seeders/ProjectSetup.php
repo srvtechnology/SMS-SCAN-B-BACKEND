@@ -41,12 +41,24 @@ class ProjectSetup extends Seeder
             $pr->save();
         }
 
+        $role = new Role();
+        $role->name = 'SchoolAdmin';
+        $role->save();
+
+
+        foreach ($pids as $key => $id) {
+            $pr = new PermissionRole();
+            $pr->role_id = $role->id;
+            $pr->permission_id = $id;
+            $pr->save();
+        }
+
 
         $user = new User();
         $user->name = 'Admin';
         $user->email = 'admin@gmail.com';
         $user->password = Hash::make('12345678');
-        $user->role_id = $role->id;
+        $user->role_id = 1;
         $user->save();
     }
 }

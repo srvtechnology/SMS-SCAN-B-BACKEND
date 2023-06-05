@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\School;
 
 function getUserImage()
@@ -29,4 +30,20 @@ function getSchoolLogo($school_id)
     return $image;
 }
 
+function getSchoolStatus($school_id)
+{
+    $school = School::find($school_id);
+    $user = User::where('email',$school->email)->first();
+    return $user->status;
+}
+
+function getSchoolInfoByUsername($username)
+{
+    $school = School::where('username',$username)->first();
+    // if(!$school)
+    // {
+    //     dd("back to login");
+    // }
+    return $school;
+}
 ?>

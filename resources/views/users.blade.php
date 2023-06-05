@@ -74,14 +74,4 @@
         <!-- / Content -->
         <div class="content-backdrop fade"></div>
     </div>
-
-    @push('footer-script')
-        <script>
-            $(document).ready(function() {
-                $('#example').DataTable({
-                    responsive: true
-                });
-            });
-        </script>
-    @endpush
 @endsection

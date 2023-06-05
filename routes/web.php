@@ -33,6 +33,9 @@ Route::controller(SchoolController::class)->as("superadmin.")->group(function ()
     Route::post('/schools/store', 'store')->name('schools.store');
     Route::get('/schools/{id}/edit', 'edit')->name('schools.edit');
     Route::post('/schools/update', 'update')->name('schools.update');
+    Route::get('/schools/{id}/detail', 'detail')->name('schools.detail');
+    Route::post('/schools/block', 'block')->name('schools.block');
+    Route::post('/schools/delete', 'delete')->name('schools.delete');
 });
 
 
