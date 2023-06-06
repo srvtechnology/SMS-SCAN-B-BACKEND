@@ -2,6 +2,9 @@
 
 use App\Models\User;
 use App\Models\School;
+use App\Models\Classes;
+use App\Models\Section;
+use App\Models\Subject;
 
 function getUserImage()
 {
@@ -35,6 +38,24 @@ function getSchoolStatus($school_id)
     $school = School::find($school_id);
     $user = User::where('email',$school->email)->first();
     return $user->status;
+}
+
+function getSectionStatus($school_id)
+{
+    $section = Section::find($school_id);
+    return $section->status;
+}
+
+function getClassStatus($class_id)
+{
+    $class = Classes::find($class_id);
+    return $class->status;
+}
+
+function getSubjectStatus($school_id)
+{
+    $subject = Subject::find($school_id);
+    return $subject->status;
 }
 
 function getSchoolInfoByUsername($username)

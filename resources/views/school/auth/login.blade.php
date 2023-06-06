@@ -58,11 +58,9 @@
                                 <div class="d-flex justify-content-between">
                                     <label class="form-label" for="password">Password</label>
 
-                                    @if (Route::has('password.request'))
-                                        {{--  <a href="{{ route('password.request') }}">
+                                        {{--  <a href="{{ route('school.password-reset') }}">
                                             <small>Forgot Password?</small>
                                         </a>  --}}
-                                    @endif
                                 </div>
                                 <div class="input-group input-group-merge">
                                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"

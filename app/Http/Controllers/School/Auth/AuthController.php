@@ -47,4 +47,9 @@ class AuthController extends Controller
         return to_route('school.login');
         // return to_route('school.login',$this->school->username);
     }
+
+    public function reset()
+    {
+        return view("school.auth.reset-password");
+    }
 }

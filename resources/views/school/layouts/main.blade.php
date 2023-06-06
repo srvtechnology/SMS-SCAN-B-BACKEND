@@ -38,7 +38,9 @@
         }
     </style>
 </head>
-
+@php
+    $school = getSchoolInfoByUsername(Auth::user()->username);
+@endphp
 <body>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
@@ -67,6 +69,28 @@
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary closeBTNBlockModal" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-danger BlockSubmitBtnClass">Yes,Blocked</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal" tabindex="-1" id="StatusModal">
+        <form id="StatusModalForm" method="POST">
+            @csrf
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Status</h5>
+                    <button type="button" class="btn-close closeBTNStatusModal" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <h4 class="text-danger text-center StatusBodyTextClass">Are you sure to InActive?</h4>
+                    <input type="hidden" id="StatusModalID" name="id">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary closeBTNStatusModal" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger StatusSubmitBtnClass">Yes,InActive</button>
                   </div>
                 </div>
               </div>
@@ -131,6 +155,27 @@
 
             $(".closeBTNBlockModal").on("click",function(){
                 $("#BlockModal").hide();
+            });
+
+
+            $(".statusBtn").on("click", function(){
+                $("#StatusModal").show();
+                var id = $(this).attr("data-id");
+                var url = $(this).attr("data-url");
+                var status = $(this).attr("data-status");
+                if(status == "inactive"){
+                    $(".StatusSubmitBtnClass").addClass("btn-primary");
+                    $(".StatusSubmitBtnClass").text('Yes,Activate');
+                    $(".StatusBodyTextClass").addClass("text-primary");
+                    $(".StatusBodyTextClass").text('Are you sure to Activate?');
+                }
+
+                $("#StatusModalID").val(id);
+                $("#StatusModalForm").attr("action", url);
+            });
+
+            $(".closeBTNStatusModal").on("click",function(){
+                $("#StatusModal").hide();
             });
 
             $(".deleteBtn").on("click", function(){

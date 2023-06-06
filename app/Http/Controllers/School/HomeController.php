@@ -10,12 +10,12 @@ class HomeController extends Controller
 {
     public $school;
     public function __construct(){
-        $this->school = getSchoolInfoByUsername(request()->segment(1));
+        // $this->school = getSchoolInfoByUsername(Auth::user()->username);
     }
 
     public function dashboard()
     {
-        $school = $this->school;
+        $school = getSchoolInfoByUsername(Auth::user()->username);
         return view("school.dashboard")->with(compact('school'));
     }
 }
