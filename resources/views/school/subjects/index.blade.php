@@ -73,7 +73,9 @@
                                 </table>
                             </div>
                             @if(count($subjects) > 0)
+                            <div class="pagination_custom_class">
                             {{ $subjects->links() }}
+                            </div>
                             @endif
                         </div>
                         <!--/ Basic Bootstrap Table -->

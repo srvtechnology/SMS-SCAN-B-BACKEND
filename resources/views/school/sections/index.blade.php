@@ -73,7 +73,9 @@
                                 </table>
                             </div>
                             @if(count($sections) > 0)
+                            <div class="pagination_custom_class">
                             {{ $sections->links() }}
+                            </div>
                             @endif
                         </div>
                         <!--/ Basic Bootstrap Table -->

@@ -37,6 +37,7 @@
             background: rgba(0,0,0,0.3) !important;
         }
     </style>
+    @yield("page_styles")
 </head>
 @php
     $school = getSchoolInfoByUsername(Auth::user()->username);

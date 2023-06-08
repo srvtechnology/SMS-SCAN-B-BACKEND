@@ -51,7 +51,22 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li>
+                                                            <a class="dropdown-item" href="{{ route("school.class.edit",$class->id) }}">Edit</a>
+                                                        </li>
+                                                        <li>
                                                             <a class="dropdown-item" href="{{ route("school.class.detail",$class->id) }}">Detail</a>
+                                                        </li>
+                                                        @if($class->status == "inactive")
+                                                        <li>
+                                                            <a class="dropdown-item statusBtn" data-id={{ $class->id }} data-url={{ route("school.class.block") }} data-status = {{ $class->status }}>Activate Class</a>
+                                                        </li>
+                                                        @else
+                                                        <li>
+                                                            <a class="dropdown-item statusBtn" data-id={{ $class->id }} data-url={{ route("school.class.block") }} data-status = {{ $class->status }}>InActive Class</a>
+                                                        </li>
+                                                        @endif
+                                                        <li>
+                                                            <a class="dropdown-item deleteBtn" data-id={{ $class->id }} data-url={{ route("school.class.delete") }}>Delete</a>
                                                         </li>
                                                     </ul>
                                                 </td>
@@ -61,7 +76,9 @@
                                 </table>
                             </div>
                             @if(count($classes) > 0)
+                            <div class="pagination_custom_class">
                             {{ $classes->links() }}
+                            </div>
                             @endif
                         </div>
                         <!--/ Basic Bootstrap Table -->

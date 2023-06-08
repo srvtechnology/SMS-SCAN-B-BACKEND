@@ -10,6 +10,7 @@ use App\Http\Controllers\School\ClassController;
 use App\Http\Controllers\ManagepasswordController;
 use App\Http\Controllers\School\SectionController;
 use App\Http\Controllers\School\SubjectController;
+use App\Http\Controllers\School\TeacherController;
 use App\Http\Controllers\School\Auth\AuthController;
 /*
 |--------------------------------------------------------------------------
@@ -61,9 +62,15 @@ Route::middleware(['school_auth'])->group(function () {
         Route::get('/class', 'index')->name('class');
         Route::get('/class/create', 'create')->name('class.create');
         Route::post('/class/store','store')->name('class.store');
+        Route::get('/class/{id}/edit', 'edit')->name('class.edit');
         Route::get('/class/{id}/detail', 'detail')->name('class.detail');
-        // Route::post('/class/update','update')->name('subjects.update');
-        // Route::post('/class/block','block')->name('subjects.block');
-        // Route::post('/class/delete','delete')->name('subjects.delete');
+        Route::post('/class/update','update')->name('class.update');
+        Route::post('/class/block','block')->name('class.block');
+        Route::post('/class/delete','delete')->name('class.delete');
+    });
+
+    Route::controller(TeacherController::class)->as('school.')->group(function () {
+        Route::get('/teachers', 'index')->name('teachers');
+        Route::get('/teachers/create', 'create')->name('teachers.create');
     });
 });

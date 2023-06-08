@@ -13,7 +13,7 @@ class SubjectController extends Controller
     public function index()
     {
         $school = getSchoolInfoByUsername(Auth::user()->username);
-        $subjects = Subject::where(['school_id' => $school->id,'is_deleted'=>'0'])->OrderBy("name","asc")->paginate(10);
+        $subjects = Subject::where(['school_id' => $school->id,'is_deleted'=>'0'])->OrderBy("id","desc")->paginate(10);
         return view('school.subjects.index')->with(compact('subjects'));
     }
 
