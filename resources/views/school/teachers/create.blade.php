@@ -36,6 +36,7 @@
                             <h2 id="heading">Create Teacher</h2>
                             <p>Fill all form field to go to next step</p>
                             <form id="msform" enctype="multipart/form-data">
+                                @csrf
                                 <!-- progressbar -->
                                 <ul id="progressbar">
                                     <li class="active" id="personal"><strong>Persional</strong></li>
@@ -123,12 +124,13 @@
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <div class="form-group">
-                                                    <label for="">Type*</label>
-                                                    <select name="type" id="type" class="form-control">
-                                                        <option value="1" selected>Class Teacher</option>
-                                                        <option value="1" selected>Simple Teacher</option>
-                                                        <option value="1" selected>Principle</option>
-                                                        <option value="1" selected>Vice Principle</option>
+                                                    <label for="">Designation*</label>
+                                                    <select name="designation_id" id="type" class="form-control">
+                                                        @if(count($designations) > 0)
+                                                        @foreach($designations as $designation)
+                                                        <option value="{{ $designation->id }}" selected>{{ $designation->name }}</option>
+                                                        @endforeach
+                                                        @endif
                                                     </select>
                                                     <span class="text-danger d-none" id="type_error">Type is required</span>
                                                 </div>
@@ -144,9 +146,9 @@
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <div class="form-group">
-                                                    <label for="">Expected Salary *</label>
+                                                    <label for="">Salary *</label>
                                                     <input type="text" name="salary" id="salary" class="form-control"
-                                                        placeholder="Expected Salary">
+                                                        placeholder="Salary">
                                                     <span class="text-danger d-none" id="salary_error">Expected Salary is
                                                         required</span>
                                                 </div>
@@ -163,7 +165,7 @@
                                             <div class="col-md-12 col-12 mb-3">
                                                 <div class="form-group">
                                                     <label for="">Additional Documents </label>
-                                                    <input type="file" name="documents" id="documents" class="form-control"
+                                                    <input type="file" name="documents[]" id="documents" class="form-control"
                                                         multiple>
                                                 </div>
                                             </div>
@@ -259,19 +261,28 @@
                                             <div class="row">
                                                 <div class="col-md-2 col-12">
                                                     <div class="form-group mb-3">
-                                                        <label for="">Year *</label>
-                                                        <input type="text" name="exp_year[]" id="year"
+                                                        <label for="">From *</label>
+                                                        <input type="date" name="from_date[]" id="from_date"
                                                             class="form-control" placeholder="Year">
-                                                        <span class="text-danger d-none" id="year_error">Year is
+                                                        <span class="text-danger d-none" id="from_date_error">From is
                                                             required</span>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-8 col-12">
+                                                <div class="col-md-2 col-12">
+                                                    <div class="form-group mb-3">
+                                                        <label for="">To *</label>
+                                                        <input type="date" name="to_date[]" id="to_date"
+                                                            class="form-control" placeholder="Year">
+                                                        <span class="text-danger d-none" id="to_date_error">To is
+                                                            required</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
                                                     <div class="form-group mb-3">
                                                         <label for="">Instituation *</label>
-                                                        <input type="text" name="exp_instituation[]" id="instituation"
+                                                        <input type="text" name="exp_instituation[]" id="exp_instituation"
                                                             class="form-control" placeholder="Instituation">
-                                                        <span class="text-danger d-none" id="instituation_error">Instituation is
+                                                        <span class="text-danger d-none" id="exp_instituation_error">Instituation is
                                                             required</span>
                                                     </div>
                                                 </div>
@@ -301,13 +312,13 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <label style="display: flex; align-items: center; justify-content: start; gap: 0.3rem;">
-                                                                <input type="checkbox" name="checkbox{{ $class->id }}" value="{{ $class->id }}" style="width: 20px; height: 20px;" class="main-checkbox"><span>{{ $class->name }}</span>
+                                                                <input type="checkbox" name="class_id[]" value="{{ $class->id }}" style="width: 20px; height: 20px;" class="main-checkbox"><span>{{ $class->name }}</span>
                                                             </label>
                                                             @if(count($class->assignedSections) > 0)
                                                                 <div class="checkbox-list">
                                                                     @foreach($class->assignedSections as $asssignedSection)
                                                                         <label style="display: flex; align-items: center; justify-content: start; gap: 0.3rem;">
-                                                                            <input type="checkbox" name="checkboxSection{{ $asssignedSection->section->id }}" value="{{ $asssignedSection->section->id }}" style="width: 15px; height: 15px;" class="sub-checkbox checkbox{{ $class->id }}"><span>{{ $asssignedSection->section->name }}</span>
+                                                                            <input type="checkbox" name="section_id[]" value="{{ $class->id }},{{ $asssignedSection->section->id }}" style="width: 15px; height: 15px;" class="sub-checkbox checkbox{{ $class->id }}"><span>{{ $asssignedSection->section->name }}</span>
                                                                         </label>
                                                                     @endforeach
                                                                 </div>
@@ -339,7 +350,7 @@
                                                     <div class="row">
                                                         <div class="row">
                                                             <label style="display: flex;align-items: center;justify-content: start;gap: 0.3rem;">
-                                                                <input type="checkbox" name="checkbox{{ $subject->id }}" value="{{ $subject->id }}" style="width: 15px; height: 15px;"> <span>{{ $subject->name }}</span>
+                                                                <input type="checkbox" name="subject_id[]" value="{{ $subject->id }}" style="width: 15px; height: 15px;"> <span>{{ $subject->name }}</span>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -349,7 +360,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="button" name="next" class="next action-button" value="Next" />
+                                    <button type="submit" name="next" class="next action-button finalStep">Submit</button>
                                     <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                 </fieldset>
                             </form>
@@ -440,8 +451,8 @@
                             <div class="col-md-4 col-12">
                                 <div class="form-group mb-3">
                                     <label for="">Institution *</label>
-                                    <input type="text" name="institution[]" class="form-control" placeholder="Institution">
-                                    <span class="text-danger d-none institution_error">Institution is required</span>
+                                    <input type="text" name="instituation[]" class="form-control" placeholder="Instituation">
+                                    <span class="text-danger d-none instituation_error">instituation is required</span>
                                 </div>
                             </div>
                             <div class="col-md-2 col-12">
@@ -489,16 +500,27 @@
                         `<div class="row">
                             <div class="col-md-2 col-12">
                                 <div class="form-group mb-3">
-                                    <label for="">Year *</label>
-                                    <input type="text" name="exp_year[]" class="form-control" placeholder="Year">
-                                    <span class="text-danger d-none year_error">Year is required</span>
+                                    <label for="">From *</label>
+                                    <input type="date" name="from_date[]" id="from_date"
+                                        class="form-control" placeholder="Year">
+                                    <span class="text-danger d-none" id="from_date_error">From is
+                                        required</span>
                                 </div>
                             </div>
-                            <div class="col-md-8 col-12">
+                            <div class="col-md-2 col-12">
+                                <div class="form-group mb-3">
+                                    <label for="">To *</label>
+                                    <input type="date" name="to_date[]" id="to_date"
+                                        class="form-control" placeholder="Year">
+                                    <span class="text-danger d-none" id="to_date_error">To is
+                                        required</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12">
                                 <div class="form-group mb-3">
                                     <label for="">Institution *</label>
-                                    <input type="text" name="exp_institution[]" class="form-control" placeholder="Institution">
-                                    <span class="text-danger d-none institution_error">Institution is required</span>
+                                    <input type="text" name="exp_instituation[]" class="form-control" placeholder="Institution">
+                                    <span class="text-danger d-none exp_instituation_error">Institution is required</span>
                                 </div>
                             </div>
                             <div class="col-md-2 col-12">
@@ -527,6 +549,28 @@
                     const current_fs = $(this).parent();
                     const next_fs = $(this).parent().next();
                     nextSection(current_fs, next_fs);
+                });
+
+                $(".finalStep").click(function(e) {
+                    e.preventDefault();
+                    var form = document.getElementById('msform');
+                    var formData = new FormData(form);
+                    //for(let [key, value] of formData){
+                        //console.log(key + " : " + value);
+                    //}
+                    $.ajax({
+                        url: '{{ route("school.teachers.store") }}',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                          window.location.href = '{{ route("school.teachers") }}';
+                        },
+                        error: function(xhr, status, error) {
+                          console.error('Form submission failed');
+                        }
+                      });
                 });
 
                 $(".previous").click(function() {

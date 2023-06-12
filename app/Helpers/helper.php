@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Staff;
 use App\Models\School;
 use App\Models\Classes;
 use App\Models\Section;
@@ -15,6 +16,20 @@ function getUserImage()
     else
     {
         $image = asset('assets/default/avatar.jpg');
+    }
+    return $image;
+}
+
+function getStaffImage($staff_id)
+{
+    $staff = Staff::find($staff_id);
+    if(!empty($staff->image) AND file_exists(public_path('uploads/schools/logo/'.$staff->image)))
+    {
+        $image = asset('uploads/schools/logo/'.$staff->image);
+    }
+    else
+    {
+        $image = asset('assets/default/placeholder.png');
     }
     return $image;
 }
@@ -67,4 +82,5 @@ function getSchoolInfoByUsername($username)
     // }
     return $school;
 }
+
 ?>

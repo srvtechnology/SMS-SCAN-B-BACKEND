@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('school.layouts.main')
 @section('page_title', 'Class')
 @section('content')
 

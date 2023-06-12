@@ -12,6 +12,7 @@ use App\Http\Controllers\School\SectionController;
 use App\Http\Controllers\School\SubjectController;
 use App\Http\Controllers\School\TeacherController;
 use App\Http\Controllers\School\Auth\AuthController;
+use App\Http\Controllers\School\DesignationController;
 /*
 |--------------------------------------------------------------------------
 | School Routes
@@ -69,8 +70,20 @@ Route::middleware(['school_auth'])->group(function () {
         Route::post('/class/delete','delete')->name('class.delete');
     });
 
+    Route::controller(DesignationController::class)->as('school.')->group(function () {
+        Route::get('/designations', 'index')->name('designations');
+        Route::get('/designations/create', 'create')->name('designations.create');
+        Route::post('/designations/store','store')->name('designations.store');
+        Route::get('/designations/{id}/edit', 'edit')->name('designations.edit');
+        Route::post('/designations/update','update')->name('designations.update');
+        Route::post('/designations/block','block')->name('designations.block');
+        Route::post('/designations/delete','delete')->name('designations.delete');
+    });
+
     Route::controller(TeacherController::class)->as('school.')->group(function () {
         Route::get('/teachers', 'index')->name('teachers');
         Route::get('/teachers/create', 'create')->name('teachers.create');
+        Route::post('/teachers/store', 'store')->name('teachers.store');
+        Route::get('/teachers/{id}/detail', 'detail')->name('teachers.detail');
     });
 });

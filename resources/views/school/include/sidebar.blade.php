@@ -52,13 +52,18 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item @if(request()->segment(2) == 'teachers') active open @endif">
+        <li class="menu-item @if(request()->segment(2) == 'teachers' OR request()->segment(2) == 'designations') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon bx bxs-user-detail'></i>
                 <div data-i18n="Layouts">Human Resource</div>
             </a>
 
             <ul class="menu-sub">
+                <li class="menu-item {{ request()->segment(2) == 'designations' ? 'active' : '' }}">
+                    <a href="{{ route('school.designations') }}" class="menu-link">
+                        <div data-i18n="Without menu">Designation</div>
+                    </a>
+                </li>
                 <li class="menu-item {{ request()->segment(2) == 'teachers' ? 'active' : '' }}">
                     <a href="{{ route('school.teachers') }}" class="menu-link">
                         <div data-i18n="Without menu">Teachers</div>

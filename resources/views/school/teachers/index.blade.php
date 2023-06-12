@@ -29,13 +29,37 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Image</th>
                                             <th>Name</th>
-                                            <th>Status</th>
+                                            <th>Designation</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        @if(count($staffs) > 0)
+                                        @foreach($staffs as $staff)
+                                        <tr>
+                                            <td>#</td>
+                                            <td>
+                                                <img src="{{ getStaffImage($staff->id) }}" class="img-fluid rounded"
+                                                        width="50" height="50" alt="">
+                                            </td>
+                                            <td>{{ $staff->first_name }} {{ $staff->last_name }}</td>
+                                            <td>{{ $staff->designation->name }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Action
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route("school.teachers.detail",$staff->id) }}">View Detail</a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
