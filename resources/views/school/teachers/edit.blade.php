@@ -1,5 +1,5 @@
 @extends('school.layouts.main')
-@section('page_title', 'Schools')
+@section('page_title', 'Teacher')
 @section('page_styles')
     <link rel="stylesheet" href="{{ asset('assets/css/step_form.css') }}">
 @endsection
@@ -24,7 +24,7 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('school.teachers') }}">Teachers</a>
                         </li>
-                        <li class="breadcrumb-item active">Create Teacher</li>
+                        <li class="breadcrumb-item active">Edit Teacher</li>
                     </ol>
                 </nav>
                 <a href="{{ route('school.teachers') }}" class="btn rounded-pill btn-primary text-white">Back</a>
@@ -33,10 +33,11 @@
                 <div class="row justify-content-center">
                     <div class="col-11 col-sm-10 col-md-12 col-lg-12 col-xl-12 text-center mt-3 mb-2">
                         <div class="card px-0 pt-4 pb-0 mt-3 mb-3 p-5">
-                            <h2 id="heading">Create Teacher</h2>
+                            <h2 id="heading">Edit Teacher</h2>
                             <p>Fill all form field to go to next step</p>
                             <form id="msform" enctype="multipart/form-data">
                                 @csrf
+                                <input type="hidden" name="staff_id" value="{{ $staff->id }}">
                                 <!-- progressbar -->
                                 <ul id="progressbar">
                                     <li class="active" id="personal"><strong>Persional</strong></li>
@@ -59,7 +60,7 @@
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
                                                 <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                                    <img src="{{ getUserImage() }}" alt="user-avatar" class="d-block rounded" height="100"
+                                                    <img src="{{ getStaffImage($staff->id) }}" alt="user-avatar" class="d-block rounded" height="100"
                                                         width="100" id="uploadedAvatar" />
                                                     <div class="button-wrapper">
                                                         <label for="image" class="btn btn-primary me-2 mb-4" tabindex="0">
@@ -79,7 +80,7 @@
                                                 <div class="form-group mb-3">
                                                     <label for="">First Name *</label>
                                                     <input type="text" name="first_name" id="first_name"
-                                                        class="form-control" placeholder="First Name">
+                                                        class="form-control" placeholder="First Name" value="{{ $staff->first_name }}">
                                                     <span class="text-danger d-none" id="first_name_error">First Name is
                                                         required</span>
                                                 </div>
@@ -88,7 +89,7 @@
                                                 <div class="form-group">
                                                     <label for="">Last Name *</label>
                                                     <input type="text" name="last_name" id="last_name"
-                                                        class="form-control" placeholder="Last Name">
+                                                        class="form-control" placeholder="Last Name" value="{{ $staff->last_name }}">
                                                     <span class="text-danger d-none" id="last_name_error">Last Name is
                                                         required</span>
                                                 </div>
@@ -97,7 +98,7 @@
                                                 <div class="form-group">
                                                     <label for="">Email*</label>
                                                     <input type="email" name="email" id="email" class="form-control"
-                                                        placeholder="Email">
+                                                        placeholder="Email"  value="{{ $staff->email }}">
                                                     <span class="text-danger d-none" id="email_error">Email is
                                                         required</span>
                                                 </div>
@@ -106,7 +107,7 @@
                                                 <div class="form-group">
                                                     <label for="">Phone*</label>
                                                     <input type="phone" name="phone" id="phone" class="form-control"
-                                                        placeholder="Phone">
+                                                        placeholder="Phone"  value="{{ $staff->phone }}">
                                                     <span class="text-danger d-none" id="phone_error">Phone is
                                                         required</span>
                                                 </div>
@@ -115,8 +116,8 @@
                                                 <div class="form-group">
                                                     <label for="">Gender*</label>
                                                     <select name="gender" id="gender" class="form-control">
-                                                        <option value="male" selected>Male</option>
-                                                        <option value="female">Female</option>
+                                                        <option value="male" @if($staff->gender == 'male') selected @endif>Male</option>
+                                                        <option value="female" @if($staff->gender == 'female') selected @endif>Female</option>
                                                     </select>
                                                     <span class="text-danger d-none" id="gender_error">Gender is
                                                         required</span>
@@ -128,7 +129,7 @@
                                                     <select name="designation_id" id="type" class="form-control">
                                                         @if(count($designations) > 0)
                                                         @foreach($designations as $designation)
-                                                        <option value="{{ $designation->id }}" selected>{{ $designation->name }}</option>
+                                                        <option value="{{ $designation->id }}"  @if($staff->designation_id == $designation->id) selected @endif>{{ $designation->name }}</option>
                                                         @endforeach
                                                         @endif
                                                     </select>
@@ -139,7 +140,7 @@
                                                 <div class="form-group">
                                                     <label for="">Address*</label>
                                                     <input type="address" name="address" id="address"
-                                                        class="form-control" placeholder="Address">
+                                                        class="form-control" placeholder="Address" value="{{ $staff->address }}">
                                                     <span class="text-danger d-none" id="address_error">Address is
                                                         required</span>
                                                 </div>
@@ -148,8 +149,8 @@
                                                 <div class="form-group">
                                                     <label for="">Salary *</label>
                                                     <input type="text" name="salary" id="salary" class="form-control"
-                                                        placeholder="Salary">
-                                                    <span class="text-danger d-none" id="salary_error">Expected Salary is
+                                                        placeholder="Salary"  value="{{ $staff->salary }}">
+                                                    <span class="text-danger d-none" id="salary_error">Salary is
                                                         required</span>
                                                 </div>
                                             </div>
@@ -157,44 +158,44 @@
                                                 <div class="form-group">
                                                     <label for="">Joining Date *</label>
                                                     <input type="date" name="joining_date" id="joining_date" class="form-control"
-                                                        >
+                                                    value="{{ $staff->joining_date }}">
                                                     <span class="text-danger d-none" id="joining_date_error">Joining Date is
                                                         required</span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12 col-12 mb-3">
+                                            {{--  <div class="col-md-12 col-12 mb-3">
                                                 <div class="form-group">
                                                     <label for="">Additional Documents </label>
                                                     <input type="file" name="documents[]" id="documents" class="form-control"
                                                         multiple>
                                                 </div>
-                                            </div>
+                                            </div>  --}}
                                             <div class="col-md-6 col-12 mb-3">
                                                 <div class="form-group">
                                                     <label for="">Facebook Profile</label>
                                                     <input type="text" name="fb_profile" id="fb_profile" class="form-control"
-                                                        placeholder="Facebook Profile">
+                                                        placeholder="Facebook Profile" value="{{ $staff->fb_profile }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <div class="form-group">
                                                     <label for="">Instagram Profile</label>
                                                     <input type="text" name="insta_profile" id="insta_profile" class="form-control"
-                                                        placeholder="Instagram Profile">
+                                                        placeholder="Instagram Profile" value="{{ $staff->insta_profile }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <div class="form-group">
                                                     <label for="">LinkedIn Profile</label>
                                                     <input type="text" name="linkedIn_profile" id="linkedIn_profile" class="form-control"
-                                                        placeholder="LinkedIn Profile">
+                                                        placeholder="LinkedIn Profile" value="{{ $staff->linkedIn_profile }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <div class="form-group">
                                                     <label for="">Twitter Profile</label>
                                                     <input type="text" name="twitter_profile" id="twitter_profile" class="form-control"
-                                                        placeholder="Twitter Profile">
+                                                        placeholder="Twitter Profile" value="{{ $staff->twitter_profile }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -210,12 +211,14 @@
                                             </div>
                                         </div>
                                         <div id="dynamicFieldsContainer">
+                                            @if(count($staff->qualifications)>0)
+                                            @foreach($staff->qualifications as $qual_index => $qualification)
                                             <div class="row">
                                                 <div class="col-md-2 col-12">
                                                     <div class="form-group mb-3">
                                                         <label for="">Year *</label>
                                                         <input type="text" name="year[]" id="year"
-                                                            class="form-control" placeholder="Year">
+                                                            class="form-control" placeholder="Year" value={{ $qualification->year }}>
                                                         <span class="text-danger d-none" id="year_error">Year is
                                                             required</span>
                                                     </div>
@@ -224,7 +227,7 @@
                                                     <div class="form-group mb-3">
                                                         <label for="">Education *</label>
                                                         <input type="text" name="education[]" id="education"
-                                                            class="form-control" placeholder="Education">
+                                                            class="form-control" placeholder="Education" value={{ $qualification->education }}>
                                                         <span class="text-danger d-none" id="education_error">Education is
                                                             required</span>
                                                     </div>
@@ -233,17 +236,23 @@
                                                     <div class="form-group mb-3">
                                                         <label for="">Instituation *</label>
                                                         <input type="text" name="instituation[]" id="instituation"
-                                                            class="form-control" placeholder="Instituation">
+                                                            class="form-control" placeholder="Instituation" value={{ $qualification->instituation }}>
                                                         <span class="text-danger d-none" id="instituation_error">Instituation is
                                                             required</span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2 col-12">
                                                     <div class="form-group mb-3">
+                                                        @if($qual_index == 0)
                                                         <button type="button" class="btn btn-primary mt-4" id="addField"><i class='bx bx-plus-medical'></i></button>
+                                                        @else
+                                                        <button type="button" class="btn btn-danger mt-4 deleteRow"><i class='bx bx-trash'></i></button>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
+                                            @endforeach
+                                            @endif
                                         </div>
                                     </div>
                                     <input type="button" name="next" class="next action-button step2Btn" value="Next" />
@@ -258,6 +267,48 @@
                                             </div>
                                         </div>
                                         <div id="dynamicFieldsContainerExperience">
+                                            @if(count($staff->experiences)>0)
+                                            @foreach($staff->experiences as $exp_index => $experience)
+                                            <div class="row">
+                                                <div class="col-md-2 col-12">
+                                                    <div class="form-group mb-3">
+                                                        <label for="">From *</label>
+                                                        <input type="date" name="from_date[]" id="from_date"
+                                                            class="form-control" placeholder="Year" value="{{ $experience->from_date }}">
+                                                        <span class="text-danger d-none" id="from_date_error">From is
+                                                            required</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    <div class="form-group mb-3">
+                                                        <label for="">To *</label>
+                                                        <input type="date" name="to_date[]" id="to_date"
+                                                            class="form-control" placeholder="Year" value="{{ $experience->to_date }}">
+                                                        <span class="text-danger d-none" id="to_date_error">To is
+                                                            required</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group mb-3">
+                                                        <label for="">Instituation *</label>
+                                                        <input type="text" name="exp_instituation[]" id="exp_instituation"
+                                                            class="form-control" placeholder="Instituation" value="{{ $experience->instituation }}">
+                                                        <span class="text-danger d-none" id="exp_instituation_error">Instituation is
+                                                            required</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    <div class="form-group mb-3">
+                                                        @if($exp_index == 0)
+                                                        <button type="button" class="btn btn-primary mt-4" id="addExperienceField"><i class='bx bx-plus-medical'></i></button>
+                                                        @else
+                                                        <button type="button" class="btn btn-danger mt-4 deleteRow"><i class='bx bx-trash'></i></button>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endforeach
+                                            @else
                                             <div class="row">
                                                 <div class="col-md-2 col-12">
                                                     <div class="form-group mb-3">
@@ -289,9 +340,11 @@
                                                 <div class="col-md-2 col-12">
                                                     <div class="form-group mb-3">
                                                         <button type="button" class="btn btn-primary mt-4" id="addExperienceField"><i class='bx bx-plus-medical'></i></button>
+
                                                     </div>
                                                 </div>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                     <input type="button" name="next" class="next action-button step3Btn" value="Next" />
@@ -308,23 +361,33 @@
                                             <span class="text-danger d-none" id="section_id_error">Please select at least one checkbox.</span>
                                             <div class="row">
                                                 @if(count($classes) > 0)
+
                                                 @foreach($classes as $class)
+                                                @if(in_array($class->id, array_column($response, 'class_id')))
+                                                @php
+                                                    $selectedSectionArray = selectedSectionArray($school->id,$staff->id,$class->id);
+                                                @endphp
+                                                @else
+                                                @php
+                                                $selectedSectionArray= [];
+                                                @endphp
+                                                @endif
                                                 <div class="col-md-3 col-3 mb-4">
                                                     <div class="row">
                                                         <div class="col">
                                                             <label style="display: flex; align-items: center; justify-content: start; gap: 0.3rem;">
-                                                                <input type="checkbox" name="class_id[]" value="{{ $class->id }}" style="width: 20px; height: 20px;" class="main-checkbox"><span>{{ $class->name }}</span>
+                                                                <input type="checkbox" name="class_id[]" value="{{ $class->id }}" style="width: 20px; height: 20px;" class="main-checkbox"  @if(in_array($class->id, array_column($response, 'class_id'))) checked @endif><span>{{ $class->name }}</span>
                                                             </label>
                                                             @if(count($class->assignedSections) > 0)
                                                                 <div class="checkbox-list">
                                                                     @foreach($class->assignedSections as $asssignedSection)
                                                                         <label style="display: flex; align-items: center; justify-content: start; gap: 0.3rem;">
-                                                                            <input type="checkbox" name="section_id[]" value="{{ $class->id }},{{ $asssignedSection->section->id }}" style="width: 15px; height: 15px;" class="sub-checkbox checkbox{{ $class->id }}"><span>{{ $asssignedSection->section->name }}</span>
+                                                                            <input type="checkbox" name="section_id[]" value="{{ $class->id }},{{ $asssignedSection->section->id }}" style="width: 15px; height: 15px;" class="sub-checkbox checkbox{{ $class->id }}" @if(in_array($asssignedSection->section->id, $selectedSectionArray)) checked @endif><span>{{ $asssignedSection->section->name }}</span>
                                                                         </label>
                                                                     @endforeach
                                                                 </div>
                                                             @endif
-
+                                                            <span class="text-danger d-none" id="checkbox_error{{ $class->id }}">Please select at least one checkbox.</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -352,7 +415,7 @@
                                                     <div class="row">
                                                         <div class="row">
                                                             <label style="display: flex;align-items: center;justify-content: start;gap: 0.3rem;">
-                                                                <input type="checkbox" name="subject_id[]" value="{{ $subject->id }}" style="width: 15px; height: 15px;"> <span>{{ $subject->name }}</span>
+                                                                <input type="checkbox" name="subject_id[]" value="{{ $subject->id }}" style="width: 15px; height: 15px;" @if(in_array($subject->id, $subjectResponse)) checked @endif> <span>{{ $subject->name }}</span>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -408,7 +471,6 @@
                         'gender',
                         'type',
                         'address',
-                        'image',
                         'salary',
                         'joining_date'
                     ];
@@ -565,14 +627,13 @@
                     var subjectId = $('input[name="subject_id[]"]:checked').length;
                     e.preventDefault();
                     if(subjectId > 0) {
-                        $("#subject_id_error").addClass('d-none');
                         var form = document.getElementById('msform');
                         var formData = new FormData(form);
                         //for(let [key, value] of formData){
                             //console.log(key + " : " + value);
                         //}
                         $.ajax({
-                            url: '{{ route("school.teachers.store") }}',
+                            url: '{{ route("school.teachers.update") }}',
                             type: 'POST',
                             data: formData,
                             processData: false,
@@ -589,7 +650,6 @@
                     {
                         $("#subject_id_error").removeClass('d-none');
                     }
-
                 });
 
                 $(".previous").click(function() {

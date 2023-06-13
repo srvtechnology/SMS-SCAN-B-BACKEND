@@ -35,30 +35,43 @@
                                     @csrf
                                     <div id="fieldContainer">
                                         <div class="row">
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-4 mb-3">
                                                 <div class="form-group">
                                                     <label for="field1">Name:</label>
-                                                    <input type="text" class="form-control" id="name" name="name1">
+                                                    <input type="text" class="form-control" id="name" name="name1[]">
                                                     <div class="nameError text-danger error-message"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 mb-3 custom-section">
+                                            <div class="col-md-3 mb-3">
 
                                                 <div class="form-group">
                                                     <label for="field1">Sections:</label>
                                                     <div class="sectionError text-danger error-message"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                    @if(count($sections) > 0)
-                                                    @foreach($sections as $section)
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="section1[]" type="checkbox" value="{{ $section->id }}" id="section_{{ $section->id }}">
-                                                        <label class="form-check-label" for="section_{{ $section->id }}">
-                                                          {{ $section->name }}
-                                                        </label>
-                                                    </div>
-                                                    @endforeach
-                                                    @endif
+                                                    <select class="select2_custom form-control" name="section_id1[]" multiple="multiple">
+                                                        @if(count($sections) > 0)
+                                                        @foreach($sections as $section)
+                                                            <option value="{{ $section->id }}">{{ $section->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                      </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+
+                                                <div class="form-group">
+                                                    <label for="field1">Subjects:</label>
+                                                    <div class="subjectError text-danger error-message"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select class="select2_custom form-control" name="subject_id1[]" multiple="multiple">
+                                                        @if(count($subjects) > 0)
+                                                        @foreach($subjects as $subject)
+                                                            <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                      </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-2 text-end">
@@ -86,37 +99,57 @@
     $('.addField').on('click', function() {
       var newField =
         `<div class="row">
-          <div class="col-md-6 mb-3">
-            <div class="form-group">
-              <label for="field${fieldIndex}">Name:</label>
-              <input type="text" class="form-control" id="name${fieldIndex}" name="name${fieldIndex}">
-              <div class="nameError text-danger error-message"></div>
+            <div class="col-md-4 mb-3">
+                <div class="form-group">
+                    <label for="field1">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name${fieldIndex}[]">
+                    <div class="nameError text-danger error-message"></div>
+                </div>
             </div>
-          </div>
-          <div class="col-md-4 mb-3 custom-section">
-            <div class="form-group">
-              <label for="field${fieldIndex}">Sections:</label>
-              <div class="sectionError text-danger error-message"></div>
+            <div class="col-md-3 mb-3">
+
+                <div class="form-group">
+                    <label for="field1">Sections:</label>
+                    <div class="sectionError text-danger error-message"></div>
+                </div>
+                <div class="form-group">
+                    <select class="select2_custom form-control" name="section_id${fieldIndex}[]" multiple="multiple">
+                        @if(count($sections) > 0)
+                        @foreach($sections as $section)
+                            <option value="{{ $section->id }}">{{ $section->name }}</option>
+                            @endforeach
+                        @endif
+                      </select>
+                </div>
             </div>
-            <div class="form-group">
-              @if(count($sections) > 0)
-              @foreach($sections as $section)
-              <div class="form-check">
-                <input class="form-check-input" name="section${fieldIndex}[]" type="checkbox" value="{{ $section->id }}" id="section${fieldIndex}_${{ $section->id }}">
-                <label class="form-check-label" for="section${fieldIndex}_${{ $section->id }}">
-                  {{ $section->name }}
-                </label>
-              </div>
-              @endforeach
-              @endif
+            <div class="col-md-3 mb-3">
+
+                <div class="form-group">
+                    <label for="field1">Subjects:</label>
+                    <div class="subjectError text-danger error-message"></div>
+                </div>
+                <div class="form-group">
+                    <select class="select2_custom form-control" name="subject_id${fieldIndex}[]" multiple="multiple">
+                        @if(count($subjects) > 0)
+                        @foreach($subjects as $subject)
+                            <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                            @endforeach
+                        @endif
+                      </select>
+                </div>
             </div>
-          </div>
           <div class="col-md-2 text-end">
             <button type="button" class="btn btn-danger mt-2 removeFieldBtn"><i class="bx bx-trash"></i></button>
           </div>
         </div>`;
 
       $('#fieldContainer').append(newField);
+      // Initialize Select2 only for last and second-to-last fields
+        var selectFields = $('#fieldContainer').find('.select2_custom');
+        selectFields.eq(selectFields.length - 1).select2();
+        if (selectFields.length > 1) {
+        selectFields.eq(selectFields.length - 2).select2();
+        }
       fieldIndex++; // Increment field index
     });
 
@@ -125,28 +158,40 @@
       $(this).closest('.row').remove();
     });
 
+
+
     $('#myForm').submit(function(event) {
         event.preventDefault(); // Prevent form submission
+        $(this).off('submit').submit();
 
         // Clear previous error messages
         $('.nameError').empty();
         $('.sectionError').empty();
+         $('.subjectError').empty();
 
         var errorCount = 0;
 
         $('#fieldContainer .row').each(function() {
-          var nameField = $(this).find('input[type="text"]');
-          var checkboxes = $(this).find('input[type="checkbox"]:checked');
+            var nameField = $(this).find('input[type="text"]');
+      var fieldIndex = nameField.attr('name').match(/\d+/)[0];
+      var sectionSelect = $(this).find('select[name="section_id' + fieldIndex + '[]"]');
+      var subjectSelect = $(this).find('select[name="subject_id' + fieldIndex + '[]"]');
 
-          if (nameField.val().trim() === '') {
-            nameField.siblings('.nameError').text('Name is required.');
-            errorCount++;
-          }
 
-          if (checkboxes.length === 0) {
-            $(this).find('.sectionError').text('Select at least one section.');
-            errorCount++;
-          }
+      if (nameField.val().trim() === '') {
+        nameField.siblings('.nameError').text('Name is required.');
+        errorCount++;
+      }
+
+      if (sectionSelect.val() === null || sectionSelect.val().length === 0) {
+        $(this).find('.sectionError').text('Select at least one section.');
+        errorCount++;
+      }
+
+      if (subjectSelect.val() === null || subjectSelect.val().length === 0) {
+        $(this).find('.subjectError').text('Select at least one subject.');
+        errorCount++;
+      }
         });
 
         if (errorCount === 0) {

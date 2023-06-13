@@ -1,7 +1,11 @@
 @extends('school.layouts.main')
 @section('page_title', 'Class')
 @section('content')
-
+    <style>
+        .icons{
+            font-size: 50px;
+        }
+    </style>
     <div class="content-wrapper">
         <!-- Content -->
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -130,16 +134,22 @@
                                         @endif
                                     </div>
                                 </div><hr>
-                                {{--  <div class="row mb-2">
+                                <div class="row mb-2">
                                     <div class="col-md-12 mb-2">
                                         <h4>Classes Assign</h5>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row">
-                                        @if(count($class_list)>0)
-                                        @foreach($class_list as $class)
-                                            <div class="col-md-4 mb-2">
-                                                <h5>{{ $class }}</h5>
+                                        @if(count($response)>0)
+                                        @foreach($response as $class)
+
+                                            <div class="col-md-4 mb-5">
+                                                <h5>{{ $class['class_name'] }}</h5>
+                                                @if(count($class['sections']) > 0)
+                                                @foreach($class['sections'] as $section)
+                                                &nbsp;&nbsp;<span>{{ $section['section_name'] }}</span><br>
+                                                @endforeach
+                                                @endif
                                             </div>
                                         @endforeach
                                         @else
@@ -147,7 +157,7 @@
                                         @endif
                                         </div>
                                     </div>
-                                </div><hr>  --}}
+                                </div><hr>
                                 <div class="row mb-2">
                                     <div class="col-md-12 mb-2">
                                         <h4>Subject Assign</h5>
@@ -173,7 +183,7 @@
                                     <div class="col-md-12 mb-2">
                                         @if(count($additional_documents) > 0)
                                         @foreach($additional_documents as $key => $document)
-                                        <a href="{{ asset("uploads/schools/additional_documents/".$document) }}" class="btn btn-primary" download>Document {{ $key+1 }}</a>&nbsp;
+                                        <a href="{{ asset("uploads/schools/additional_documents/".$document) }}" class="" download><i class='bx bx-file icons'></i></a>&nbsp;
                                         @endforeach
                                         @else
                                         <p>N/A</p>
@@ -186,16 +196,16 @@
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         @if(!empty($staff->fb_profile))
-                                        <a href="{{ $staff->fb_profile }}" class="btn btn-primary" target="_blank">Facebook Profile</a>&nbsp;
+                                        <a href="{{ $staff->fb_profile }}" class="icons" target="_blank"><i class='bx bxl-facebook icons'></i></a>&nbsp;
                                         @endif
                                         @if(!empty($staff->insta_profile))
-                                        <a href="{{ $staff->insta_profile }}" class="btn btn-primary" target="_blank">Instagram Profile</a>&nbsp;
+                                        <a href="{{ $staff->insta_profile }}" class="icons" target="_blank"><i class='bx bxl-instagram icons' ></i></a>&nbsp;
                                         @endif
                                         @if(!empty($staff->linkedIn_profile))
-                                        <a href="{{ $staff->linkedIn_profile }}" class="btn btn-primary" target="_blank">LinkedIn Profile</a>&nbsp;
+                                        <a href="{{ $staff->linkedIn_profile }}" class="icons" target="_blank"><i class='bx bxl-linkedin-square icons' ></i></a>&nbsp;
                                         @endif
                                         @if(!empty($staff->twitter_profile))
-                                        <a href="{{ $staff->twitter_profile }}" class="btn btn-primary" target="_blank">Twitter Profile</a>&nbsp;
+                                        <a href="{{ $staff->twitter_profile }}" class="icons" target="_blank"><i class='bx bxl-twitter icons' ></i></a>&nbsp;
                                         @endif
                                     </div>
                                 </div><hr>

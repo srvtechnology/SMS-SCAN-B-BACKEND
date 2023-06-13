@@ -85,5 +85,8 @@ Route::middleware(['school_auth'])->group(function () {
         Route::get('/teachers/create', 'create')->name('teachers.create');
         Route::post('/teachers/store', 'store')->name('teachers.store');
         Route::get('/teachers/{id}/detail', 'detail')->name('teachers.detail');
+        Route::get('/teachers/{id}/edit', 'edit')->name('teachers.edit');
+        Route::post('/teachers/update', 'update')->name('teachers.update');
+        Route::post('/teachers/delete', 'delete')->name('teachers.delete');
     });
 });

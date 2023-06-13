@@ -55,6 +55,12 @@
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route("school.teachers.detail",$staff->id) }}">View Detail</a>
                                                     </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route("school.teachers.edit",$staff->id) }}">Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item deleteBtn" data-id={{ $staff->id }} data-url={{ route("school.teachers.delete") }}>Delete</a>
+                                                    </li>
                                                 </ul>
                                             </td>
                                         </tr>

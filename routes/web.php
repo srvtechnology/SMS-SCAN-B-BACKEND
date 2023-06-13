@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ManagepasswordController;
 use App\Http\Controllers\SuperAdmin\SchoolController;
+use App\Http\Controllers\SuperAdmin\TeacherController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,6 +37,11 @@ Route::controller(SchoolController::class)->as("superadmin.")->group(function ()
     Route::get('/schools/{id}/detail', 'detail')->name('schools.detail');
     Route::post('/schools/block', 'block')->name('schools.block');
     Route::post('/schools/delete', 'delete')->name('schools.delete');
+});
+
+//Teacher
+Route::controller(TeacherController::class)->as("superadmin.")->group(function () {
+    Route::get('/teachers', 'index')->name('teachers');
 });
 
 

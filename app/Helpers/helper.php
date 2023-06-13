@@ -6,6 +6,7 @@ use App\Models\School;
 use App\Models\Classes;
 use App\Models\Section;
 use App\Models\Subject;
+use App\Models\StaffAssignClass;
 
 function getUserImage()
 {
@@ -81,6 +82,20 @@ function getSchoolInfoByUsername($username)
     //     dd("back to login");
     // }
     return $school;
+}
+
+function selectedSectionArray($school_id,$staff_id,$class_id)
+{
+    $sections = StaffAssignClass::where('class_id', $class_id)
+    ->where('school_id',$school_id)
+    ->where('staff_id',$staff_id)
+    ->get();
+    $response = [];
+    foreach($sections as $section)
+    {
+        $response[] = $section->section_id;
+    }
+    return $response;
 }
 
 ?>
