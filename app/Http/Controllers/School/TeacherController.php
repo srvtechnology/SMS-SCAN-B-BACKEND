@@ -70,7 +70,7 @@ class TeacherController extends Controller
         $staff = Staff::create($data);
         if($staff)
         {
-            $existUser = User::where('email',$request->email)->first();
+            $existUser = User::where('username',$staff->username)->first();
             if(!$existUser)
             {
                 $role = Role::where('name','SchoolAdmin')->first();
@@ -79,7 +79,7 @@ class TeacherController extends Controller
                     'username' => $username,
                     'email' => $request->email,
                     'password' => $data['password'],
-                    // 'type'  => 'staff',
+                    'type'  => 'teacher',
                     'role_id'   =>  $role->id
                 ]);
             }
@@ -151,7 +151,7 @@ class TeacherController extends Controller
         return to_route("school.teachers")->with('success','Staff Added Successfully');
     }
 
-    private function generateUserName()
+    public function generateUserName()
     {
         $str = Str::random(8);
         $count = User::where('username',$str)->count();

@@ -39,7 +39,7 @@
                                 @csrf
                                 <!-- progressbar -->
                                 <ul id="progressbar">
-                                    <li class="active" id="personal"><strong>Persional</strong></li>
+                                    <li class="active" id="personal"><strong>Personal</strong></li>
                                     <li id="qualification"><strong>Qualification</strong></li>
                                     <li id="experience"><strong>Experience</strong></li>
                                     <li id="class_assign"><strong>Class Assign</strong></li>

@@ -13,4 +13,9 @@ class Classes extends Model
     {
         return $this->hasMany(ClassAssignSection::class, 'class_id');
     }
+
+    public function assignedSubjects()
+    {
+        return $this->hasMany(CLassAssignSubject::class,'class_id');
+    }
 }

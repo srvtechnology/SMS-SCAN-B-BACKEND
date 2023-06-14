@@ -18,10 +18,10 @@ return new class extends Migration
 
             $table->string('name');
             $table->string('username')->nullable();
-            $table->string('email')->unique();
+            $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum("type",['admin','school'])->default('admin');
+            $table->enum("type",['admin','school','teacher','student','parent'])->default('admin');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('orgnization')->nullable();

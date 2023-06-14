@@ -30,7 +30,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -39,36 +38,10 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $class->name }}</td>
-                                                @if(getClassStatus($class->id) == "active")
-                                                <td><span class="badge bg-success">{{ ucwords(getClassStatus($class->id)) }}</span></td>
-                                                @elseif(getClassStatus($class->id) == "inactive")
-                                                <td><span class="badge bg-danger">{{ ucwords(getClassStatus($class->id)) }}</span></td>
-                                                @endif
                                                 <td>
-                                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Action
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route("school.class.edit",$class->id) }}">Edit</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route("school.class.detail",$class->id) }}">Detail</a>
-                                                        </li>
-                                                        @if($class->status == "inactive")
-                                                        <li>
-                                                            <a class="dropdown-item statusBtn" data-id={{ $class->id }} data-url={{ route("school.class.block") }} data-status = {{ $class->status }}>Activate Class</a>
-                                                        </li>
-                                                        @else
-                                                        <li>
-                                                            <a class="dropdown-item statusBtn" data-id={{ $class->id }} data-url={{ route("school.class.block") }} data-status = {{ $class->status }}>InActive Class</a>
-                                                        </li>
-                                                        @endif
-                                                        <li>
-                                                            <a class="dropdown-item deleteBtn" data-id={{ $class->id }} data-url={{ route("school.class.delete") }}>Delete</a>
-                                                        </li>
-                                                    </ul>
+                                                    <a href="{{ route("school.class.detail",$class->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                    <a href="{{ route("school.class.edit",$class->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $class->id }} data-url={{ route("school.class.delete") }}><i class='bx bxs-trash'></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

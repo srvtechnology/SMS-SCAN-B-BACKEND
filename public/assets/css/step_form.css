@@ -172,7 +172,7 @@ p {
 
 #progressbar #class_assign:before {
     font-family: FontAwesome;
-    content: "\e0e6"
+    content: "\f66f"
 }
 
 #progressbar #subject_assign:before {
@@ -183,6 +183,21 @@ p {
 #progressbar #personal:before {
     font-family: FontAwesome;
     content: "\f007"
+}
+
+#progressbar #background:before {
+    font-family: FontAwesome;
+    content: "\f1da"
+}
+
+#progressbar #fee_structure:before {
+    font-family: FontAwesome;
+    content: "\f15b"
+}
+
+#progressbar #parents:before {
+    font-family: FontAwesome;
+    content: "\e592"
 }
 
 #progressbar #payment:before {

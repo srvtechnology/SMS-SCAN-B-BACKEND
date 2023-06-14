@@ -5,12 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ClassAssignSubject extends Model
+class Parents extends Model
 {
     use HasFactory;
-
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class);
-    }
+    protected $table = 'parents';
 }

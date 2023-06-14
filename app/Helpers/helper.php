@@ -5,6 +5,7 @@ use App\Models\Staff;
 use App\Models\School;
 use App\Models\Classes;
 use App\Models\Section;
+use App\Models\Student;
 use App\Models\Subject;
 use App\Models\StaffAssignClass;
 
@@ -27,6 +28,20 @@ function getStaffImage($staff_id)
     if(!empty($staff->image) AND file_exists(public_path('uploads/schools/logo/'.$staff->image)))
     {
         $image = asset('uploads/schools/logo/'.$staff->image);
+    }
+    else
+    {
+        $image = asset('assets/default/placeholder.png');
+    }
+    return $image;
+}
+
+function getStudentImage($student_id)
+{
+    $student = Student::find($student_id);
+    if(!empty($student->image) AND file_exists(public_path('uploads/schools/student/'.$student->image)))
+    {
+        $image = asset('uploads/schools/student/'.$student->image);
     }
     else
     {

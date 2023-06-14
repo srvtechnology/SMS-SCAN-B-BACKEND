@@ -30,7 +30,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -39,33 +38,9 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $section->name }}</td>
-                                                @if(getSectionStatus($section->id) == "active")
-                                                <td><span class="badge bg-success">{{ ucwords(getSectionStatus($section->id)) }}</span></td>
-                                                @elseif(getSectionStatus($section->id) == "inactive")
-                                                <td><span class="badge bg-danger">{{ ucwords(getSectionStatus($section->id)) }}</span></td>
-                                                @endif
                                                 <td>
-                                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Action
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route("school.sections.edit",$section->id) }}">Edit</a>
-                                                        </li>
-                                                        @if(getSectionStatus($section->id) == "inactive")
-                                                        <li>
-                                                            <a class="dropdown-item statusBtn" data-id={{ $section->id }} data-url={{ route("school.sections.block") }} data-status = {{ getSectionStatus($section->id) }}>Activate Section</a>
-                                                        </li>
-                                                        @else
-                                                        <li>
-                                                            <a class="dropdown-item statusBtn" data-id={{ $section->id }} data-url={{ route("school.sections.block") }} data-status = {{ getSectionStatus($section->id) }}>InActive Section</a>
-                                                        </li>
-                                                        @endif
-                                                        <li>
-                                                            <a class="dropdown-item deleteBtn" data-id={{ $section->id }} data-url={{ route("school.sections.delete") }}>Delete</a>
-                                                        </li>
-                                                    </ul>
+                                                    <a href="{{ route("school.sections.edit",$section->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $section->id }} data-url={{ route("school.sections.delete") }}><i class='bx bxs-trash'></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

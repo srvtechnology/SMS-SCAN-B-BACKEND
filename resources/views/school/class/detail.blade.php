@@ -39,6 +39,14 @@
                                             @endforeach
                                         @endif
                                     </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label" for="address">Subjects</label>
+                                        @if(count($classData->assignedSubjects) > 0)
+                                            @foreach($classData->assignedSubjects as $subjectData)
+                                            <h6>{{ $subjectData->subject->name }}</h6>
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
 
                             </div>

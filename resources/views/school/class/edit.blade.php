@@ -27,6 +27,7 @@
                 <a href="{{ route('school.class') }}" class="btn rounded-pill btn-primary text-white">Back</a>
             </div>
             <x-alert></x-alert>
+            <x-error></x-error>
             <div class="row">
                 <div class="col-md-12">
                     <div class="my-3">
@@ -37,44 +38,43 @@
                                     <input type="hidden" name="id" value="{{ $classData->id }}">
                                     <div id="fieldContainer">
                                         <div class="row">
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-4 mb-3">
                                                 <div class="form-group">
                                                     <label for="field1">Name:</label>
-                                                    <input type="text"
-                                                        class="form-control @error('name') is-invalid @enderror"
-                                                        id="name" name="name"
-                                                        value="{{ old('name', $classData->name) }}">
+                                                    <input type="text" class="form-control" id="name" name="name" value="{{ $classData->name }}">
+                                                    <div class="nameError text-danger error-message"></div>
                                                 </div>
-                                                @error('name')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
                                             </div>
-                                            <div class="col-md-6">
-                                            </div>
-                                            <div class="col-md-12 mb-3 custom-section">
+                                            <div class="col-md-4 mb-3">
 
                                                 <div class="form-group">
                                                     <label for="field1">Sections:</label>
-                                                    @error('section')
-                                                        <br>
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
+                                                    <div class="sectionError text-danger error-message"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                    @if (count($sections) > 0)
-                                                        @foreach ($sections as $section)
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" name="section[]"
-                                                                    type="checkbox" value="{{ $section->id }}"
-                                                                    id="section_{{ $section->id }}"
-                                                                    @if (in_array($section->id, $sectionAssignArray)) checked @endif>
-                                                                <label class="form-check-label"
-                                                                    for="section_{{ $section->id }}">
-                                                                    {{ $section->name }}
-                                                                </label>
-                                                            </div>
-                                                        @endforeach
-                                                    @endif
+                                                    <select class="select2_custom form-control" name="section_id[]" multiple="multiple">
+                                                        @if(count($sections) > 0)
+                                                        @foreach($sections as $section)
+                                                            <option value="{{ $section->id }}" @if(in_array($section->id,$sectionAssignArray)) selected @endif>{{ $section->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                      </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+
+                                                <div class="form-group">
+                                                    <label for="field1">Subjects:</label>
+                                                    <div class="subjectError text-danger error-message"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select class="select2_custom form-control" name="subject_id[]" multiple="multiple">
+                                                        @if(count($subjects) > 0)
+                                                        @foreach($subjects as $subject)
+                                                            <option value="{{ $subject->id }}" @if(in_array($subject->id,$subjectAssignArray)) selected @endif>{{ $subject->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                      </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -92,6 +92,8 @@
     </div>
 
     @push('footer-script')
-        <script></script>
+        <script>
+
+        </script>
     @endpush
 @endsection

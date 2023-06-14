@@ -39,18 +39,9 @@
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $designation->name }}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Action
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route("school.designations.edit",$designation->id) }}">Edit</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item deleteBtn" data-id={{ $designation->id }} data-url={{ route("school.designations.delete") }}>Delete</a>
-                                                        </li>
-                                                    </ul>
+                                                    <a href="{{ route("school.designations.edit",$designation->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $designation->id }} data-url={{ route("school.designations.delete") }}><i class='bx bxs-trash'></i></a>
+
                                                 </td>
                                             </tr>
                                         @endforeach

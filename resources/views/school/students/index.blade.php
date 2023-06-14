@@ -1,5 +1,5 @@
 @extends('school.layouts.main')
-@section('page_title', 'Teachers')
+@section('page_title', 'Students')
 @section('content')
 
     <div class="content-wrapper">
@@ -11,11 +11,11 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('school.dashboard') }}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">Teachers</li>
+                        <li class="breadcrumb-item active">Students</li>
                     </ol>
                 </nav>
-                <a href="{{ route('school.teachers.create') }}" class="btn rounded-pill btn-primary text-white">Create
-                    Teacher</a>
+                <a href="{{ route('school.students.create') }}" class="btn rounded-pill btn-primary text-white">Create
+                    Student</a>
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -23,7 +23,7 @@
                     <div class="my-3">
                         <!-- Basic Bootstrap Table -->
                         <div class="card">
-                            <h5 class="card-header">Teachers List</h5>
+                            <h5 class="card-header">Students List</h5>
                             <div class="table-responsive text-nowrap">
                                 <table id="example" class="table table-striped" style="width:100%">
                                     <thead>
@@ -31,26 +31,24 @@
                                             <th>#</th>
                                             <th>Image</th>
                                             <th>Name</th>
-                                            <th>Designation</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if(count($staffs) > 0)
-                                        @foreach($staffs as $staff)
+                                        @if(count($students) > 0)
+                                        @foreach($students as $student)
                                         <tr>
                                             <td>#</td>
                                             <td>
-                                                <img src="{{ getStaffImage($staff->id) }}" class="img-fluid rounded"
+                                                <img src="{{ getStudentImage($student->id) }}" class="img-fluid rounded"
                                                         width="50" height="50" alt="">
                                             </td>
-                                            <td>{{ $staff->first_name }} {{ $staff->last_name }}</td>
-                                            <td>{{ $staff->designation->name }}</td>
+                                            <td>{{ $student->first_name }} {{ $student->last_name }}</td>
                                             <td>
 
-                                                <a href="{{ route("school.teachers.detail",$staff->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
-                                                <a href="{{ route("school.teachers.edit",$staff->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
-                                                <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $staff->id }} data-url={{ route("school.teachers.delete") }}><i class='bx bxs-trash'></i></a>
+                                                <a href="{{ route("school.students.detail",$student->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                <a href="{{ route("school.students.edit",$student->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $student->id }} data-url={{ route("school.students.delete") }}><i class='bx bxs-trash'></i></a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -58,9 +56,9 @@
                                     </tbody>
                                 </table>
                             </div>
-                            @if(count($staffs) > 0)
+                            @if(count($students) > 0)
                             <div class="pagination_custom_class">
-                            {{ $staffs->links() }}
+                            {{ $students->links() }}
                             </div>
                             @endif
                         </div>
