@@ -10,6 +10,7 @@ class School extends Model
     use HasFactory;
     protected $fillable = [
         'created_by',
+        'user_id',
         'username',
         'name',
         'email',

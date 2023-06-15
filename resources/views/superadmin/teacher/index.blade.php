@@ -38,7 +38,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <button class="btn btn-primary mt-4">Seacrh</button>
+                                                <button class="btn btn-primary mt-4">Search</button>
                                             </div>
                                         </div>
                                     </div>
@@ -60,20 +60,38 @@
                                 <table id="example" class="table table-striped" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Sr No</th>
-                                            <th>Logo</th>
+                                            <th>#</th>
+                                            <th>Image</th>
                                             <th>Name</th>
-                                            <th>Username</th>
-                                            <th>Email</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
+                                            <th>Designation</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        @if(count($staffs) > 0)
+                                        @foreach($staffs as $staff)
+                                        <tr>
+                                            <td>#</td>
+                                            <td>
+                                                <img src="{{ getStaffImage($staff->id) }}" class="img-fluid rounded"
+                                                        width="50" height="50" alt="">
+                                            </td>
+                                            <td>{{ $staff->first_name }} {{ $staff->last_name }}</td>
+                                            <td>{{ $staff->designation->name }}</td>
+                                            <td>
+                                                <a href="{{ route("superadmin.teachers.detail",$staff->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
+                            @if(count($staffs) > 0)
+                            <div class="pagination_custom_class">
+                            {{ $staffs->links() }}
+                            </div>
+                            @endif
                         </div>
                         <!--/ Basic Bootstrap Table -->
                     </div>

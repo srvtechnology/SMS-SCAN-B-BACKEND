@@ -565,6 +565,7 @@
                     var subjectId = $('input[name="subject_id[]"]:checked').length;
                     e.preventDefault();
                     if(subjectId > 0) {
+                        loader();
                         $("#subject_id_error").addClass('d-none');
                         var form = document.getElementById('msform');
                         var formData = new FormData(form);
@@ -584,6 +585,7 @@
                             console.error('Form submission failed');
                             }
                         });
+
                     }
                     else
                     {

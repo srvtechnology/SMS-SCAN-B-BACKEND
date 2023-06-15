@@ -52,7 +52,7 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item @if(request()->segment(2) == 'teachers' OR request()->segment(2) == 'designations' OR request()->segment(2) == 'students') active open @endif">
+        <li class="menu-item @if(request()->segment(2) == 'teachers' OR request()->segment(2) == 'designations' OR request()->segment(2) == 'students' OR request()->segment(2) == 'parents') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon bx bxs-user-detail'></i>
                 <div data-i18n="Layouts">Human Resource</div>
@@ -72,6 +72,11 @@
                 <li class="menu-item {{ request()->segment(2) == 'students' ? 'active' : '' }}">
                     <a href="{{ route('school.students') }}" class="menu-link">
                         <div data-i18n="Without menu">Student</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->segment(2) == 'parents' ? 'active' : '' }}">
+                    <a href="{{ route('school.parents') }}" class="menu-link">
+                        <div data-i18n="Without menu">Parents</div>
                     </a>
                 </li>
             </ul>

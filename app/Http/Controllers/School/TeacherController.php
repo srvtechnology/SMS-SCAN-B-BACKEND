@@ -43,9 +43,24 @@ class TeacherController extends Controller
         $school = getSchoolInfoByUsername(Auth::user()->username);
         $data['school_id'] = $school->id;
         $username = $this->generateUserName();
+        $random_password = Str::random(8);
+
+        $existUser = User::where('username',$username)->first();
+        if(!$existUser)
+        {
+            $role = Role::where('name','SchoolAdmin')->first();
+            $existUser = User::create([
+                'name'  => $request->first_name.' '.$request->last_name,
+                'username' => $username,
+                'email' => $request->email,
+                'password' => Hash::make($random_password),
+                'type'  => 'teacher',
+                'role_id'   =>  $role->id
+            ]);
+        }
+        $data['user_id'] = $existUser->id;
         $data['username'] = $username;
         $data['created_by'] = Auth::user()->id;
-        $random_password = Str::random(8);
         $data['password']   = Hash::make($random_password);
         if($request->hasFile('image'))
         {
@@ -68,22 +83,6 @@ class TeacherController extends Controller
             $data['additional_documents'] = $additional_documents_implode;
         }
         $staff = Staff::create($data);
-        if($staff)
-        {
-            $existUser = User::where('username',$staff->username)->first();
-            if(!$existUser)
-            {
-                $role = Role::where('name','SchoolAdmin')->first();
-                $user = User::create([
-                    'name'  => $request->first_name.' '.$request->last_name,
-                    'username' => $username,
-                    'email' => $request->email,
-                    'password' => $data['password'],
-                    'type'  => 'teacher',
-                    'role_id'   =>  $role->id
-                ]);
-            }
-        }
 
         //StaffQualifiucation
         if(count($request->year)> 0 AND count($request->education) > 0 AND count($request->instituation) > 0)

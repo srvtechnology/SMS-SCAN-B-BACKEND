@@ -36,10 +36,51 @@
         .modal{
             background: rgba(0,0,0,0.3) !important;
         }
+
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            height: 100%;
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader {
+            /*border: 16px solid #f3f3f3;
+            /* Light grey */
+            border-top: 16px solid #5f61e6;
+            /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #loader.hidden {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
+    <div id="loader" class="hidden">
+        <div class="loader"></div>
+    </div>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             @include('include.sidebar')
@@ -107,6 +148,7 @@
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
     @stack('footer-script')
     <script>
         $(document).ready(function () {
@@ -146,6 +188,14 @@
                 $("#DeleteModal").hide();
             });
         });
+    </script>
+    <script>
+        function loader() {
+            $("#loader").removeClass("hidden");
+        }
+        function hideLoader() {
+            document.getElementById("loader").classList.add("hidden");
+        }
     </script>
 </body>
 

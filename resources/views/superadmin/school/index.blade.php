@@ -56,29 +56,14 @@
                                                 <td><span class="badge bg-danger">{{ ucwords(getSchoolStatus($school->id)) }}</span></td>
                                                 @endif
                                                 <td>
-                                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Action
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route("superadmin.schools.edit",$school->id) }}">Edit</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route("superadmin.schools.detail",$school->id) }}">View Detail</a>
-                                                        </li>
-                                                        @if(getSchoolStatus($school->id) == "blocked")
-                                                        <li>
-                                                            <a class="dropdown-item blockSchoolBtn" data-id={{ $school->id }} data-url={{ route("superadmin.schools.block") }} data-status = {{ getSchoolStatus($school->id) }}>Activate School</a>
-                                                        </li>
-                                                        @else
-                                                        <li>
-                                                            <a class="dropdown-item blockSchoolBtn" data-id={{ $school->id }} data-url={{ route("superadmin.schools.block") }} data-status = {{ getSchoolStatus($school->id) }}>Block School</a>
-                                                        </li>
-                                                        @endif
-                                                        <li>
-                                                            <a class="dropdown-item deleteBtn" data-id={{ $school->id }} data-url={{ route("superadmin.schools.delete") }}>Delete</a>
-                                                        </li>
+                                                    <a href="{{ route("superadmin.schools.detail",$school->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                    <a href="{{ route("superadmin.schools.edit",$school->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    @if(getSchoolStatus($school->id) == "blocked")
+                                                    <a class="btn btn-success btn-sm text-white blockSchoolBtn" title="Activate" data-id={{ $school->id }} data-url={{ route("superadmin.schools.block") }} data-status = {{ getSchoolStatus($school->id) }}><i class='bx bx-check-shield'></i></a>
+                                                    @else
+                                                    <a class="btn btn-danger btn-sm text-white blockSchoolBtn" title="Block" data-id={{ $school->id }} data-url={{ route("superadmin.schools.block") }} data-status = {{ getSchoolStatus($school->id) }}><i class='bx bx-block'></i></a>
+                                                    @endif
+                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $school->id }} data-url={{ route("superadmin.schools.delete") }}><i class='bx bxs-trash'></i></a>
                                                     </ul>
                                                 </td>
                                             </tr>

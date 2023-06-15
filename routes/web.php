@@ -6,7 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ManagepasswordController;
+use App\Http\Controllers\SuperAdmin\ParentController;
 use App\Http\Controllers\SuperAdmin\SchoolController;
+use App\Http\Controllers\SuperAdmin\StudentController;
 use App\Http\Controllers\SuperAdmin\TeacherController;
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +44,19 @@ Route::controller(SchoolController::class)->as("superadmin.")->group(function ()
 //Teacher
 Route::controller(TeacherController::class)->as("superadmin.")->group(function () {
     Route::get('/teachers', 'index')->name('teachers');
+    Route::get('/teachers/{id}/detail', 'detail')->name('teachers.detail');
+});
+
+//Student
+Route::controller(StudentController::class)->as('superadmin.')->group(function () {
+    Route::get('/students', 'index')->name('students');
+    Route::get('/students/{id}/detail', 'detail')->name('students.detail');
+});
+
+//Parent
+Route::controller(ParentController::class)->as('superadmin.')->group(function () {
+    Route::get('/parents', 'index')->name('parents');
+    Route::get('/parents/{id}/detail', 'detail')->name('parents.detail');
 });
 
 

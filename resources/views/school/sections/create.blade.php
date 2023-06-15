@@ -37,17 +37,19 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="field1">Section Name 1:</label>
-                                                    <input type="text" class="form-control" id="section1" name="section[]">
+                                                    <input type="text" class="form-control" id="section1"
+                                                        name="section[]">
                                                 </div>
 
                                             </div>
                                             <div class="col-md-6 mt-3">
-                                                <button type="button" class="btn btn-primary mt-2" id="addField"><i class='bx bx-plus-medical'></i></button>
+                                                <button type="button" class="btn btn-primary mt-2" id="addField"><i
+                                                        class='bx bx-plus-medical'></i></button>
                                             </div>
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-success mt-2" id="submitBtn">Submit</button>
-                                  </form>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -59,78 +61,117 @@
     </div>
 
     @push('footer-script')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
-    <script>
-        var fieldCount = 2;
+        <script>
+            $('#section1').on('keydown', function(event) {
+                var inputValue = $(this).val();
+                var enteredChar = event.key;
+                if (inputValue.length >= 1 && event.keyCode !== 8 || !isNaN(enteredChar)) {
 
-        function createField() {
-          var container = $('#fieldContainer');
-
-          var row = $('<div>', { class: 'row mt-3' });
-
-          var col1 = $('<div>', { class: 'col-md-6' });
-
-          var formGroup = $('<div>', { class: 'form-group' });
-
-          var label = $('<label>', { for: 'section' + fieldCount, text: 'Section Name ' + fieldCount + ':' });
-
-          var inputGroup = $('<div>', { class: 'input-group' });
-
-          var input = $('<input>', { type: 'text', class: 'form-control section', id: 'section' + fieldCount, name: 'section[]'});
-
-          var removeButton = $('<button>', { type: 'button', class: 'btn btn-danger removeField' });
-          removeButton.html('<i class="bx bx-trash"></i>');
-
-          inputGroup.append(input);
-          inputGroup.append(removeButton);
-          formGroup.append(label);
-          formGroup.append(inputGroup);
-          //formGroup.append('<div class="error-message text-danger"></div>');
-          col1.append(formGroup);
-
-          var col2 = $('<div>', { class: 'col-md-6 mt-3' });
-
-
-          row.append(col1);
-          row.append(col2);
-          container.append(row);
-
-          fieldCount++;
-
-
-          // Remove the field when the remove button is clicked
-          removeButton.on('click', function() {
-            row.remove();
-          });
-        }
-
-        $('#addField').on('click', createField);
-
-
-        $('#myForm').submit(function(event) {
-            event.preventDefault(); // Prevent form submission
-
-            var errorMessages = [];
-
-            $('#fieldContainer input').each(function(index) {
-                var fieldName = $(this).attr('name');
-                var fieldValue = $(this).val();
-                var fieldIndex = index + 1;
-
-                if (fieldValue === '') {
-                    errorMessages.push('Section Name ' + fieldIndex + ' is required.');
+                    event.preventDefault();
                 }
             });
-            if (errorMessages.length > 0) {
-                var errorMessage = errorMessages.join('<br>');
-                $('.error-message').html(errorMessage).show();
-            } else {
-                $('.error-message').hide();
-                $(this).off('submit').submit();
+            var fieldCount = 2;
+
+            function createField() {
+                var container = $('#fieldContainer');
+
+                var row = $('<div>', {
+                    class: 'row mt-3'
+                });
+
+                var col1 = $('<div>', {
+                    class: 'col-md-6'
+                });
+
+                var formGroup = $('<div>', {
+                    class: 'form-group'
+                });
+
+                var label = $('<label>', {
+                    for: 'section' + fieldCount,
+                    text: 'Section Name ' + fieldCount + ':'
+                });
+
+                var inputGroup = $('<div>', {
+                    class: 'input-group'
+                });
+
+                var input = $('<input>', {
+                    type: 'text',
+                    class: 'form-control section',
+                    id: 'section' + fieldCount,
+                    name: 'section[]'
+                });
+
+                var removeButton = $('<button>', {
+                    type: 'button',
+                    class: 'btn btn-danger removeField'
+                });
+                removeButton.html('<i class="bx bx-trash"></i>');
+
+                inputGroup.append(input);
+                inputGroup.append(removeButton);
+                formGroup.append(label);
+                formGroup.append(inputGroup);
+                //formGroup.append('<div class="error-message text-danger"></div>');
+                col1.append(formGroup);
+
+                var col2 = $('<div>', {
+                    class: 'col-md-6 mt-3'
+                });
+
+
+                row.append(col1);
+                row.append(col2);
+                container.append(row);
+
+
+
+                //apply validation
+                $('#section' + fieldCount).on('keypress', function(event) {
+                    var inputValue = $(this).val();
+                    var enteredChar = event.key;
+                    if (inputValue.length >= 1 && event.keyCode !== 8 || !isNaN(enteredChar)) {
+
+                        event.preventDefault();
+                    }
+                });
+                fieldCount++;
+
+                // Remove the field when the remove button is clicked
+                removeButton.on('click', function() {
+                    row.remove();
+                });
             }
-        });
-      </script>
+
+            $('#addField').on('click', createField);
+
+
+            $('#myForm').submit(function(event) {
+                event.preventDefault(); // Prevent form submission
+
+                var errorMessages = [];
+
+                $('#fieldContainer input').each(function(index) {
+                    var fieldName = $(this).attr('name');
+                    var fieldValue = $(this).val();
+                    var fieldIndex = index + 1;
+
+                    if (fieldValue === '') {
+                        errorMessages.push('Section Name ' + fieldIndex + ' is required.');
+                    }
+                });
+                if (errorMessages.length > 0) {
+                    var errorMessage = errorMessages.join('<br>');
+                    $('.error-message').html(errorMessage).show();
+                } else {
+                    $('.error-message').hide();
+                    $(this).off('submit').submit();
+                }
+            });
+        </script>
     @endpush
 @endsection

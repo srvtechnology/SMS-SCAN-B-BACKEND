@@ -58,26 +58,28 @@ class SchoolController extends Controller
         $random_password = Str::random(8);
         $data['password']   = Hash::make($random_password);
         $data['username'] = $username;
-        $result = School::create($data);
-        if($result)
+
+        $existUser = User::where('email',$request->email)->first();
+        if(!$existUser)
         {
-            $existUser = User::where('email',$request->email)->first();
-            if(!$existUser)
-            {
-                $role = Role::where('name','SchoolAdmin')->first();
-                $user = User::create([
+            $role = Role::where('name','SchoolAdmin')->first();
+            $existUser = User::create([
                     'name'  => $request->name,
                     'username' => $username,
                     'email' => $request->email,
                     'password' => $data['password'],
                     'type'  => 'school',
                     'role_id'   =>  $role->id
-                ]);
-                Mail::send('email.school.register', ['name' => $request->name,'email'=>$request->email,'username'=>$username,'password'=>$random_password], function($message) use($request){
-                    $message->to($request->email);
-                    $message->subject('School Login Credentials');
-                });
-            }
+            ]);
+        }
+        $data['user_id'] = $existUser->id;
+        $result = School::create($data);
+        if($result)
+        {
+            Mail::send('email.school.register', ['name' => $request->name,'email'=>$request->email,'username'=>$username,'password'=>$random_password], function($message) use($request){
+                $message->to($request->email);
+                $message->subject('School Login Credentials');
+            });
         }
         return to_route('superadmin.schools')->with('success','School Added Successfully');
     }

@@ -27,23 +27,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
         integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
     <script src="{{ asset('assets/js/config.js') }}"></script>
     <style>
         #example_wrapper {
             padding: 10px;
         }
-        .modal{
-            background: rgba(0,0,0,0.3) !important;
+
+        .modal {
+            background: rgba(0, 0, 0, 0.3) !important;
+        }
+
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            height: 100%;
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader {
+            /*border: 16px solid #f3f3f3;
+            /* Light grey */
+            border-top: 16px solid #5f61e6;
+            /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #loader.hidden {
+            display: none;
         }
     </style>
-    @yield("page_styles")
+    @yield('page_styles')
 </head>
 @php
     $school = getSchoolInfoByUsername(Auth::user()->username);
 @endphp
+
 <body>
+    <div id="loader" class="hidden">
+        <div class="loader"></div>
+    </div>
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             @include('school.include.sidebar')
@@ -55,26 +98,28 @@
         </div>
         <div class="layout-overlay layout-menu-toggle"></div>
 
-    <div class="modal" tabindex="-1" id="BlockModal">
-        <form id="BlockModalForm" method="POST">
-            @csrf
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Status</h5>
-                    <button type="button" class="btn-close closeBTNBlockModal" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <h4 class="text-danger text-center BlockBodyTextClass">Are you sure to block?</h4>
-                    <input type="hidden" id="BlockModalID" name="id">
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary closeBTNBlockModal" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-danger BlockSubmitBtnClass">Yes,Blocked</button>
-                  </div>
+        <div class="modal" tabindex="-1" id="BlockModal">
+            <form id="BlockModalForm" method="POST">
+                @csrf
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Status</h5>
+                            <button type="button" class="btn-close closeBTNBlockModal" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h4 class="text-danger text-center BlockBodyTextClass">Are you sure to block?</h4>
+                            <input type="hidden" id="BlockModalID" name="id">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary closeBTNBlockModal"
+                                data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger BlockSubmitBtnClass">Yes,Blocked</button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
+        </div>
         </form>
     </div>
     <div class="modal" tabindex="-1" id="StatusModal">
@@ -82,44 +127,48 @@
             @csrf
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Status</h5>
-                    <button type="button" class="btn-close closeBTNStatusModal" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <h4 class="text-danger text-center StatusBodyTextClass">Are you sure to InActive?</h4>
-                    <input type="hidden" id="StatusModalID" name="id">
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary closeBTNStatusModal" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-danger StatusSubmitBtnClass">Yes,InActive</button>
-                  </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Status</h5>
+                        <button type="button" class="btn-close closeBTNStatusModal" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="text-danger text-center StatusBodyTextClass">Are you sure to InActive?</h4>
+                        <input type="hidden" id="StatusModalID" name="id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary closeBTNStatusModal"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger StatusSubmitBtnClass">Yes,InActive</button>
+                    </div>
                 </div>
-              </div>
             </div>
-        </form>
+    </div>
+    </form>
     </div>
     <div class="modal" tabindex="-1" id="DeleteModal">
         <form id="DeleteModalForm" method="POST">
             @csrf
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Status</h5>
-                    <button type="button" class="btn-close closeBTNDeleteModal" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <h4 class="text-danger text-center">Are you sure to delete?</h4>
-                    <input type="hidden" id="DeleteModalID" name="id">
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary closeBTNDeleteModal" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-danger">Yes,Delete it</button>
-                  </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Status</h5>
+                        <button type="button" class="btn-close closeBTNDeleteModal" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="text-danger text-center">Are you sure to delete?</h4>
+                        <input type="hidden" id="DeleteModalID" name="id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary closeBTNDeleteModal"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Yes,Delete it</button>
+                    </div>
                 </div>
-              </div>
             </div>
-        </form>
+    </div>
+    </form>
     </div>
     <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
@@ -136,17 +185,25 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @stack('footer-script')
     <script>
-        $(document).ready(function () {
+        function loader() {
+            $("#loader").removeClass("hidden");
+        }
+        function hideLoader() {
+            document.getElementById("loader").classList.add("hidden");
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
             $('.select2_custom').select2();
             $('#example').DataTable({
                 "paging": false
             });
-            $(".blockSchoolBtn").on("click", function(){
+            $(".blockSchoolBtn").on("click", function() {
                 $("#BlockModal").show();
                 var id = $(this).attr("data-id");
                 var url = $(this).attr("data-url");
                 var status = $(this).attr("data-status");
-                if(status == "blocked"){
+                if (status == "blocked") {
                     $(".BlockSubmitBtnClass").addClass("btn-primary");
                     $(".BlockSubmitBtnClass").text('Yes,Activate');
                     $(".BlockBodyTextClass").addClass("text-primary");
@@ -157,17 +214,17 @@
                 $("#BlockModalForm").attr("action", url);
             });
 
-            $(".closeBTNBlockModal").on("click",function(){
+            $(".closeBTNBlockModal").on("click", function() {
                 $("#BlockModal").hide();
             });
 
 
-            $(".statusBtn").on("click", function(){
+            $(".statusBtn").on("click", function() {
                 $("#StatusModal").show();
                 var id = $(this).attr("data-id");
                 var url = $(this).attr("data-url");
                 var status = $(this).attr("data-status");
-                if(status == "inactive"){
+                if (status == "inactive") {
                     $(".StatusSubmitBtnClass").addClass("btn-primary");
                     $(".StatusSubmitBtnClass").text('Yes,Activate');
                     $(".StatusBodyTextClass").addClass("text-primary");
@@ -178,11 +235,11 @@
                 $("#StatusModalForm").attr("action", url);
             });
 
-            $(".closeBTNStatusModal").on("click",function(){
+            $(".closeBTNStatusModal").on("click", function() {
                 $("#StatusModal").hide();
             });
 
-            $(".deleteBtn").on("click", function(){
+            $(".deleteBtn").on("click", function() {
                 $("#DeleteModal").show();
                 var id = $(this).attr("data-id");
                 var url = $(this).attr("data-url");
@@ -191,7 +248,7 @@
                 $("#DeleteModalForm").attr("action", url);
             });
 
-            $(".closeBTNDeleteModal").on("click",function(){
+            $(".closeBTNDeleteModal").on("click", function() {
                 $("#DeleteModal").hide();
             });
         });

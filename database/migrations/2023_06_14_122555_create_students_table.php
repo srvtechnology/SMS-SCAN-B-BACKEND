@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
             $table->bigInteger("parent_id")->unsigned()->nullable();
             $table->foreign('parent_id')->references('id')->on('parents')->onDelete('cascade');
+            $table->string("parent_type")->nullable();
+            $table->bigInteger("sibling_id")->default(0);
             $table->string('username');
             $table->string('first_name');
             $table->string('last_name');

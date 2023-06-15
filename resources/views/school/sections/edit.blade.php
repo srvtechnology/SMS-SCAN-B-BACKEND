@@ -52,5 +52,16 @@
     </div>
 
     @push('footer-script')
+    <script>
+        //apply validation
+        $('#section').on('keypress', function(event) {
+            var inputValue = $(this).val();
+            var enteredChar = event.key;
+            if (inputValue.length >= 1 && event.keyCode !== 8 || !isNaN(enteredChar)) {
+
+                event.preventDefault();
+            }
+        });
+    </script>
     @endpush
 @endsection

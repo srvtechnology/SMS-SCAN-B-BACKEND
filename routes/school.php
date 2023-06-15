@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\School\HomeController;
 use App\Http\Controllers\School\ClassController;
+use App\Http\Controllers\School\ParentController;
 use App\Http\Controllers\ManagepasswordController;
 use App\Http\Controllers\School\SectionController;
 use App\Http\Controllers\School\StudentController;
@@ -100,7 +101,19 @@ Route::middleware(['school_auth'])->group(function () {
         Route::post('/students/store', 'store')->name('students.store');
         Route::get('/students/{id}/detail', 'detail')->name('students.detail');
         Route::get('/students/{id}/edit', 'edit')->name('students.edit');
-        // Route::post('/teachers/update', 'update')->name('teachers.update');
+        Route::post('/students/update', 'update')->name('students.update');
         Route::post('/students/delete', 'delete')->name('students.delete');
+    });
+    Route::controller(ParentController::class)->as('school.')->group(function () {
+        Route::get('/parents', 'index')->name('parents');
+        // Route::get('/students/create', 'create')->name('students.create');
+        // Route::get('/students/create/get-sections-by-class/{id}', 'getSectionByClass')->name('students.getSectionByClass');
+        // Route::get('/students/create/get-parent-by-student/{id}', 'getParentByStudent')->name('students.getParentByStudent');
+        // Route::get('/students/create/get-staff-info/{id}', 'getStaffInfo')->name('students.getStaffInfo');
+        // Route::post('/students/store', 'store')->name('students.store');
+        Route::get('/parents/{id}/detail', 'detail')->name('parents.detail');
+        // Route::get('/students/{id}/edit', 'edit')->name('students.edit');
+        // Route::post('/students/update', 'update')->name('students.update');
+        // Route::post('/students/delete', 'delete')->name('students.delete');
     });
 });

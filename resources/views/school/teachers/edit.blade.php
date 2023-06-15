@@ -627,6 +627,7 @@
                     var subjectId = $('input[name="subject_id[]"]:checked').length;
                     e.preventDefault();
                     if(subjectId > 0) {
+                        loader();
                         var form = document.getElementById('msform');
                         var formData = new FormData(form);
                         //for(let [key, value] of formData){

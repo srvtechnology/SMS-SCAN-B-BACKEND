@@ -27,8 +27,20 @@
         </li>
         <li class="menu-item {{ request()->segment(1) == 'teachers' ? 'active' : '' }}">
             <a href="{{ route('superadmin.teachers') }}" class="menu-link">
-                <i class='menu-icon bx bxs-school'></i>
+                <i class='menu-icon bx bxs-user-detail'></i>
                 <div data-i18n="Analytics">Teachers</div>
+            </a>
+        </li>
+        <li class="menu-item {{ request()->segment(1) == 'students' ? 'active' : '' }}">
+            <a href="{{ route('superadmin.students') }}" class="menu-link">
+                <i class='menu-icon bx bxs-user-circle' ></i>
+                <div data-i18n="Analytics">Students</div>
+            </a>
+        </li>
+        <li class="menu-item {{ request()->segment(1) == 'parents' ? 'active' : '' }}">
+            <a href="{{ route('superadmin.parents') }}" class="menu-link">
+                <i class='menu-icon bx bx-user-pin' ></i>
+                <div data-i18n="Analytics">Parents</div>
             </a>
         </li>
         {{-- <!-- Layouts -->
