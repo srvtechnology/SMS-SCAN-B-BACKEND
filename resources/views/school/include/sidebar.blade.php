@@ -81,9 +81,20 @@
                 </li>
             </ul>
         </li>
-        {{-- <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Teams</span>
-        </li> --}}
+        <li class="menu-item @if(request()->segment(2) == 'study-material') active open @endif">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon bx bxs-user-detail'></i>
+                <div data-i18n="Layouts">Study Material</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->segment(3) == 'view-content' ? 'active' : '' }}">
+                    <a href="{{ route('school.studyMaterial.view-content') }}" class="menu-link">
+                        <div data-i18n="Without menu">Upload Content</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
 
     </ul>

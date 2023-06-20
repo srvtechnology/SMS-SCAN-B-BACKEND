@@ -15,6 +15,7 @@ use App\Http\Controllers\School\SubjectController;
 use App\Http\Controllers\School\TeacherController;
 use App\Http\Controllers\School\Auth\AuthController;
 use App\Http\Controllers\School\DesignationController;
+use App\Http\Controllers\School\StudyMaterialController;
 /*
 |--------------------------------------------------------------------------
 | School Routes
@@ -38,6 +39,17 @@ Route::middleware(['school_auth'])->group(function () {
 
     Route::controller(AuthController::class)->group(function () {
         Route::post('/logout', 'logout')->name('school.logout');
+    });
+
+    Route::controller(StudyMaterialController::class)->as('school.')->group(function () {
+        Route::get('/study-material/view-content', 'index')->name('studyMaterial.view-content');
+        Route::get('/study-material/view-content/create', 'create')->name('studyMaterial.create-content');
+        Route::get('/study-material/get-subjects-byclass/{id}', 'getSectionsByClass')->name('studyMaterial.getSubjectsByClass');
+        Route::post('/study-material/view-content/store', 'store')->name('studyMaterial.store-content');
+        Route::get('/study-material/view-content/{id}/detail', 'detail')->name('studyMaterial.detail-content');
+        Route::get('/study-material/view-content/{id}/edit', 'edit')->name('studyMaterial.edit-content');
+        Route::post('/study-material/view-content/update', 'update')->name('studyMaterial.update-content');
+        Route::post('/study-material/view-content/delete', 'delete')->name('studyMaterial.delete-content');
     });
 
     Route::controller(SectionController::class)->as('school.')->group(function () {
@@ -106,14 +118,6 @@ Route::middleware(['school_auth'])->group(function () {
     });
     Route::controller(ParentController::class)->as('school.')->group(function () {
         Route::get('/parents', 'index')->name('parents');
-        // Route::get('/students/create', 'create')->name('students.create');
-        // Route::get('/students/create/get-sections-by-class/{id}', 'getSectionByClass')->name('students.getSectionByClass');
-        // Route::get('/students/create/get-parent-by-student/{id}', 'getParentByStudent')->name('students.getParentByStudent');
-        // Route::get('/students/create/get-staff-info/{id}', 'getStaffInfo')->name('students.getStaffInfo');
-        // Route::post('/students/store', 'store')->name('students.store');
         Route::get('/parents/{id}/detail', 'detail')->name('parents.detail');
-        // Route::get('/students/{id}/edit', 'edit')->name('students.edit');
-        // Route::post('/students/update', 'update')->name('students.update');
-        // Route::post('/students/delete', 'delete')->name('students.delete');
     });
 });
