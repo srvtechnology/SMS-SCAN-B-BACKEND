@@ -14,6 +14,7 @@ use App\Http\Controllers\School\StudentController;
 use App\Http\Controllers\School\SubjectController;
 use App\Http\Controllers\School\TeacherController;
 use App\Http\Controllers\School\Auth\AuthController;
+use App\Http\Controllers\School\TimetableController;
 use App\Http\Controllers\School\DesignationController;
 use App\Http\Controllers\School\StudyMaterialController;
 /*
@@ -39,6 +40,22 @@ Route::middleware(['school_auth'])->group(function () {
 
     Route::controller(AuthController::class)->group(function () {
         Route::post('/logout', 'logout')->name('school.logout');
+    });
+
+    Route::controller(TimetableController::class)->as('school.')->group(function () {
+        Route::get('/time-table/setting', 'index')->name('timetable.setting');
+        Route::get('/time-table/setting/create', 'create')->name('timetable.setting.create');
+        Route::post('/time-table/setting/store', 'store')->name('timetable.setting.store');
+        Route::get('/time-table/setting/{id}/edit', 'edit')->name('timetable.setting.edit');
+        Route::post('/time-table/setting/update', 'update')->name('timetable.setting.update');
+        Route::post('/time-table/setting/delete', 'delete')->name('timetable.setting.delete');
+
+        Route::get('/time-table/periods', 'periods')->name('timetable.periods');
+        Route::get('/time-table/periods/create', 'createPeriods')->name('timetable.periods.create');
+        Route::post('/time-table/periods/store', 'storePeriods')->name('timetable.periods.store');
+        Route::get('/time-table/periods/{id}/edit', 'editPeriods')->name('timetable.periods.edit');
+        Route::post('/time-table/periods/update', 'updatePeriods')->name('timetable.periods.update');
+        Route::post('/time-table/periods/delete', 'deletePeriods')->name('timetable.periods.delete');
     });
 
     Route::controller(StudyMaterialController::class)->as('school.')->group(function () {

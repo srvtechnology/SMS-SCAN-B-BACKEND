@@ -96,6 +96,26 @@
             </ul>
         </li>
 
+        <li class="menu-item @if(request()->segment(2) == 'time-table') active open @endif">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon bx bxs-user-detail'></i>
+                <div data-i18n="Layouts">Timetable</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->segment(3) == 'setting' ? 'active' : '' }}">
+                    <a href="{{ route('school.timetable.setting') }}" class="menu-link">
+                        <div data-i18n="Without menu">Setting</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->segment(3) == 'periods' ? 'active' : '' }}">
+                    <a href="{{ route('school.timetable.periods') }}" class="menu-link">
+                        <div data-i18n="Without menu">Periods</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
 
     </ul>
 </aside>
