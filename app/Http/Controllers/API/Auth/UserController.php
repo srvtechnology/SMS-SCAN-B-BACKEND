@@ -19,7 +19,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
@@ -30,10 +30,19 @@ class UserController extends Controller
             ],401);
         }
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user();
-            $token = $user->createToken('MyAppToken')->accessToken;
-
+        if (filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                $user = Auth::user();
+                $token = $user->createToken('MyAppToken')->accessToken;
+            }
+        } else {
+            if (Auth::attempt(['username' => $request->email, 'password' => $request->password])) {
+                $user = Auth::user();
+                $token = $user->createToken('MyAppToken')->accessToken;
+            }
+        }
+        if(!empty($token))
+        {
             return response()->json([
                 'status' => 'success',
                 'token' => $token,
@@ -121,5 +130,12 @@ class UserController extends Controller
             "status" => "success",
             "message" => "Password has been successfully changed"
         ],200);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        $user->tokens()->delete();
+        return response()->json(['message' => 'Successfully logged out.']);
     }
 }
