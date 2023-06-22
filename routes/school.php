@@ -53,9 +53,11 @@ Route::middleware(['school_auth'])->group(function () {
         Route::get('/time-table/periods', 'periods')->name('timetable.periods');
         Route::get('/time-table/periods/create', 'createPeriods')->name('timetable.periods.create');
         Route::post('/time-table/periods/store', 'storePeriods')->name('timetable.periods.store');
+        Route::get('/time-table/periods/{id}/detail', 'detailPeriods')->name('timetable.periods.detail');
         Route::get('/time-table/periods/{id}/edit', 'editPeriods')->name('timetable.periods.edit');
         Route::post('/time-table/periods/update', 'updatePeriods')->name('timetable.periods.update');
         Route::post('/time-table/periods/delete', 'deletePeriods')->name('timetable.periods.delete');
+        Route::get('/time-table/periods/get-date-range/{id}', 'getDateRange')->name('timetable.periods.get-date-range');
     });
 
     Route::controller(StudyMaterialController::class)->as('school.')->group(function () {

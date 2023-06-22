@@ -52,9 +52,18 @@
                                                             </div>
                                                         @enderror
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <button type="button" class="btn btn-primary mt-4" id="addMainSection"><i
-                                                            class='bx bx-plus-medical'></i></button>
+                                                    <div class="col-md-6 mb-3">
+                                                        <div class="form-group">
+                                                            <label for="">Date Range</label>
+                                                            <select class="form-control" name="date_range" id="date_range">
+                                                                <option value="">Select</option>
+                                                            </select>
+                                                        </div>
+                                                        @error('date_range')
+                                                            <div class="text-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -64,8 +73,8 @@
                                                 <div class="col-md-3 mb-2">
                                                     <div class="form-group">
                                                         <label for="field1">Subjects:</label>
-                                                        <select name="subject_id" id="subject_id"
-                                                            class="form-control @error('subject_id') is-invalid @enderror subject_id">
+                                                        <select name="subject_id1" id="subject_id1"
+                                                            class="form-control @error('subject_id1') is-invalid @enderror subject_id">
                                                             <option value="">Select</option>
                                                         </select>
                                                     </div>
@@ -78,8 +87,8 @@
                                                 <div class="col-md-3 mb-2">
                                                     <div class="form-group">
                                                         <label for="field1">Teachers:</label>
-                                                        <select name="subject_id" id="subject_id"
-                                                            class="form-control @error('subject_id') is-invalid @enderror">
+                                                        <select name="staff_id1" id="staff_id1"
+                                                            class="form-control @error('staff_id1') is-invalid @enderror">
                                                             <option value="">Select</option>
                                                             @if(count($teachers))
                                                             @foreach($teachers as $teacher)
@@ -98,8 +107,8 @@
                                                 <div class="col-md-2 mb-2">
                                                     <div class="form-group">
                                                         <label for="field1">Start Time:</label>
-                                                        <input type="time" class="form-control @error('start_time') is-invalid @enderror" id="start_time"
-                                                            name="start_time" value="{{ old('start_time') }}">
+                                                        <input type="time" class="form-control @error('start_time1') is-invalid @enderror" id="start_time"
+                                                            name="start_time1" value="{{ old('start_time1') }}">
                                                     </div>
                                                     @error('start_time')
                                                         <div class="text-danger">
@@ -111,8 +120,8 @@
                                                 <div class="col-md-2 mb-2">
                                                     <div class="form-group">
                                                         <label for="field1">End Time:</label>
-                                                        <input type="time" class="form-control @error('end_time') is-invalid @enderror" id="end_time"
-                                                            name="end_time" value="{{ old('end_time') }}">
+                                                        <input type="time" class="form-control @error('end_time1') is-invalid @enderror" id="end_time"
+                                                            name="end_time1" value="{{ old('end_time1') }}">
                                                     </div>
                                                     @error('end_time')
                                                         <div class="text-danger">
@@ -142,24 +151,38 @@
 
     @push('footer-script')
         <script>
-
             $(".class_id").on("change", function(){
                 var class_id = $(this).val();
-                getSectionsByClass(class_id);
+                getSectionsByClass(class_id,1);
+
+                $.ajax({
+                    url: '{{ url('school/time-table/periods/get-date-range') }}' + '/' + class_id,
+                    type: 'GET',
+                    success: function(response) {
+                        $("#date_range").html('');
+                        $(response).each(function(index, element) {
+                            $("#date_range").append('<option value="' + element.id + '">' + element
+                                .days + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('failed');
+                    }
+                });
             });
 
             $(".submitBtn").on("click", function() {
                 loader();
             });
-            function getSectionsByClass(class_id){
+            function getSectionsByClass(class_id,counter){
                 $.ajax({
                     url: '{{ url('school/study-material/get-subjects-byclass/') }}' + '/' + class_id,
                     type: 'GET',
                     success: function(response) {
-                        $(".subject_id").html('');
-                        $(".subject_id").append('<option value="">Select</option>');
+                        $("#subject_id"+counter).html('');
+                        $("#subject_id"+counter).append('<option value="">Select</option>');
                         $(response).each(function(index, element) {
-                            $(".subject_id").append('<option value="' + element.id + '">' + element
+                            $("#subject_id"+counter).append('<option value="' + element.id + '">' + element
                                 .name + '</option>');
                         });
                     },
@@ -169,198 +192,89 @@
                 });
             }
 
-            let counter = 1;
+            var fieldIndex = 2; // Starting index for dynamic fields
 
-            // Event handler for "addMainSection" button
-            $('#addMainSection').click(function() {
-              // Generate a unique ID for the new section
-              const sectionId = `mainSection${counter}`;
-
-              // Create the HTML for the new section
-              const newSection = `
-                <div id="${sectionId}">
-                  <div class="my-3">
-                    <div class="card mb-4">
-                      <div class="card-body">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <div class="row">
-                              <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                  <label for="field1">Class:</label>
-                                  <select name="class_id" id="class_id" class="form-control @error('class_id') is-invalid @enderror class_id">
-                                    <option value="">Select</option>
-                                    @if (count($classes))
-                                      @foreach ($classes as $class)
-                                        <option value="{{ $class->id }}">{{ $class->name }}</option>
-                                      @endforeach
-                                    @endif
-                                  </select>
-                                </div>
-                                @error('class_id')
-                                  <div class="text-danger">
-                                    {{ $message }}
-                                  </div>
-                                @enderror
-                              </div>
-                              <div class="col-md-2">
-                                <button type="button" class="btn btn-danger mt-4 deleteMainSection" data-section-id="${sectionId}">
-                                  <i class="bx bx-trash"></i>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+        // Add field when addField button is clicked
+        $('#addField').click(function() {
+            var class_id = $("#class_id").val();
+            getSectionsByClass(class_id,fieldIndex);
+            var newField = `
+                <div class="row" id="field${fieldIndex}">
+                    <div class="col-md-3 mb-2">
+                        <div class="form-group">
+                            <label for="field${fieldIndex}">Subjects:</label>
+                            <select name="subject_id${fieldIndex}" id="subject_id${fieldIndex}"
+                                class="form-control @error('subject_id${fieldIndex}') is-invalid @enderror subject_id">
+                                <option value="">Select</option>
+                            </select>
                         </div>
-                        <div id="innerForm">
-                          <div class="row">
-                            <div class="col-md-3 mb-2">
-                              <div class="form-group">
-                                <label for="field1">Subjects:</label>
-                                <select name="subject_id" id="subject_id" class="form-control @error('subject_id') is-invalid @enderror subject_id">
-                                  <option value="">Select</option>
-                                </select>
-                              </div>
-                              @error('subject_id')
-                                <div class="text-danger">
-                                  {{ $message }}
-                                </div>
-                              @enderror
-                            </div>
-                            <div class="col-md-3 mb-2">
-                              <div class="form-group">
-                                <label for="field1">Teachers:</label>
-                                <select name="subject_id" id="subject_id" class="form-control @error('subject_id') is-invalid @enderror">
-                                  <option value="">Select</option>
-                                  @if(count($teachers))
-                                    @foreach($teachers as $teacher)
-                                      <option value="{{ $teacher->id }}">{{ $teacher->first_name }} {{ $teacher->last_name }}</option>
-                                    @endforeach
-                                  @endif
-                                </select>
-                              </div>
-                              @error('subject_id')
-                                <div class="text-danger">
-                                  {{ $message }}
-                                </div>
-                              @enderror
-                            </div>
-                            <div class="col-md-2 mb-2">
-                              <div class="form-group">
-                                <label for="field1">Start Time:</label>
-                                <input type="time" class="form-control @error('start_time') is-invalid @enderror" id="start_time" name="start_time" value="{{ old('start_time') }}">
-                              </div>
-                              @error('start_time')
-                                <div class="text-danger">
-                                  {{ $message }}
-                                </div>
-                              @enderror
-                            </div>
-                            <div class="col-md-2 mb-2">
-                              <div class="form-group">
-                                <label for="field1">End Time:</label>
-                                <input type="time" class="form-control @error('end_time') is-invalid @enderror" id="end_time" name="end_time" value="{{ old('end_time') }}">
-                              </div>
-                              @error('end_time')
-                                <div class="text-danger">
-                                  {{ $message }}
-                                </div>
-                              @enderror
-                            </div>
-                            <div class="col-md-2 mb-2">
-                              <button type="button" class="btn btn-primary mt-4 addField"><i class='bx bx-plus-medical'></i></button>
-                            </div>
-                          </div>
+                        @error('subject_id${fieldIndex}')
+                        <div class="text-danger">
+                            {{ $message }}
                         </div>
-                      </div>
+                        @enderror
                     </div>
-                  </div>
+                    <div class="col-md-3 mb-2">
+                        <div class="form-group">
+                            <label for="field${fieldIndex}">Teachers:</label>
+                            <select name="staff_id${fieldIndex}" id="staff_id${fieldIndex}"
+                                class="form-control @error('staff_id${fieldIndex}') is-invalid @enderror">
+                                <option value="">Select</option>
+                                @if(count($teachers))
+                                @foreach($teachers as $teacher)
+                                <option value="{{ $teacher->id }}">{{ $teacher->first_name }} {{ $teacher->last_name }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        @error('subject_id${fieldIndex}')
+                        <div class="text-danger">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <div class="form-group">
+                            <label for="field${fieldIndex}">Start Time:</label>
+                            <input type="time" class="form-control @error('start_time${fieldIndex}') is-invalid @enderror" id="start_time"
+                                name="start_time${fieldIndex}" value="{{ old('start_time${fieldIndex}') }}">
+                        </div>
+                        @error('start_time${fieldIndex}')
+                        <div class="text-danger">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <div class="form-group">
+                            <label for="field${fieldIndex}">End Time:</label>
+                            <input type="time" class="form-control @error('end_time${fieldIndex}') is-invalid @enderror" id="end_time"
+                                name="end_time${fieldIndex}" value="{{ old('end_time${fieldIndex}') }}">
+                        </div>
+                        @error('end_time${fieldIndex}')
+                        <div class="text-danger">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <button type="button" class="btn btn-danger mt-4 removeField" data-index="${fieldIndex}"><i class="bx bx-trash"></i></button>
+                    </div>
                 </div>
-              `;
+            `;
 
-              // Append the new section to the container
-              $('#mainSection').append(newSection);
+            $('#innerForm').append(newField);
 
-              // Increment the counter for the next section
-              counter++;
-            });
+            fieldIndex++;
+        });
 
-            // Event delegation for "deleteMainSection" button
-            $('#mainSection').on('click', '.deleteMainSection', function() {
-              const sectionId = $(this).data('section-id');
-              $('#' + sectionId).remove();
-            });
-
-            $(".addField").click(function() {
-                const currentClassID = $(".class_id").val();
-                getSectionsByClass(currentClassID);
-                var fieldHTML = `
-                    <div class="row">
-                        <div class="col-md-3 mb-2">
-                            <div class="form-group">
-                                <label for="field1">Subjects:</label>
-                                <select name="subject_id[]" class="form-control @error('subject_id') is-invalid @enderror subject_id">
-                                    <option value="">Select</option>
-                                </select>
-                            </div>
-                            @error('subject_id')
-                                <div class="text-danger">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3 mb-2">
-                            <div class="form-group">
-                                <label for="field1">Teachers:</label>
-                                <select name="teacher_id[]" class="form-control @error('teacher_id') is-invalid @enderror">
-                                    <option value="">Select</option>
-                                    @if(count($teachers))
-                                        @foreach($teachers as $teacher)
-                                            <option value="{{ $teacher->id }}">{{ $teacher->first_name }} {{ $teacher->last_name }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                            </div>
-                            @error('teacher_id')
-                                <div class="text-danger">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-2 mb-2">
-                            <div class="form-group">
-                                <label for="field1">Start Time:</label>
-                                <input type="time" class="form-control @error('start_time') is-invalid @enderror" name="start_time[]" value="{{ old('start_time') }}">
-                            </div>
-                            @error('start_time')
-                                <div class="text-danger">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-2 mb-2">
-                            <div class="form-group">
-                                <label for="field1">End Time:</label>
-                                <input type="time" class="form-control @error('end_time') is-invalid @enderror" name="end_time[]" value="{{ old('end_time') }}">
-                            </div>
-                            @error('end_time')
-                                <div class="text-danger">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="col-md-2 mb-2">
-                            <button type="button" class="btn btn-danger mt-4 deleteField" ><i class="bx bx-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-                $("#innerForm").append(fieldHTML);
-            });
-
-            $(document).on("click", ".deleteField", function() {
-                $(this).closest(".row").remove();
-            });
+        // Remove field when removeField button is clicked
+        $(document).on('click', '.removeField', function() {
+            var index = $(this).data('index');
+            $('#field' + index).remove();
+        });
         </script>
     @endpush
 @endsection

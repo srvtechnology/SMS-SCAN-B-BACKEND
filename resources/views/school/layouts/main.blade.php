@@ -30,6 +30,11 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
     <script src="{{ asset('assets/js/config.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset("assets/pretty-weekly/pretty-calendar.css") }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="{{ asset("assets/weekly-calender/dist/jquery.schedule.css") }}">
+    <link rel="stylesheet" href="{{ asset("assets/weekly-calender/dist/jquery.schedule-demo.css") }}">
     <style>
         #example_wrapper {
             padding: 10px;

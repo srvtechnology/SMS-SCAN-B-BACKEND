@@ -19,10 +19,14 @@ return new class extends Migration
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
             $table->bigInteger("class_id")->unsigned();
             $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
+            $table->bigInteger("time_table_setting_id")->unsigned();
+            $table->foreign('time_table_setting_id')->references('id')->on('time_table_settings')->onDelete('cascade');
             $table->bigInteger("subject_id")->unsigned();
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
-            $table->string("no_of_periods");
-            $table->string("duration");
+            $table->bigInteger("staff_id")->unsigned();
+            $table->foreign('staff_id')->references('id')->on('staff')->onDelete('cascade');
+            $table->string("start_time");
+            $table->string("end_time");
             $table->bigInteger("created_by")->unsigned();
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->enum("is_deleted",["0","1"])->default('0');

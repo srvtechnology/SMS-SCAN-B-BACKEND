@@ -29,9 +29,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Class</th>
-                                            <th>Subject</th>
-                                            <th>No of Periods</th>
-                                            <th>Duration</th>
+                                            <th>Weekdays</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -39,22 +37,21 @@
                                         @foreach ($periods as $period)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $period->class->name }}</td>
-                                                <td>{{ $period->subject->name }}</td>
-                                                <td>{{ $period->no_of_periods }}</td>
-                                                <td>{{ $period->duration }}</td>
+                                                <td>{{ $period['class'] }}</td>
+                                                <td>{{ $period['days'] }}</td>
                                                 <td>
-                                                    <a href="{{ route("school.timetable.periods.edit",$period->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
-                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $period->id }} data-url={{ route("school.timetable.periods.delete") }}><i class='bx bxs-trash'></i></a>
+                                                    <a href="{{ route("school.timetable.periods.detail",$period['days_id']) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                    <a href="{{ route("school.timetable.periods.edit",$period['days_id']) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $period['days_id'] }} data-url={{ route("school.timetable.periods.delete") }}><i class='bx bxs-trash'></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                            @if(count($periods) > 0)
+                            @if(count($periodsQuery) > 0)
                             <div class="pagination_custom_class">
-                            {{ $periods->links() }}
+                            {{ $periodsQuery->links() }}
                             </div>
                             @endif
                         </div>
