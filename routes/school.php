@@ -16,6 +16,7 @@ use App\Http\Controllers\School\TeacherController;
 use App\Http\Controllers\School\Auth\AuthController;
 use App\Http\Controllers\School\TimetableController;
 use App\Http\Controllers\School\DesignationController;
+use App\Http\Controllers\School\AssignPeriodController;
 use App\Http\Controllers\School\StudyMaterialController;
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,17 @@ Route::middleware(['school_auth'])->group(function () {
         Route::post('/time-table/periods/update', 'updatePeriods')->name('timetable.periods.update');
         Route::post('/time-table/periods/delete', 'deletePeriods')->name('timetable.periods.delete');
         Route::get('/time-table/periods/get-date-range/{id}', 'getDateRange')->name('timetable.periods.get-date-range');
+    });
+
+    Route::controller(AssignPeriodController::class)->as('school.')->group(function () {
+        Route::get('/time-table/assign-periods', 'index')->name('timetable.assign_periods');
+        Route::get('/time-table/assign-periods/create', 'create')->name('timetable.assign_periods.create');
+        Route::get('/time-table/assign-periods/get-all-data-by-class/{id}', 'getAllDataByClass')->name('timetable.assign_periods.get-all-data-by-class');
+        Route::get('/time-table/assign-periods/get-periods-by-class-range/{id}', 'getPeriodsByClass');
+        Route::post('/time-table/assign-periods/store', 'store')->name('timetable.assign_periods.store');
+        Route::get('/time-table/assign-periods/{id}/edit', 'edit')->name('timetable.assign_periods.edit');
+        Route::post('/time-table/assign-periods/update', 'update')->name('timetable.assign_periods.update');
+        Route::post('/time-table/assign-periods/delete', 'delete')->name('timetable.assign_periods.delete');
     });
 
     Route::controller(StudyMaterialController::class)->as('school.')->group(function () {

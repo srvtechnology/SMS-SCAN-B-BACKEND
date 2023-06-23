@@ -1,5 +1,5 @@
 @extends('school.layouts.main')
-@section('page_title', 'TimeTable Setting')
+@section('page_title', 'Periods')
 @section('content')
 
     <div class="content-wrapper">
@@ -11,10 +11,10 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('school.dashboard') }}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">TimeTable Setting</li>
+                        <li class="breadcrumb-item active">Assign Periods</li>
                     </ol>
                 </nav>
-                <a href="{{ route('school.timetable.setting.create') }}" class="btn rounded-pill btn-primary text-white">Create</a>
+                <a href="{{ route('school.timetable.assign_periods.create') }}" class="btn rounded-pill btn-primary text-white">Create</a>
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -22,39 +22,37 @@
                     <div class="my-3">
                         <!-- Basic Bootstrap Table -->
                         <div class="card">
-                            <h5 class="card-header">TimeTable Setting List</h5>
+                            <h5 class="card-header">Assign List</h5>
                             <div class="table-responsive text-nowrap">
                                 <table id="example" class="table table-striped" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Day Range</th>
+                                            <th>Period</th>
                                             <th>Class</th>
-                                            <th>Time</th>
-                                            <th>Days</th>
-                                            <th>Actions</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($timetable_settings as $timetable_setting)
+                                        @foreach ($assign_periods as $assign_period)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $timetable_setting->fromClass->name }} to {{ $timetable_setting->toClass->name }}</td>
-                                                <td>{{ date('h:i A', strtotime($timetable_setting->start_time)) }} to {{ date('h:i A', strtotime($timetable_setting->end_time)) }}</td>
+                                                <td>{{ implode(",",json_decode($assign_period->day_range->weekdays)) }}</td>
+                                                <td>{{ $assign_period->period->title }}</td>
+                                                <td>{{ $assign_period->class->name }}</td>
                                                 <td>
-                                                    {{ implode(', ', json_decode($timetable_setting->weekdays)) }}
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route("school.timetable.setting.edit",$timetable_setting->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
-                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $timetable_setting->id }} data-url={{ route("school.timetable.setting.delete") }}><i class='bx bxs-trash'></i></a>
+                                                    <a href="{{ route("school.timetable.assign_periods.edit",$assign_period->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $assign_period->id }} data-url={{ route("school.timetable.assign_periods.delete") }}><i class='bx bxs-trash'></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                            @if(count($timetable_settings) > 0)
+                            @if(count($assign_periods) > 0)
                             <div class="pagination_custom_class">
-                            {{ $timetable_settings->links() }}
+                            {{ $assign_periods->links() }}
                             </div>
                             @endif
                         </div>

@@ -105,12 +105,17 @@
             <ul class="menu-sub">
                 <li class="menu-item {{ request()->segment(3) == 'setting' ? 'active' : '' }}">
                     <a href="{{ route('school.timetable.setting') }}" class="menu-link">
-                        <div data-i18n="Without menu">Setting</div>
+                        <div data-i18n="Without menu">Time Range</div>
                     </a>
                 </li>
                 <li class="menu-item {{ request()->segment(3) == 'periods' ? 'active' : '' }}">
                     <a href="{{ route('school.timetable.periods') }}" class="menu-link">
-                        <div data-i18n="Without menu">Periods</div>
+                        <div data-i18n="Without menu">Time Range Periods</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->segment(3) == 'assign-periods' ? 'active' : '' }}">
+                    <a href="{{ route('school.timetable.assign_periods') }}" class="menu-link">
+                        <div data-i18n="Without menu">Assign Period</div>
                     </a>
                 </li>
             </ul>

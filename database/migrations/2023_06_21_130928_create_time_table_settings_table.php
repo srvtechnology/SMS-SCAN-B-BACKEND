@@ -17,8 +17,11 @@ return new class extends Migration
             $table->id();
             $table->bigInteger("school_id")->unsigned();
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
-            $table->string("from_class");
-            $table->string("to_class");
+            $table->bigInteger("from_class")->unsigned();
+            $table->foreign('from_class')->references('id')->on('classes')->onDelete('cascade');
+            $table->bigInteger("to_class")->unsigned();
+            $table->foreign('to_class')->references('id')->on('classes')->onDelete('cascade');
+            $table->string("class_range");
             $table->string("start_time");
             $table->string("end_time");
             $table->string("weekdays");

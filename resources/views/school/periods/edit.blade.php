@@ -39,9 +39,9 @@
                                                             <select name="class_id" id="class_id"
                                                                 class="form-control @error('class_id') is-invalid @enderror class_id">
                                                                 <option value="">Select</option>
-                                                                @if (count($classes))
-                                                                    @foreach ($classes as $class)
-                                                                        <option value="{{ $class->id }}" @if($classData->id == $class->id) selected @endif>{{ $class->name }}
+                                                                @if (count($class_ranges))
+                                                                    @foreach ($class_ranges as $class_range)
+                                                                        <option value="{{ $class_range->fromClass->id }}-{{ $class_range->toClass->id }}" @if($curClass_range == $class_range->fromClass->id.'-'.$class_range->toClass->id) selected @endif>{{ $class_range->fromClass->name }}-{{ $class_range->toClass->name }}
                                                                         </option>
                                                                     @endforeach
                                                                 @endif
@@ -58,11 +58,6 @@
                                                             <label for="">Date Range</label>
                                                             <select class="form-control" name="date_range" id="date_range">
                                                                 <option value="">Select</option>
-                                                                @if(count($day_ranges) > 0)
-                                                                @foreach($day_ranges as $day_range)
-                                                                <option value="{{ $day_range['id'] }}" @if($curPeriod->time_table_setting_id == $day_range['id']) selected @endif>{{ $day_range['days'] }}</option>
-                                                                @endforeach
-                                                                @endif
                                                             </select>
                                                         </div>
                                                         @error('date_range')
@@ -83,44 +78,17 @@
                                             <div class="row"  id="field{{ $keyIndex }}">
                                                 <div class="col-md-3 mb-2">
                                                     <div class="form-group">
-                                                        <label for="field1">Subjects:</label>
-                                                        <select name="subject_id{{ $keyIndex }}" id="subject_id{{ $keyIndex }}"
-                                                            class="form-control @error('subject_id{{ $keyIndex }}') is-invalid @enderror subject_id">
-                                                            <option value="">Select</option>
-                                                            @if(count($subjects))
-                                                            @foreach($subjects as $subject)
-                                                            <option value="{{ $subject['id'] }}" @if($period->subject_id == $subject['id']) selected @endif>{{ $subject['name'] }}</option>
-                                                            @endforeach
-                                                            @endif
-                                                        </select>
+                                                        <label for="field{{ $keyIndex }}">Title</label>
+                                                        <input type="text" value="{{ $period->title }}" name="title{{ $keyIndex }}" class="form-control @error('title{{ $keyIndex }}') is-invalid @enderror" id="title{{ $keyIndex }}">
                                                     </div>
-                                                    @error('subject_id')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-md-3 mb-2">
-                                                    <div class="form-group">
-                                                        <label for="field{{ $keyIndex }}">Teachers:</label>
-                                                        <select name="staff_id{{ $keyIndex }}" id="staff_id{{ $keyIndex }}"
-                                                            class="form-control @error('staff_id{{ $keyIndex }}') is-invalid @enderror">
-                                                            <option value="">Select</option>
-                                                            @if(count($teachers))
-                                                            @foreach($teachers as $teacher)
-                                                            <option value="{{ $teacher->id }}" @if($period->staff_id == $teacher->id) selected @endif>{{ $teacher->first_name }} {{ $teacher->last_name }}</option>
-                                                            @endforeach
-                                                            @endif
-                                                        </select>
-                                                    </div>
-                                                    @error('subject_id')
+                                                    @error('title{{ $keyIndex }}')
                                                         <div class="text-danger">
                                                             {{ $message }}
                                                         </div>
                                                     @enderror
                                                 </div>
 
-                                                <div class="col-md-2 mb-2">
+                                                <div class="col-md-3 mb-2">
                                                     <div class="form-group">
                                                         <label for="field{{ $keyIndex }}">Start Time:</label>
                                                         <input type="time" class="form-control @error('start_time') is-invalid @enderror" id="start_time"
@@ -133,7 +101,7 @@
                                                     @enderror
                                                 </div>
 
-                                                <div class="col-md-2 mb-2">
+                                                <div class="col-md-3 mb-2">
                                                     <div class="form-group">
                                                         <label for="field{{ $keyIndex }}">End Time:</label>
                                                         <input type="time" class="form-control @error('end_time{{ $keyIndex }}') is-invalid @enderror" id="end_time"
@@ -145,7 +113,7 @@
                                                         </div>
                                                     @enderror
                                                 </div>
-                                                <div class="col-md-2 mb-2">
+                                                <div class="col-md-3 mb-2">
                                                     @if($key == 0)
                                                     <button type="button" class="btn btn-primary mt-4 addField" id="addField"><i
                                                         class='bx bx-plus-medical'></i></button>
@@ -173,6 +141,27 @@
 
     @push('footer-script')
         <script>
+            var class_id = '{{ $class_id }}';
+            const day_range_id = '{{ $day_range_id }}';
+            $.ajax({
+                url: '{{ url('school/time-table/periods/get-date-range') }}' + '/' + class_id,
+                type: 'GET',
+                success: function(response) {
+                    $("#date_range").html('');
+                    $(response).each(function(index, element) {
+                        if(day_range_id == element.id)
+                        {
+                            var selected = "selected";
+                        }
+                        $("#date_range").append('<option value="' + element.id + '"  '+selected+'>' + element
+                            .days + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('failed');
+                }
+            });
+
             $(".class_id").on("change", function(){
                 var class_id = $(this).val();
                 getSectionsByClass(class_id,1);
@@ -183,14 +172,13 @@
             });
               function getSectionsByClass(class_id,counter){
                 $.ajax({
-                    url: '{{ url('school/study-material/get-subjects-byclass/') }}' + '/' + class_id,
+                    url: '{{ url('school/time-table/periods/get-date-range') }}' + '/' + class_id,
                     type: 'GET',
                     success: function(response) {
-                        $("#subject_id"+counter).html('');
-                        $("#subject_id"+counter).append('<option value="">Select</option>');
+                        $("#date_range").html('');
                         $(response).each(function(index, element) {
-                            $("#subject_id"+counter).append('<option value="' + element.id + '">' + element
-                                .name + '</option>');
+                            $("#date_range").append('<option value="' + element.id + '">' + element
+                                .days + '</option>');
                         });
                     },
                     error: function(xhr, status, error) {
@@ -208,39 +196,17 @@
                 <div class="row" id="field${fieldIndex}">
                     <div class="col-md-3 mb-2">
                         <div class="form-group">
-                            <label for="field${fieldIndex}">Subjects:</label>
-                            <select name="subject_id${fieldIndex}" id="subject_id${fieldIndex}"
-                                class="form-control @error('subject_id${fieldIndex}') is-invalid @enderror subject_id">
-                                <option value="">Select</option>
-                            </select>
+                            <label for="field${fieldIndex}">Title</label>
+                            <input type="text" name="title${fieldIndex}" class="form-control @error('title${fieldIndex}') is-invalid @enderror" id="title${fieldIndex}">
                         </div>
-                        @error('subject_id${fieldIndex}')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <div class="form-group">
-                            <label for="field${fieldIndex}">Teachers:</label>
-                            <select name="staff_id${fieldIndex}" id="staff_id${fieldIndex}"
-                                class="form-control @error('staff_id${fieldIndex}') is-invalid @enderror">
-                                <option value="">Select</option>
-                                @if(count($teachers))
-                                @foreach($teachers as $teacher)
-                                <option value="{{ $teacher->id }}">{{ $teacher->first_name }} {{ $teacher->last_name }}</option>
-                                @endforeach
-                                @endif
-                            </select>
-                        </div>
-                        @error('subject_id${fieldIndex}')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
+                        @error('title${fieldIndex}')
+                            <div class="text-danger">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
 
-                    <div class="col-md-2 mb-2">
+                    <div class="col-md-3 mb-2">
                         <div class="form-group">
                             <label for="field${fieldIndex}">Start Time:</label>
                             <input type="time" class="form-control @error('start_time${fieldIndex}') is-invalid @enderror" id="start_time"
@@ -253,7 +219,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-2 mb-2">
+                    <div class="col-md-3 mb-2">
                         <div class="form-group">
                             <label for="field${fieldIndex}">End Time:</label>
                             <input type="time" class="form-control @error('end_time${fieldIndex}') is-invalid @enderror" id="end_time"
@@ -265,7 +231,7 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col-md-2 mb-2">
+                    <div class="col-md-3 mb-2">
                         <button type="button" class="btn btn-danger mt-4 removeField" data-index="${fieldIndex}"><i class="bx bx-trash"></i></button>
                     </div>
                 </div>

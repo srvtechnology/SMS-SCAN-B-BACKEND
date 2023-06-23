@@ -26,6 +26,6 @@ class TimeTablePeriod extends Model
 
     public function timetablesetting()
     {
-        return $this->belongsTo(TimeTableSetting::class);
+        return $this->belongsTo(TimeTableSetting::class,'time_table_setting_id');
     }
 }

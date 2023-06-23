@@ -29,4 +29,9 @@ class StaffAssignClass extends Model
     {
         return $this->hasMany(Section::class,'id','section_id');
     }
+
+    public function staffs()
+    {
+        return $this->hasMany(Staff::class,'id','staff_id');
+    }
 }
