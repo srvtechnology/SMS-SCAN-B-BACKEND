@@ -16,6 +16,46 @@
                 </nav>
                 <a href="{{ route('school.timetable.assign_periods.create') }}" class="btn rounded-pill btn-primary text-white">Create</a>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="my-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="{{ route('school.timetable.assign_periods.view-timetable') }}" method="GET">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <div class="form-group">
+                                                <label for="field1">Class:</label>
+                                                    <select name="class_id" id="class_id" class="form-control @error('class_id') is-invalid @enderror class_id">
+                                                        <option value="">Select</option>
+                                                        @if(count($classes))
+                                                        @foreach($classes as $class)
+                                                        <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <div class="form-group">
+                                                <label for="field1">Section:</label>
+                                                    <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror">
+                                                        <option value="">Select</option>
+                                                    </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <div class="form-group">
+                                                <button class="btn btn-primary mt-4">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <x-alert></x-alert>
             <div class="row">
                 <div class="col-md-12">
@@ -66,5 +106,27 @@
     </div>
 
     @push('footer-script')
+    <script>
+        $(".class_id").on("change", function(){
+            var class_id = $(this).val();
+            getDataByClass(class_id);
+        });
+        function getDataByClass(class_id){
+            $.ajax({
+                url: '{{ url('school/time-table/assign-periods/get-all-data-by-class') }}' + '/' + class_id,
+                type: 'GET',
+                success: function(response) {
+                    $("#section_id").html('');
+                    $(response.sections).each(function(index, element) {
+                        $("#section_id").append('<option value="' + element.id + '">' + element
+                            .name + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('failed');
+                }
+            });
+        }
+    </script>
     @endpush
 @endsection

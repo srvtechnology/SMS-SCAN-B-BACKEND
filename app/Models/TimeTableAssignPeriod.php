@@ -23,4 +23,14 @@ class TimeTableAssignPeriod extends Model
     {
         return $this->belongsTo(Classes::class);
     }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
+
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class);
+    }
 }

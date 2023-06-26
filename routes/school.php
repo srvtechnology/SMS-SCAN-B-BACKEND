@@ -13,6 +13,7 @@ use App\Http\Controllers\School\SectionController;
 use App\Http\Controllers\School\StudentController;
 use App\Http\Controllers\School\SubjectController;
 use App\Http\Controllers\School\TeacherController;
+use App\Http\Controllers\School\PushNotificationController;
 use App\Http\Controllers\School\Auth\AuthController;
 use App\Http\Controllers\School\TimetableController;
 use App\Http\Controllers\School\DesignationController;
@@ -71,6 +72,8 @@ Route::middleware(['school_auth'])->group(function () {
         Route::get('/time-table/assign-periods/{id}/edit', 'edit')->name('timetable.assign_periods.edit');
         Route::post('/time-table/assign-periods/update', 'update')->name('timetable.assign_periods.update');
         Route::post('/time-table/assign-periods/delete', 'delete')->name('timetable.assign_periods.delete');
+
+        Route::get('/time-table/assign-periods/view-timetable', 'viewTimeTable')->name('timetable.assign_periods.view-timetable');
     });
 
     Route::controller(StudyMaterialController::class)->as('school.')->group(function () {
@@ -152,4 +155,16 @@ Route::middleware(['school_auth'])->group(function () {
         Route::get('/parents', 'index')->name('parents');
         Route::get('/parents/{id}/detail', 'detail')->name('parents.detail');
     });
+
+    Route::controller(PushNotificationController::class)->as('school.')->group(function () {
+        Route::get('/notifications','index')->name('notification-index');
+        Route::get('notification_info/{id}', 'view')->name('notification-view');
+        Route::get('notification_edit/{id}', 'edit')->name('notification-edit');
+        Route::get('notifications/create', 'create')->name('notification-create');
+        Route::post('notifications/save', 'save')->name('save-notification');
+        Route::post('notification_delete', 'destroy')->name('notification-delete');
+        Route::post('notifications/update', 'update')->name('update-notification');
+    });
+
+
 });

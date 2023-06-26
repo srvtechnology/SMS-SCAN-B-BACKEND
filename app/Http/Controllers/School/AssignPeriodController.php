@@ -18,9 +18,10 @@ class AssignPeriodController extends Controller
     public function index()
     {
         $school = getSchoolInfoByUsername(Auth::user()->username);
+        $classes = Classes::where('school_id', $school->id)->where('is_deleted','0')->OrderBy("name", 'asc')->get();
         $assign_periods = TimeTableAssignPeriod::where('school_id', $school->id)->where('is_deleted','0')->paginate(10);
 
-        return view("school.assign-periods.index")->with(compact('assign_periods'));
+        return view("school.assign-periods.index")->with(compact('assign_periods','classes'));
     }
 
     public function create()
@@ -220,5 +221,30 @@ class AssignPeriodController extends Controller
             'sections' => $sections,
             'day_range' => $day_range,
         ];
+    }
+
+    public function viewTimeTable()
+    {
+        $school = getSchoolInfoByUsername(Auth::user()->username);
+        $class_id = request()->class_id;
+        $section_id = request()->section_id;
+        $assign_periods = TimeTableAssignPeriod::where('school_id',$school->id)->where('section_id',$section_id)->get();
+        $timetablesetting = TimeTableSetting::find($assign_periods[0]->time_table_setting_id);
+        $weekdays = json_decode($timetablesetting->weekdays);
+        $start_time = $timetablesetting->start_time;
+        $end_time = $timetablesetting->end_time;
+
+        $start_time = [];
+        foreach($assign_periods as $assign_period)
+        {
+            $start_time[] = $assign_period->period->start_time;
+            $periods[] = [
+                'subject'   => $assign_period->subject->name,
+                'teacher'   =>  $assign_period->staff->first_name . ' ' . $assign_period->staff->last_name,
+                'start_time'    => $assign_period->period->start_time,
+                'end_time' => $assign_period->period->end_time,
+            ];
+        }
+        return view("school.assign-periods.view-timetable")->with(compact('start_time','weekdays','periods'));
     }
 }
