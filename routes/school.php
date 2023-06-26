@@ -59,6 +59,7 @@ Route::middleware(['school_auth'])->group(function () {
         Route::post('/time-table/periods/update', 'updatePeriods')->name('timetable.periods.update');
         Route::post('/time-table/periods/delete', 'deletePeriods')->name('timetable.periods.delete');
         Route::get('/time-table/periods/get-date-range/{id}', 'getDateRange')->name('timetable.periods.get-date-range');
+        Route::get('/time-table/periods/get-time-range/{class_id}/{day_range}', 'getTimeRange')->name('timetable.periods.get-time-range');
     });
 
     Route::controller(AssignPeriodController::class)->as('school.')->group(function () {

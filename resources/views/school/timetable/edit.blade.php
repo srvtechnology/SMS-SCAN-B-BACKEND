@@ -32,7 +32,7 @@
                                         <div class="col-md-6 mb-2">
                                             <div class="form-group">
                                                 <label for="field1">From Class:</label>
-                                                <select name="from_class" id="from_class" class="form-control @error('from_class') is-invalid @enderror">
+                                                <select name="from_class" id="from_class" class="form-control selectcustom @error('from_class') is-invalid @enderror" readonly>
                                                     <option value="">Select</option>
                                                     @if(count($classes))
                                                     @foreach($classes as $class)
@@ -51,7 +51,7 @@
                                         <div class="col-md-6 mb-2">
                                             <div class="form-group">
                                                 <label for="field1">To Class:</label>
-                                                <select name="to_class" id="to_class" class="form-control @error('to_class') is-invalid @enderror">
+                                                <select name="to_class" id="to_class" class="form-control selectcustom @error('to_class') is-invalid @enderror" readonly>
                                                     <option value="">Select</option>
                                                     @if(count($classes))
                                                     @foreach($classes as $class)
@@ -127,6 +127,16 @@
     @push('footer-script')
 
         <script>
+            $(document).ready(function() {
+                $('.selectcustom').on('mousedown', function(event) {
+                    event.preventDefault();
+                    this.blur();
+                    window.focus();
+                }).on('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                });
+            });
             $(".submitBtn").on("click", function(){
                 loader();
             });

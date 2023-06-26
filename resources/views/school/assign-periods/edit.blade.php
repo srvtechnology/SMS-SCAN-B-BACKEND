@@ -52,12 +52,10 @@
                                                                 @endforeach
                                                             @endif
                                                         </select>
-                                                    </div>
-                                                    @error('class_id1')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
+                                                        <div class="invalid-feedback">
+                                                            Class is required
                                                         </div>
-                                                    @enderror
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-3 mb-3">
                                                     <div class="form-group">
@@ -72,12 +70,10 @@
                                                                 @endforeach
                                                             @endif
                                                         </select>
-                                                    </div>
-                                                    @error('day_range1')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
+                                                        <div class="invalid-feedback">
+                                                            Day Range is required
                                                         </div>
-                                                    @enderror
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-3 mb-3">
                                                     <div class="form-group">
@@ -92,12 +88,10 @@
                                                             @endforeach
                                                         @endif
                                                         </select>
-                                                    </div>
-                                                    @error('period_id1')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
+                                                        <div class="invalid-feedback">
+                                                            Period is required
                                                         </div>
-                                                    @enderror
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-3 mb-3">
                                                     <div class="form-group">
@@ -112,12 +106,10 @@
                                                                 @endforeach
                                                             @endif
                                                         </select>
-                                                    </div>
-                                                    @error('teacher_id1')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
+                                                        <div class="invalid-feedback">
+                                                            Teacher is required
                                                         </div>
-                                                    @enderror
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-3 mb-3">
                                                     <div class="form-group">
@@ -133,12 +125,10 @@
                                                             @endif
 
                                                         </select>
-                                                    </div>
-                                                    @error('section_id1')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
+                                                        <div class="invalid-feedback">
+                                                            Section is required
                                                         </div>
-                                                    @enderror
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-3 mb-3">
                                                     <div class="form-group">
@@ -154,12 +144,10 @@
                                                             @endif
 
                                                         </select>
-                                                    </div>
-                                                    @error('subject_id1')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
+                                                        <div class="invalid-feedback">
+                                                            Subject is required
                                                         </div>
-                                                    @enderror
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -271,44 +259,40 @@
               }
 
 
-        function validateField(field) {
-            var fieldValue = field.val();
-            var errorContainer = field.closest('.form-group').find('.text-danger');
+              function validateField(field) {
+                var fieldValue = field.val();
+                var errorContainer = field.closest('.form-group').find('.invalid-feedback');
 
 
-            if (fieldValue === '') {
-              field.addClass('is-invalid');
-              errorContainer.text('This field is required.').show();
-              return false;
-            } else {
-              field.removeClass('is-invalid');
-              return true;
+                if (fieldValue === '') {
+                  field.addClass('is-invalid');
+                  errorContainer.show();
+                  return false;
+                } else {
+                  field.removeClass('is-invalid');
+                  return true;
+                }
             }
-          }
 
-          function validateForm() {
-            var isValid = true;
+              function validateForm() {
+                var isValid = true;
 
-            var classIdField = $('#class_id');
-            isValid = validateField(classIdField) && isValid;
-            var dateRangeField = $('#date_range');
-            isValid = validateField(dateRangeField) && isValid;
+                $('[id^=class_id], [id^=day_range], [id^=period_id], [id^=teacher_id], [id^=section_id], [id^=subject_id]').each(function() {
+                  var field = $(this);
+                  isValid = validateField(field) && isValid;
+                });
 
-            $('[id^=title], [id^=staff_id], [id^=start_time], [id^=end_time]').each(function() {
-              var field = $(this);
-              isValid = validateField(field) && isValid;
-            });
+                return isValid;
+              }
 
-            return isValid;
-          }
+              $('#myForm').submit(function(event) {
+                event.preventDefault();
 
-          $('#myForm').submit(function(event) {
-            event.preventDefault();
-
-            if (validateForm()) {
-                $(this).unbind('submit').submit();
-            }
-          });
+                if (validateForm()) {
+                    loader();
+                    $(this).unbind('submit').submit();
+                }
+              });
         </script>
     @endpush
 @endsection

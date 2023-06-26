@@ -71,6 +71,7 @@
                                                 <label for="field1">Start Time:</label>
                                                 <input type="time" class="form-control @error('start_time') is-invalid @enderror" id="start_time"
                                                     name="start_time" value="{{ old('start_time') }}">
+
                                             </div>
                                             @error('start_time')
                                                 <div class="text-danger">

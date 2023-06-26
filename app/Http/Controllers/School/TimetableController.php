@@ -59,6 +59,25 @@ class TimetableController extends Controller
         {
             return back()->with('error','You have already added same time.')->withInput();
         }
+
+        $countRange = TimeTableSetting::where('school_id', $school->id)
+        ->where('to_class',$request->from_class)
+        ->count();
+        if($countRange > 0)
+        {
+            return back()->with('error','You have already added same time.You cant add between already slots');
+        }
+
+        $count = TimeTableSetting::where('school_id', $school->id)
+        ->where('from_class','<=',$request->from_class)
+        ->where('to_class','>=',$request->to_class)
+        ->count();
+
+        if($count > 0)
+        {
+            return back()->with('error','You have already added same time.You cant add between already slots');
+        }
+
         $array = [
             $request->from_class,
             $request->to_class
@@ -135,8 +154,7 @@ class TimetableController extends Controller
     public function delete(Request $request)
     {
         $timetable_setting = TimeTableSetting::find($request->id);
-        $timetable_setting->is_deleted = "1";
-        $timetable_setting->save();
+        $timetable_setting->delete();
 
         return back()->with('success','Timetable settings Deleted Successfully');
     }
@@ -197,7 +215,15 @@ class TimetableController extends Controller
                 ];
             }
         }
+        $result = false;
         foreach($fields as $field) {
+            $count = TimeTablePeriod::where(['school_id'=> $school->id,'time_table_setting_id' => $request->date_range,'is_deleted' => '0'])
+            ->where('start_time','<=',$field['start_time'])
+            ->where('end_time','>=',$field['end_time'])
+            ->count();
+            $countPeriodTime = TimeTablePeriod::where(['school_id'=> $school->id,'time_table_setting_id' => $request->date_range,'title' => $field['title'],'is_deleted' => '0'])->count();
+            if($count == 0 AND $countPeriodTime == 0)
+            {
                 $period = new TimeTablePeriod;
                 $period->school_id = $school->id;
                 $period->time_table_setting_id  = $request->date_range;
@@ -206,9 +232,17 @@ class TimetableController extends Controller
                 $period->end_time = $field['end_time'];
                 $period->created_by = Auth::user()->id;
                 $period->save();
+                $result = true;
+            }
         }
-
-        return to_route("school.timetable.periods")->with('success','Periods created successfully');
+        if($result)
+        {
+            return to_route("school.timetable.periods")->with('success','Periods created successfully');
+        }
+        else
+        {
+            return to_route("school.timetable.periods")->with('error','Periods could not be added. Already exists.');
+        }
     }
 
     public function editPeriods($id)
@@ -252,13 +286,21 @@ class TimetableController extends Controller
                 ];
             }
         }
-        TimeTablePeriod::where('school_id', $school->id)->where('time_table_setting_id',$request->id)->where('is_deleted', '0')->delete();
-        foreach($fields as $field) {
-            // $count = TimeTablePeriod::where('school_id', $school->id)->where('subject_id',$field['subject_id'])->where('class_id',$request->class_id)
-            // ->where('time_table_setting_id',$request->id)
-            // ->where('is_deleted','0')->count();
-            // if($count == 0)
-            // {
+        $result = false;
+        foreach($fields as $key => $field) {
+            $count = TimeTablePeriod::where(['school_id'=> $school->id,'time_table_setting_id' => $request->date_range,'is_deleted' => '0'])
+            ->where('start_time','<=',$field['start_time'])
+            ->where('end_time','>=',$field['end_time'])
+            ->count();
+            $countPeriodTime = TimeTablePeriod::where(['school_id'=> $school->id,'time_table_setting_id' => $request->date_range,'title' => $field['title'],'is_deleted' => '0'])->count();
+
+            if($count == 0 AND $countPeriodTime == 0)
+            {
+                if($key == 0)
+                {
+                    TimeTablePeriod::where('school_id', $school->id)->where('time_table_setting_id',$request->id)->where('is_deleted', '0')->delete();
+                }
+
                 $period = new TimeTablePeriod;
                 $period->school_id = $school->id;
                 $period->time_table_setting_id  = $request->date_range;
@@ -267,10 +309,18 @@ class TimetableController extends Controller
                 $period->end_time = $field['end_time'];
                 $period->created_by = Auth::user()->id;
                 $period->save();
-            // }
-        }
+                $result = true;
+            }
 
-        return to_route("school.timetable.periods")->with('success','Periods updated successfully');
+        }
+        if($result)
+        {
+            return to_route("school.timetable.periods")->with('success','Periods updated successfully');
+        }
+        else
+        {
+            return to_route("school.timetable.periods")->with('error','Periods could not be added. Already exists.');
+        }
     }
 
     public function getSectionsByClass($id)
@@ -378,5 +428,21 @@ class TimetableController extends Controller
             $day_range[$key]['days'] = implode(",",json_decode($timetable_setting->weekdays));
         }
         return $day_range;
+    }
+
+    public function getTimeRange($class_id,$day_range)
+    {
+        $explode = explode('-', $class_id);
+        $from_class = $explode[0];
+        $to_class = $explode[1];
+        $school = getSchoolInfoByUsername(Auth::user()->username);
+
+        $timetablesettings = TimeTableSetting::where('school_id',$school->id)
+        ->where('from_class' ,$from_class)
+        ->where('to_class' ,$to_class)
+        ->where('id',$day_range)
+        ->first();
+        $timetablesettings['end_time'] = date('H:i', strtotime($timetablesettings->end_time) + 60);
+        return $timetablesettings;
     }
 }

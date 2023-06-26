@@ -64,20 +64,39 @@ class AssignPeriodController extends Controller
                 ];
             }
         }
+        $result = false;
         foreach($fields as $field) {
-            $assign_period = new TimeTableAssignPeriod;
-            $assign_period->school_id = $school->id;
-            $assign_period->class_id  = $field['class_id'];
-            $assign_period->section_id  = $field['section_id'];
-            $assign_period->staff_id  = $field['teacher_id'];
-            $assign_period->subject_id = $field['subject_id'];
-            $assign_period->time_table_setting_id = $field['day_range'];
-            $assign_period->time_table_period_id  = $field['period_id'];
-            $assign_period->created_by   = Auth::user()->id;
-            $assign_period->save();
+            $count = TimeTableAssignPeriod::where('school_id', $school->id)->where('is_deleted','0')
+            ->where('class_id', $field['class_id'])
+            ->where('time_table_setting_id',$field['day_range'])
+            ->where('time_table_period_id',$field['period_id'])
+            ->where('section_id',$field['section_id'])
+            ->where('subject_id',$field['subject_id'])
+            ->count();
+            if($count == 0)
+            {
+                $assign_period = new TimeTableAssignPeriod;
+                $assign_period->school_id = $school->id;
+                $assign_period->class_id  = $field['class_id'];
+                $assign_period->section_id  = $field['section_id'];
+                $assign_period->staff_id  = $field['teacher_id'];
+                $assign_period->subject_id = $field['subject_id'];
+                $assign_period->time_table_setting_id = $field['day_range'];
+                $assign_period->time_table_period_id  = $field['period_id'];
+                $assign_period->created_by   = Auth::user()->id;
+                $assign_period->save();
+                $result = true;
+            }
         }
 
-        return to_route("school.timetable.assign_periods")->with('success','Periods Assigned successfully');
+        if($result)
+        {
+            return to_route("school.timetable.assign_periods")->with('success','Periods Assigned successfully');
+        }
+        else
+        {
+            return to_route("school.timetable.assign_periods")->with('error','Already Period Assigned');
+        }
     }
 
     public function edit($id)
@@ -113,6 +132,19 @@ class AssignPeriodController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
+        $count = TimeTableAssignPeriod::where('school_id', $school->id)->where('is_deleted','0')
+            ->where('class_id', $request->class_id1)
+            ->where('time_table_setting_id',$request->day_range1)
+            ->where('time_table_period_id',$request->period_id1)
+            ->where('section_id',$request->section_id1)
+            ->where('subject_id',$request->subject_id1)
+            ->where('id','!=',$request->id)
+            ->count();
+        if($count > 0)
+        {
+            return back()->with('error','Already Period Assigned');
+        }
+
         $assign_period = TimeTableAssignPeriod::find($request->id);
         $assign_period->school_id = $school->id;
         $assign_period->class_id  = $request->class_id1;

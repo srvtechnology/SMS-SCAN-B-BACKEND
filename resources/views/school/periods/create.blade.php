@@ -45,12 +45,10 @@
                                                                     @endforeach
                                                                 @endif
                                                             </select>
-                                                        </div>
-                                                        @error('class_id')
-                                                            <div class="text-danger">
-                                                                {{ $message }}
+                                                            <div class="invalid-feedback">
+                                                                Class is required
                                                             </div>
-                                                        @enderror
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-6 mb-3">
                                                         <div class="form-group">
@@ -58,12 +56,10 @@
                                                             <select class="form-control" name="date_range" id="date_range">
                                                                 <option value="">Select</option>
                                                             </select>
-                                                        </div>
-                                                        @error('date_range')
-                                                            <div class="text-danger">
-                                                                {{ $message }}
+                                                            <div class="invalid-feedback">
+                                                                Day Range is required
                                                             </div>
-                                                        @enderror
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,38 +70,37 @@
                                                     <div class="form-group">
                                                         <label for="field1">Title</label>
                                                         <input type="text" name="title1" class="form-control @error('title1') is-invalid @enderror" id="title1">
-                                                    </div>
-                                                    @error('title1')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
+                                                        <div class="invalid-feedback">
+                                                            Title is required
                                                         </div>
-                                                    @enderror
+                                                    </div>
                                                 </div>
 
                                                 <div class="col-md-3 mb-2">
                                                     <div class="form-group">
                                                         <label for="field1">Start Time:</label>
-                                                        <input type="time" class="form-control @error('start_time1') is-invalid @enderror" id="start_time"
-                                                            name="start_time1" value="{{ old('start_time1') }}">
+                                                        {{--  <input type="time" class="form-control @error('start_time1') is-invalid @enderror" id="start_time1"
+                                                            name="start_time1" value="{{ old('start_time1') }}">  --}}
+
+                                                            <input type="text" id="start_time1" class="form-control timepicker @error('start_time1') is-invalid @enderror"  name="start_time1" />
+                                                            <div class="invalid-feedback">
+                                                                Start Time is required
+                                                            </div>
                                                     </div>
-                                                    @error('start_time')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
                                                 </div>
 
                                                 <div class="col-md-3 mb-2">
                                                     <div class="form-group">
                                                         <label for="field1">End Time:</label>
-                                                        <input type="time" class="form-control @error('end_time1') is-invalid @enderror" id="end_time"
-                                                            name="end_time1" value="{{ old('end_time1') }}">
+                                                        {{--  <input type="time" class="form-control @error('end_time1') is-invalid @enderror" id="end_time1"
+                                                            name="end_time1" value="{{ old('end_time1') }}">  --}}
+                                                            <input type="text" id="end_time1" class="form-control timepicker @error('end_time1') is-invalid @enderror" name="end_time1" />
+
+
+                                                            <div class="invalid-feedback">
+                                                                End Time is required
+                                                            </div>
                                                     </div>
-                                                    @error('end_time')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
                                                 </div>
                                                 <div class="col-md-3 mb-2">
                                                     <button type="button" class="btn btn-primary mt-4 addField" id="addField"><i
@@ -129,6 +124,7 @@
 
     @push('footer-script')
         <script>
+
             $(".class_id").on("change", function(){
                 var class_id = $(this).val();
                 getSectionsByClass(class_id,1);
@@ -138,9 +134,33 @@
                     type: 'GET',
                     success: function(response) {
                         $("#date_range").html('');
+                        $("#date_range").append('<option> Select </option>');
                         $(response).each(function(index, element) {
                             $("#date_range").append('<option value="' + element.id + '">' + element
                                 .days + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('failed');
+                    }
+                });
+            });
+            $("#date_range").on("change", function(){
+                var class_id = $("#class_id").val();
+                var day_range = $(this).val();
+                $.ajax({
+                    url: '{{ url('school/time-table/periods/get-time-range') }}' + '/' + class_id + '/' + day_range,
+                    type: 'GET',
+                    success: function(response) {
+
+                        $('#innerForm').find('.timepicker').each(function() {
+                            var timepickerId = $(this).attr('id');
+                            $(this).timepicker({
+                                minTime: response.start_time,
+                                maxTime: response.end_time
+                            });
+                            $("#"+timepickerId).attr('min',response.start_time);
+                            $("#"+timepickerId).attr('max',response.end_time);
                         });
                     },
                     error: function(xhr, status, error) {
@@ -182,38 +202,33 @@
                         <div class="form-group">
                             <label for="field${fieldIndex}">Title:</label>
                             <input type="text" name="title${fieldIndex}" class="form-control @error('title${fieldIndex}') is-invalid @enderror" id="title${fieldIndex}">
+
+                            <div class="invalid-feedback">
+                                Class is required
+                            </div>
                         </div>
-                        @error('subject_id${fieldIndex}')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
-                        @enderror
                     </div>
 
                     <div class="col-md-3 mb-2">
                         <div class="form-group">
                             <label for="field${fieldIndex}">Start Time:</label>
-                            <input type="time" class="form-control @error('start_time${fieldIndex}') is-invalid @enderror" id="start_time"
+                            <input type="text" class="form-control timepicker @error('start_time${fieldIndex}') is-invalid @enderror" id="start_time${fieldIndex}"
                                 name="start_time${fieldIndex}" value="{{ old('start_time${fieldIndex}') }}">
+                                <div class="invalid-feedback">
+                                    Start Time is required
+                                </div>
                         </div>
-                        @error('start_time${fieldIndex}')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
-                        @enderror
                     </div>
 
                     <div class="col-md-3 mb-2">
                         <div class="form-group">
                             <label for="field${fieldIndex}">End Time:</label>
-                            <input type="time" class="form-control @error('end_time${fieldIndex}') is-invalid @enderror" id="end_time"
+                            <input type="text" class="form-control timepicker @error('end_time${fieldIndex}') is-invalid @enderror" id="end_time${fieldIndex}"
                                 name="end_time${fieldIndex}" value="{{ old('end_time${fieldIndex}') }}">
+                                <div class="invalid-feedback">
+                                    End Time is required
+                                </div>
                         </div>
-                        @error('end_time${fieldIndex}')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
-                        @enderror
                     </div>
                     <div class="col-md-3 mb-2">
                         <button type="button" class="btn btn-danger mt-4 removeField" data-index="${fieldIndex}"><i class="bx bx-trash"></i></button>
@@ -222,6 +237,9 @@
             `;
 
             $('#innerForm').append(newField);
+            $('#innerForm').find('.timepicker').each(function() {
+                $(this).timepicker();
+            });
 
             fieldIndex++;
         });
@@ -234,18 +252,18 @@
 
         function validateField(field) {
             var fieldValue = field.val();
-            var errorContainer = field.closest('.form-group').find('.text-danger');
+            var errorContainer = field.closest('.form-group').find('.invalid-feedback');
 
 
             if (fieldValue === '') {
               field.addClass('is-invalid');
-              errorContainer.text('This field is required.').show();
+              errorContainer.show();
               return false;
             } else {
               field.removeClass('is-invalid');
               return true;
             }
-          }
+        }
 
           function validateForm() {
             var isValid = true;
@@ -267,6 +285,7 @@
             event.preventDefault();
 
             if (validateForm()) {
+                loader();
                 $(this).unbind('submit').submit();
             }
           });
