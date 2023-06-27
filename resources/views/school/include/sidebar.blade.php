@@ -83,7 +83,7 @@
         </li>
         <li class="menu-item @if(request()->segment(2) == 'study-material') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon bx bxs-user-detail'></i>
+                <i class='menu-icon bx bx-file-blank'></i>
                 <div data-i18n="Layouts">Study Material</div>
             </a>
 
@@ -98,7 +98,7 @@
 
         <li class="menu-item @if(request()->segment(2) == 'time-table') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon bx bxs-user-detail'></i>
+                <i class='menu-icon bx bx-time-five' ></i>
                 <div data-i18n="Layouts">Timetable</div>
             </a>
 
@@ -121,16 +121,36 @@
             </ul>
         </li>
 
-        <li class="menu-item @if(request()->segment(2) == 'time-table') active open @endif">
+        <li class="menu-item @if(request()->segment(2) == 'notifications') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon bx bxs-user-detail'></i>
+                <i class='menu-icon bx bx-bell' ></i>
                 <div data-i18n="Layouts">Notifications</div>
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->segment(2) == 'notifications' ? 'active' : '' }}">
                     <a href="{{ url('school/notifications') }}" class="menu-link">
                         <div data-i18n="Without menu">Push Notification</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-item @if(request()->segment(2) == 'exams') active open @endif">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon bx bx-food-menu'></i>
+                <div data-i18n="Layouts">Exams</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->segment(3) == 'create-exam' ? 'active' : '' }}">
+                    <a href="{{ route('school.exams.create-exam') }}" class="menu-link">
+                        <div data-i18n="Without menu">Create Exam</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->segment(3) == 'create-syllabus' ? 'active' : '' }}">
+                    <a href="{{ route('school.exams.create-syllabus') }}" class="menu-link">
+                        <div data-i18n="Without menu">Create Syllabus</div>
                     </a>
                 </li>
             </ul>

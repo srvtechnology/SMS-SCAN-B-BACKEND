@@ -40,22 +40,11 @@
                                                 <td>{{ $period['class'] }}</td>
                                                 <td>{{ $period['days'] }}</td>
                                                 <td>
-                                                    {{--  <a href="{{ route("school.timetable.periods.detail",$period['id']) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>  --}}
+                                                    <a href="{{ route("school.timetable.periods.detail",$period['id']) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
                                                     <a href="{{ route("school.timetable.periods.edit",$period['id']) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $period['id'] }} data-url={{ route("school.timetable.periods.delete") }}><i class='bx bxs-trash'></i></a>
                                                 </td>
                                             </tr>
-                                            {{--  <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $period->timetablesetting->from_class }} - {{ $period->timetablesetting->to_class }}</td>
-                                                <td>{{ $period->title }}</td>
-                                                <td>{{ implode(",",json_decode($period->timetablesetting->weekdays)) }} </td>
-                                                <td>
-                                                    <a href="{{ route("school.timetable.periods.detail",$period->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
-                                                    <a href="{{ route("school.timetable.periods.edit",$period->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
-                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $period->id }} data-url={{ route("school.timetable.periods.delete") }}><i class='bx bxs-trash'></i></a>
-                                                </td>
-                                            </tr>  --}}
                                         @endforeach
                                     </tbody>
                                 </table>

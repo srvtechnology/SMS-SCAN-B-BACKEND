@@ -85,8 +85,9 @@
                                                 <div class="col-md-3 mb-2">
                                                     <div class="form-group">
                                                         <label for="field{{ $keyIndex }}">Start Time:</label>
-                                                        <input type="time" class="form-control @error('start_time') is-invalid @enderror" id="start_time"
-                                                            name="start_time{{ $keyIndex }}" value="{{ old('start_time$keyIndex',$period->start_time) }}">
+                                                        {{--  <input type="time" class="form-control @error('start_time') is-invalid @enderror" id="start_time"
+                                                            name="start_time{{ $keyIndex }}" value="{{ old($period->start_time) }}">  --}}
+                                                            <input type="text" id="start_time{{ $keyIndex }}" class="form-control timepicker @error('start_time') is-invalid @enderror"  name="start_time{{ $keyIndex }}" value="{{ $period->start_time }}"/>
                                                             <div class="invalid-feedback">
                                                                 Start Time is required
                                                             </div>
@@ -96,8 +97,9 @@
                                                 <div class="col-md-3 mb-2">
                                                     <div class="form-group">
                                                         <label for="field{{ $keyIndex }}">End Time:</label>
-                                                        <input type="time" class="form-control @error('end_time{{ $keyIndex }}') is-invalid @enderror" id="end_time"
-                                                            name="end_time{{ $keyIndex }}" value="{{ old('end_time$keyIndex',$period->end_time) }}">
+                                                        <input type="text" id="end_time{{ $keyIndex }}" class="form-control timepicker @error('end_time') is-invalid @enderror"  name="end_time{{ $keyIndex }}" value="{{ $period->end_time }}"/>
+                                                        {{--  <input type="time" class="form-control @error('end_time{{ $keyIndex }}') is-invalid @enderror" id="end_time"
+                                                            name="end_time{{ $keyIndex }}" value="{{ old($period->end_time) }}">  --}}
                                                             <div class="invalid-feedback">
                                                                 End Time is required
                                                             </div>
@@ -198,7 +200,7 @@
                     <div class="col-md-3 mb-2">
                         <div class="form-group">
                             <label for="field${fieldIndex}">Start Time:</label>
-                            <input type="time" class="form-control @error('start_time${fieldIndex}') is-invalid @enderror" id="start_time${fieldIndex}"
+                            <input type="text" class="form-control timepicker @error('start_time${fieldIndex}') is-invalid @enderror" id="start_time${fieldIndex}"
                                 name="start_time${fieldIndex}" value="{{ old('start_time${fieldIndex}') }}">
                                 <div class="invalid-feedback">
                                     Start Time is required
@@ -209,7 +211,7 @@
                     <div class="col-md-3 mb-2">
                         <div class="form-group">
                             <label for="field${fieldIndex}">End Time:</label>
-                            <input type="time" class="form-control @error('end_time${fieldIndex}') is-invalid @enderror" id="end_time${fieldIndex}"
+                            <input type="text" class="form-control timepicker @error('end_time${fieldIndex}') is-invalid @enderror" id="end_time${fieldIndex}"
                                 name="end_time${fieldIndex}" value="{{ old('end_time${fieldIndex}') }}">
                                 <div class="invalid-feedback">
                                     End Time is required
@@ -223,6 +225,9 @@
             `;
 
             $('#innerForm').append(newField);
+            $('#innerForm').find('.timepicker').each(function() {
+                $(this).timepicker();
+            });
 
             fieldIndex++;
         });

@@ -163,8 +163,8 @@ class AssignPeriodController extends Controller
     public function delete(Request $request)
     {
         $period = TimeTableAssignPeriod::find($request->id);
-        $period->is_deleted = "1";
-        $period->save();
+        $period->delete();
+
         return back()->with('success','Assign Period Deleted Successfully');
     }
 
@@ -228,7 +228,12 @@ class AssignPeriodController extends Controller
         $school = getSchoolInfoByUsername(Auth::user()->username);
         $class_id = request()->class_id;
         $section_id = request()->section_id;
+        $classes = Classes::where('school_id', $school->id)->where('is_deleted','0')->OrderBy("name", 'asc')->get();
         $assign_periods = TimeTableAssignPeriod::where('school_id',$school->id)->where('section_id',$section_id)->get();
+        if(count($assign_periods) == 0)
+        {
+            return back()->with('error','No Record Found');
+        }
         $timetablesetting = TimeTableSetting::find($assign_periods[0]->time_table_setting_id);
         $weekdays = json_decode($timetablesetting->weekdays);
         $start_time = $timetablesetting->start_time;
@@ -237,14 +242,15 @@ class AssignPeriodController extends Controller
         $start_time = [];
         foreach($assign_periods as $assign_period)
         {
+            // return $assign_period;
             $start_time[] = $assign_period->period->start_time;
             $periods[] = [
-                'subject'   => $assign_period->subject->name,
+                'subject'   => $assign_period->period->title,
                 'teacher'   =>  $assign_period->staff->first_name . ' ' . $assign_period->staff->last_name,
                 'start_time'    => $assign_period->period->start_time,
                 'end_time' => $assign_period->period->end_time,
             ];
         }
-        return view("school.assign-periods.view-timetable")->with(compact('start_time','weekdays','periods'));
+        return view("school.assign-periods.view-timetable")->with(compact('start_time','weekdays','periods','classes'));
     }
 }

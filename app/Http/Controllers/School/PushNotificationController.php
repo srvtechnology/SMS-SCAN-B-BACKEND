@@ -20,8 +20,9 @@ class PushNotificationController extends Controller
     }
     public function edit($id)
     {
-        $push_notification = PushNotification::where('id', $id)->first();;
-        return view('school.push-notifications.edit', compact('push_notification'));
+        $push_notification = PushNotification::where('id', $id)->first();
+        $types = json_decode($push_notification->type);
+        return view('school.push-notifications.edit', compact('push_notification','types'));
     }
     public function view($id)
     {
@@ -38,8 +39,9 @@ class PushNotificationController extends Controller
         if ($validator->fails()) {
             return back()->with(['errors' => $validator->errors()]);
         } else {
+            $type = json_encode($request->nofication_type);
             $notification = new PushNotification();
-            $notification->type = $request->nofication_type;
+            $notification->type = $type;
             $notification->title = $request->title;
             $notification->message = $request->message;
             $notification->save();
@@ -59,8 +61,9 @@ class PushNotificationController extends Controller
     }
     public function update(Request $request)
     {
+        $type = json_encode($request->nofication_type);
         $notification = PushNotification::find($request->id);
-        $notification->type = $request->nofication_type;
+        $notification->type = $type;
         $notification->title = $request->title;
         $notification->message = $request->message;
         $notification->save();

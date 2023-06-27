@@ -21,8 +21,9 @@
                     <div class="my-3">
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{ route('school.timetable.assign_periods.view-timetable') }}" method="GET">
+                                <form id="myForm" action="{{ route('school.timetable.assign_periods.view-timetable') }}" method="GET">
                                     <div class="row">
+                                        <h4>Time Table Sheet</h4>
                                         <div class="col-md-4 mb-2">
                                             <div class="form-group">
                                                 <label for="field1">Class:</label>
@@ -34,6 +35,7 @@
                                                         @endforeach
                                                         @endif
                                                     </select>
+                                                    <span class="invalid-feedback">Class is required</span>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-2">
@@ -42,11 +44,12 @@
                                                     <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror">
                                                         <option value="">Select</option>
                                                     </select>
+                                                    <span class="invalid-feedback">Section is required</span>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-2">
                                             <div class="form-group">
-                                                <button class="btn btn-primary mt-4">Submit</button>
+                                                <button class="btn btn-primary mt-4 submitBtn">Submit</button>
                                             </div>
                                         </div>
                                     </div>
@@ -71,6 +74,7 @@
                                             <th>Day Range</th>
                                             <th>Period</th>
                                             <th>Class</th>
+                                            <th>Section</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -81,6 +85,7 @@
                                                 <td>{{ implode(",",json_decode($assign_period->day_range->weekdays)) }}</td>
                                                 <td>{{ $assign_period->period->title }}</td>
                                                 <td>{{ $assign_period->class->name }}</td>
+                                                <td>{{ $assign_period->section->name }}</td>
                                                 <td>
                                                     <a href="{{ route("school.timetable.assign_periods.edit",$assign_period->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $assign_period->id }} data-url={{ route("school.timetable.assign_periods.delete") }}><i class='bx bxs-trash'></i></a>
@@ -111,6 +116,36 @@
             var class_id = $(this).val();
             getDataByClass(class_id);
         });
+
+        function validateField(field) {
+            var fieldValue = field.val();
+
+            if (fieldValue === '') {
+              field.addClass('is-invalid');
+              return false;
+            } else {
+              field.removeClass('is-invalid');
+              return true;
+            }
+        }
+
+        function validateForm() {
+            var isValid = true;
+
+            $('[id^=class_id], [id^=section_id]').each(function() {
+              var field = $(this);
+              isValid = validateField(field) && isValid;
+            });
+
+            return isValid;
+        }
+        $("#myForm").on("submit", function(event){
+            event.preventDefault();
+            if (validateForm()) {
+                $(this).unbind('submit').submit();
+            }
+        });
+
         function getDataByClass(class_id){
             $.ajax({
                 url: '{{ url('school/time-table/assign-periods/get-all-data-by-class') }}' + '/' + class_id,

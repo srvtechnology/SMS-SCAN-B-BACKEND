@@ -1,5 +1,5 @@
 @extends('school.layouts.main')
-@section('page_title', 'Periods')
+@section('page_title', 'Student Material')
 @section('content')
 
     <div class="content-wrapper">
@@ -11,11 +11,10 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('school.dashboard') }}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">Periods</li>
+                        <li class="breadcrumb-item active">Exams</li>
                     </ol>
                 </nav>
-                <a href="{{ route('school.notification-create') }}"
-                    class="btn rounded-pill btn-primary text-white">Create</a>
+                <a href="{{ route('school.exams.create-exam.create') }}" class="btn rounded-pill btn-primary text-white">Create Exam</a>
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -23,42 +22,40 @@
                     <div class="my-3">
                         <!-- Basic Bootstrap Table -->
                         <div class="card">
-                            <h5 class="card-header">Notification List</h5>
+                            <h5 class="card-header">Exams List</h5>
                             <div class="table-responsive text-nowrap">
                                 <table id="example" class="table table-striped" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Type</th>
                                             <th>Title</th>
-                                            <th>Message</th>
+                                            <th>Class Range</th>
+                                            <th>Date</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($push_notifications as $key => $push_notification)
+                                        @foreach ($exams as $exam)
                                             <tr>
-                                                <td>{{ ++$key }}</td>
-                                                <td>{{ implode(",",json_decode($push_notification->type)) }}</td>
-                                                <td>{{ $push_notification->title }}</td>
-                                                <td>{{ $push_notification->message }}</td>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $exam->title }}</td>
+                                                <td>{{ $exam->fromClass->name }}- {{ $exam->toClass->name }}</td>
+                                                <td>{{ date("d/m/Y",strtotime($exam->date)) }}</td>
                                                 <td>
-                                                    {{--  <a href="{{ route('school.notification-view', $push_notification->id) }}"
-                                                        class="btn btn-success">View</a>  --}}
-                                                    <a href="{{ route('school.notification-edit', $push_notification->id) }}"
-                                                        class="btn btn-primary btn-sm"><i class='bx bxs-edit'></i></a>
-
-                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $push_notification->id }} data-url={{ route("school.notification-delete") }}><i class='bx bxs-trash'></i></a>
-
-                                                    <a href="#"
-                                                        class="btn btn-primary btn-sm NotificationSentBtn"><i class='bx bxs-send'></i></a>
-
+                                                    <a href="{{ route("school.exams.create-exam.detail",$exam->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                    <a href="{{ route("school.exams.create-exam.edit",$exam->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $exam->id }} data-url={{ route("school.exams.create-exam.delete") }}><i class='bx bxs-trash'></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
+                            @if(count($exams) > 0)
+                            <div class="pagination_custom_class">
+                            {{ $exams->links() }}
+                            </div>
+                            @endif
                         </div>
                         <!--/ Basic Bootstrap Table -->
                     </div>

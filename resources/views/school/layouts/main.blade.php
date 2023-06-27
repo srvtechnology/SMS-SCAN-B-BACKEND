@@ -51,7 +51,7 @@
             z-index: 999;
             height: 100%;
             width: 100%;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,6 +175,24 @@
     </div>
     </form>
     </div>
+    <div class="modal" tabindex="-1" id="NotificationSentModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Status</h5>
+                    <button type="button" class="btn-close closeNotificationSentModal" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-center text-success">Notification has been sent Successfully.</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary closeNotificationSentModal"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
@@ -189,23 +207,28 @@
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.4/dayjs.min.js" integrity="sha512-Ot7ArUEhJDU0cwoBNNnWe487kjL5wAOsIYig8llY/l0P2TUFwgsAHVmrZMHsT8NGo+HwkjTJsNErS6QqIkBxDw==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.4/dayjs.min.js"
+        integrity="sha512-Ot7ArUEhJDU0cwoBNNnWe487kjL5wAOsIYig8llY/l0P2TUFwgsAHVmrZMHsT8NGo+HwkjTJsNErS6QqIkBxDw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
     <script src="{{ asset('assets/timepicker/timepicker-bs4.js') }}"></script>
     @stack('footer-script')
     <script>
         function loader() {
             $("#loader").removeClass("hidden");
         }
+
         function hideLoader() {
             document.getElementById("loader").classList.add("hidden");
         }
     </script>
+
     <script>
         $(document).ready(function() {
             $('.timepicker').timepicker();
             $('.select2_custom').select2();
             $('#example').DataTable({
-                "paging": false
+                "paging": false,
+                "ordering": false
             });
             $(".blockSchoolBtn").on("click", function() {
                 $("#BlockModal").show();
@@ -259,6 +282,13 @@
 
             $(".closeBTNDeleteModal").on("click", function() {
                 $("#DeleteModal").hide();
+            });
+
+            $(".NotificationSentBtn").on("click", function() {
+                $("#NotificationSentModal").show();
+            });
+            $(".closeNotificationSentModal").on("click", function() {
+                $("#NotificationSentModal").hide();
             });
         });
     </script>

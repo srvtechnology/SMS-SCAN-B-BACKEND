@@ -5,6 +5,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\School\ExamController;
 use App\Http\Controllers\School\HomeController;
 use App\Http\Controllers\School\ClassController;
 use App\Http\Controllers\School\ParentController;
@@ -13,12 +14,13 @@ use App\Http\Controllers\School\SectionController;
 use App\Http\Controllers\School\StudentController;
 use App\Http\Controllers\School\SubjectController;
 use App\Http\Controllers\School\TeacherController;
-use App\Http\Controllers\School\PushNotificationController;
+use App\Http\Controllers\School\SyllabusController;
 use App\Http\Controllers\School\Auth\AuthController;
 use App\Http\Controllers\School\TimetableController;
 use App\Http\Controllers\School\DesignationController;
 use App\Http\Controllers\School\AssignPeriodController;
 use App\Http\Controllers\School\StudyMaterialController;
+use App\Http\Controllers\School\PushNotificationController;
 /*
 |--------------------------------------------------------------------------
 | School Routes
@@ -159,11 +161,31 @@ Route::middleware(['school_auth'])->group(function () {
     Route::controller(PushNotificationController::class)->as('school.')->group(function () {
         Route::get('/notifications','index')->name('notification-index');
         Route::get('notification_info/{id}', 'view')->name('notification-view');
-        Route::get('notification_edit/{id}', 'edit')->name('notification-edit');
+        Route::get('notifications/{id}/edit', 'edit')->name('notification-edit');
         Route::get('notifications/create', 'create')->name('notification-create');
         Route::post('notifications/save', 'save')->name('save-notification');
         Route::post('notification_delete', 'destroy')->name('notification-delete');
         Route::post('notifications/update', 'update')->name('update-notification');
+    });
+
+    Route::controller(ExamController::class)->as('school.')->group(function () {
+        Route::get('/exams/create-exam','index')->name('exams.create-exam');
+        Route::get('/exams/create-exam/create','create')->name('exams.create-exam.create');
+        Route::post('/exams/create-exam/store','store')->name('exams.create-exam.store');
+        Route::get('/exams/create-exam/{id}/edit','edit')->name('exams.create-exam.edit');
+        Route::post('/exams/create-exam/update','update')->name('exams.create-exam.update');
+        Route::get('/exams/create-exam/{id}/detail','detail')->name('exams.create-exam.detail');
+        Route::post('/exams/create-exam/delete','delete')->name('exams.create-exam.delete');
+    });
+
+    Route::controller(SyllabusController::class)->as('school.')->group(function () {
+        Route::get('/exams/create-syllabus','index')->name('exams.create-syllabus');
+        Route::get('/exams/create-syllabus/create','create')->name('exams.create-syllabus.create');
+        Route::post('/exams/create-syllabus/store','store')->name('exams.create-syllabus.store');
+        Route::get('/exams/create-syllabus/{id}/edit','edit')->name('exams.create-syllabus.edit');
+        Route::post('/exams/create-syllabus/update','update')->name('exams.create-syllabus.update');
+        Route::get('/exams/create-syllabus/{id}/detail','detail')->name('exams.create-syllabus.detail');
+        Route::post('/exams/create-syllabus/delete','delete')->name('exams.create-syllabus.delete');
     });
 
 

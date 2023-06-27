@@ -31,15 +31,10 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="type" class=" mt-2">Type</label>
-
-                                            <select id="type" name="nofication_type" required class="form-select">
-                                                <option>Selecte Type</option>
-                                                <option value="Teacher" @if ($push_notification->type == 'Teacher') selected @endif>Teacher
-                                                </option>
-                                                <option value="Student" @if ($push_notification->type == 'Student') selected @endif>Student
-                                                </option>
-                                                <option value="Parent" @if ($push_notification->type == 'Parent') selected @endif>Parent</option>
-
+                                            <select id="type" name="nofication_type[]" required class="form-control select2_custom" multiple>
+                                                <option value="Teacher" @if(in_array("Teacher",$types)) selected @endif>Teacher</option>
+                                                <option value="Student" @if(in_array("Student",$types)) selected @endif>Student</option>
+                                                <option value="Parent" @if(in_array("Parent",$types)) selected @endif>Parent</option>
                                             </select>
                                         </div>
                                     </div>

@@ -256,14 +256,14 @@ class TimetableController extends Controller
         $class_id = $timetable_setting->from_class.'-'.$timetable_setting->to_class;
         $day_range_id = $id;
         $curClass_range = $timetable_setting->fromClass->id.'-'.$timetable_setting->toClass->id;
-        $periods = TimeTablePeriod::where('time_table_setting_id',$id)->where('school_id',$school->id)->get();
+        $periods = TimeTablePeriod::where('time_table_setting_id',$id)->where('school_id',$school->id)->where('is_deleted','0')->get();
 
         return view("school.periods.edit")->with(compact('periods','curPeriod','class_ranges','curClass_range','class_id','day_range_id'));
     }
 
     public function updatePeriods(Request $request)
     {
-        // dd($request->all());
+        // return $request;
         $school = getSchoolInfoByUsername(Auth::user()->username);
         $validator = Validator::make($request->all(), [
             'class_id' =>'required',
@@ -291,8 +291,10 @@ class TimetableController extends Controller
             $count = TimeTablePeriod::where(['school_id'=> $school->id,'time_table_setting_id' => $request->date_range,'is_deleted' => '0'])
             ->where('start_time','<=',$field['start_time'])
             ->where('end_time','>=',$field['end_time'])
+            ->where('time_table_setting_id','!=',$request->id)
             ->count();
-            $countPeriodTime = TimeTablePeriod::where(['school_id'=> $school->id,'time_table_setting_id' => $request->date_range,'title' => $field['title'],'is_deleted' => '0'])->count();
+            $countPeriodTime = TimeTablePeriod::where(['school_id'=> $school->id,'time_table_setting_id' => $request->date_range,'title' => $field['title'],'is_deleted' => '0'])
+            ->where('time_table_setting_id','!=',$request->id)->count();
 
             if($count == 0 AND $countPeriodTime == 0)
             {
@@ -342,14 +344,7 @@ class TimetableController extends Controller
     public function deletePeriods(Request $request)
     {
         $school = getSchoolInfoByUsername(Auth::user()->username);
-        $periods = TimeTablePeriod::where('time_table_setting_id',$request->id)->where('school_id',$school->id)->get();
-        foreach($periods as $period)
-        {
-            $periodData = TimeTablePeriod::find($period->id);
-            $periodData->is_deleted = "1";
-            $periodData->save();
-        }
-
+        $periods = TimeTablePeriod::where('time_table_setting_id',$request->id)->where('school_id',$school->id)->delete();
 
         return back()->with('success','Period Deleted Successfully');
     }
@@ -357,55 +352,17 @@ class TimetableController extends Controller
     public function detailPeriods($id)
     {
         $school = getSchoolInfoByUsername(Auth::user()->username);
-        $periods = TimeTablePeriod::where('time_table_setting_id',$id)->where('school_id',$school->id)->get();
-        $idsList = [];
-        $weekdays = [];
-        $eventData = [];
-        foreach($periods as $key => $period)
-        {
-            if(!in_array($period->time_table_setting_id,$idsList))
-            {
-                $idsList[] = $period->time_table_setting_id;
-                $timetable_setting = TimeTableSetting::find($period->time_table_setting_id);
-                $weekdays = json_decode($timetable_setting->weekdays);
-            }
-        }
-        $data = [];
-        foreach ($weekdays as $day) {
-            if ($day == 'Monday') {
-                $day_index = 0;
-            } elseif ($day == 'Tuesday') {
-                $day_index = 1;
-            } elseif ($day == 'Wednesday') {
-                $day_index = 2;
-            } elseif ($day == 'Thursday') {
-                $day_index = 3;
-            } elseif ($day == 'Friday') {
-                $day_index = 4;
-            } elseif ($day == 'Saturday') {
-                $day_index = 5;
-            } elseif ($day == 'Sunday') {
-                $day_index = 6;
-            }
-            $periodsData = [];
-            foreach ($periods as $key => $period) {
-                    $periodsData[] = [
-                        'start' => $period->start_time,
-                        'end' => $period->end_time,
-                        'title' => $period->subject->name,
-                    ];
-            }
 
-            if (!empty($periodsData)) {
-                $data[] = [
-                    'day' => $day_index,
-                    'periods' => $periodsData
-                ];
-            }
-        }
+        $class_ranges = TimeTableSetting::where('school_id', $school->id)->where('is_deleted','0')
+        ->distinct()->get(['from_class','to_class']);
+        $timetable_setting = TimeTableSetting::where('id',$id)->first();
+        $curPeriod = TimeTablePeriod::where('time_table_setting_id',$id)->first();
+        $class_id = $timetable_setting->from_class.'-'.$timetable_setting->to_class;
+        $day_range_id = $id;
+        $curClass_range = $timetable_setting->fromClass->id.'-'.$timetable_setting->toClass->id;
+        $periods = TimeTablePeriod::where('time_table_setting_id',$id)->where('school_id',$school->id)->where('is_deleted','0')->get();
 
-        $response = json_encode($data);
-        return view("school.periods.detail")->with(compact('periods','school','weekdays','eventData','response'));
+        return view("school.periods.detail")->with(compact('periods','curPeriod','class_ranges','curClass_range','class_id','day_range_id','timetable_setting'));
     }
 
     public function getDateRange($id)

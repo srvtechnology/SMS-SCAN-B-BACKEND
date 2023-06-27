@@ -36,8 +36,7 @@
                                                         <div class="form-group">
                                                             <label for="type" class="">Type</label>
 
-                                                            <select id="type" name="nofication_type" required class="form-select">
-                                                                <option>Selecte Type</option>
+                                                            <select id="type" name="nofication_type[]" required class="form-control select2_custom" multiple>
                                                                 <option value="Teacher">Teacher</option>
                                                                 <option value="Student">Student</option>
                                                                 <option value="Parent">Parent</option>
