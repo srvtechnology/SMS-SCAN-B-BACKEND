@@ -1,0 +1,9 @@
+.danger_clr {
+    color: red;
+}
+
+.pagination_custom_class{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
