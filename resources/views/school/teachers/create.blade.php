@@ -132,7 +132,7 @@
                                                         @endforeach
                                                         @endif
                                                     </select>
-                                                    <span class="text-danger d-none" id="type_error">Type is required</span>
+                                                    <span class="text-danger d-none" id="type_error">Designation is required</span>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 col-12  mb-3">
@@ -417,7 +417,7 @@
 
                     for (const field of fields) {
                         const value = $("#" + field).val();
-                        if (value === "") {
+                        if (value === "" || value === null) {
                             $("#" + field + "_error").removeClass("d-none");
                             isValid = false;
                         } else {
