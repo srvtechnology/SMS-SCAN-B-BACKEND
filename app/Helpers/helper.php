@@ -8,6 +8,7 @@ use App\Models\Section;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\StaffAssignClass;
+use App\Models\ClassAssignSubject;
 
 function getUserImage()
 {
@@ -111,6 +112,22 @@ function selectedSectionArray($school_id,$staff_id,$class_id)
         $response[] = $section->section_id;
     }
     return $response;
+}
+
+function getSubjectsByClass($id)
+{
+        $subjects = ClassAssignSubject::with(['subject', 'schoolClass'])
+            ->whereHas('schoolClass', function ($query) use($id) {
+                $query->where('id', $id);
+            })
+            ->get();
+
+            $newArr = [];
+        foreach ($subjects as $index =>$subject) {
+            $newArr[$index]['id'] = $subject->subject_id;
+            $newArr[$index]['name'] = $subject->subject->name;
+        }
+        return $newArr;
 }
 
 ?>

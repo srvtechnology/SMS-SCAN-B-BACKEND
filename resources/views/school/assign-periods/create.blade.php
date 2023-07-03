@@ -237,7 +237,7 @@
                 var counter = className.replace(/^\D+/g, '');
                 var class_id = $("."+className).val();
                 getDataByClass(class_id, counter);
-              }
+            }
 
             var fieldIndex = 2; // Starting index for dynamic fields
 

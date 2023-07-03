@@ -19,6 +19,8 @@ use App\Http\Controllers\School\Auth\AuthController;
 use App\Http\Controllers\School\TimetableController;
 use App\Http\Controllers\School\DesignationController;
 use App\Http\Controllers\School\AssignPeriodController;
+use App\Http\Controllers\School\ExamTimeSheetController;
+use App\Http\Controllers\School\ExamTimeTableController;
 use App\Http\Controllers\School\StudyMaterialController;
 use App\Http\Controllers\School\PushNotificationController;
 /*
@@ -186,6 +188,20 @@ Route::middleware(['school_auth'])->group(function () {
         Route::post('/exams/create-syllabus/update','update')->name('exams.create-syllabus.update');
         Route::get('/exams/create-syllabus/{id}/detail','detail')->name('exams.create-syllabus.detail');
         Route::post('/exams/create-syllabus/delete','delete')->name('exams.create-syllabus.delete');
+    });
+
+
+    Route::controller(ExamTimeSheetController::class)->as('school.')->group(function () {
+        Route::get('/exams/exam-timetable','index')->name('exam-timetable');
+        Route::get('/exams/exam-timetable/create','create')->name('exam-timetable.create');
+        Route::post('/exams/exam-timetable/store','store')->name('exam-timetable.store');
+        Route::get('/exams/exam-timetable/{id}/edit','edit')->name('exam-timetable.edit');
+        Route::post('/exams/exam-timetable/update','update')->name('exam-timetable.update');
+        Route::get('/exams/exam-timetable/{id}/detail','detail')->name('exam-timetable.detail');
+        Route::post('/exams/exam-timetable/delete','delete')->name('exam-timetable.delete');
+
+        Route::get('/exams/exam-timetable/get-class-by-exam/{id}','getClassByExam');
+        Route::get('/exams/exam-timetable/view-timesheet','viewTimesheet')->name('exam-timetable.viewTimesheet');
     });
 
 

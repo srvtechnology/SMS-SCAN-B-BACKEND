@@ -125,8 +125,7 @@ class ExamController extends Controller
     public function delete(Request $request)
     {
         $exam = Exam::find($request->id);
-        $exam->is_deleted = '1';
-        $exam->save();
+        $exam->delete();
 
         return back()->with('success','Exam Deleted Successfully');
     }

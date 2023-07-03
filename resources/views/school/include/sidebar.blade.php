@@ -153,6 +153,11 @@
                         <div data-i18n="Without menu">Create Syllabus</div>
                     </a>
                 </li>
+                <li class="menu-item {{ request()->segment(3) == 'exam-timetable' ? 'active' : '' }}">
+                    <a href="{{ route('school.exam-timetable') }}" class="menu-link">
+                        <div data-i18n="Without menu">Exam TimeSheet</div>
+                    </a>
+                </li>
             </ul>
         </li>
 
