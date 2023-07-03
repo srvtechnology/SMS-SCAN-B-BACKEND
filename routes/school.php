@@ -9,6 +9,7 @@ use App\Http\Controllers\School\ExamController;
 use App\Http\Controllers\School\HomeController;
 use App\Http\Controllers\School\ClassController;
 use App\Http\Controllers\School\ParentController;
+use App\Http\Controllers\School\ResultController;
 use App\Http\Controllers\ManagepasswordController;
 use App\Http\Controllers\School\SectionController;
 use App\Http\Controllers\School\StudentController;
@@ -204,5 +205,8 @@ Route::middleware(['school_auth'])->group(function () {
         Route::get('/exams/exam-timetable/view-timesheet','viewTimesheet')->name('exam-timetable.viewTimesheet');
     });
 
+    Route::controller(ResultController::class)->as('school.')->group(function () {
+        Route::get('/results/view','index')->name('results.index');
 
+    });
 });

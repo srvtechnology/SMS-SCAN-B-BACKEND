@@ -161,6 +161,21 @@
             </ul>
         </li>
 
+        <li class="menu-item @if(request()->segment(2) == 'results') active open @endif">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon bx bx-food-menu'></i>
+                <div data-i18n="Layouts">Result</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->segment(3) == 'view' ? 'active' : '' }}">
+                    <a href="{{ route('school.results.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">View Result</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
 
     </ul>
 </aside>

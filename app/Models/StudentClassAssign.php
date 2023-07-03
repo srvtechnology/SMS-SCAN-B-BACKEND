@@ -18,4 +18,9 @@ class StudentClassAssign extends Model
     {
         return $this->belongsTo(Classes::class);
     }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }
