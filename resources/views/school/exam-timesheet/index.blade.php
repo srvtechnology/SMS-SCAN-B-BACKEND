@@ -14,7 +14,9 @@
                         <li class="breadcrumb-item active">Exam TimeSheet</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Exam Time Sheet'))
                 <a href="{{ route('school.exam-timetable.create') }}" class="btn rounded-pill btn-primary text-white">Create Exam TimeSheet</a>
+                @endif
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -72,7 +74,9 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Exam</th>
+                                            @if(canHaveRole('Delete Exam Time Sheet') OR canHaveRole('Edit Exam Time Sheet') OR canHaveRole('Detail Exam Time Sheet'))
                                             <th>Actions</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -80,11 +84,19 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $timeSheetList['name'] }}</td>
+                                                @if(canHaveRole('Delete Exam Time Sheet') OR canHaveRole('Edit Exam Time Sheet') OR canHaveRole('Detail Exam Time Sheet'))
                                                 <td>
+                                                    @if(canHaveRole('Detail Exam Time Sheet'))
                                                     <a href="{{ route("school.exam-timetable.detail",$timeSheetList['exam_id']) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Edit Exam Time Sheet'))
                                                     <a href="{{ route("school.exam-timetable.edit",$timeSheetList['exam_id']) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Delete Exam Time Sheet'))
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $timeSheetList['exam_id'] }} data-url={{ route("school.exam-timetable.delete") }}><i class='bx bxs-trash'></i></a>
+                                                    @endif
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

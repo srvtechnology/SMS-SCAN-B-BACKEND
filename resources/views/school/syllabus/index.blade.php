@@ -14,7 +14,9 @@
                         <li class="breadcrumb-item active">Syllabus</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Syllabus'))
                 <a href="{{ route('school.exams.create-syllabus.create') }}" class="btn rounded-pill btn-primary text-white">Create Syllabus</a>
+                @endif
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -30,7 +32,9 @@
                                             <th>#</th>
                                             <th>Exam</th>
                                             <th>Title</th>
+                                            @if(canHaveRole('Delete Syllabus') OR canHaveRole('Edit Syllabus') OR canHaveRole('Detail Syllabus'))
                                             <th>Actions</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -39,11 +43,19 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $content->exam->title }}</td>
                                                 <td>{{ $content->title }}</td>
+                                                @if(canHaveRole('Delete Syllabus') OR canHaveRole('Edit Syllabus') OR canHaveRole('Detail Syllabus'))
                                                 <td>
+                                                    @if(canHaveRole('Detail Syllabus'))
                                                     <a href="{{ route("school.exams.create-syllabus.detail",$content->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Edit Syllabus'))
                                                     <a href="{{ route("school.exams.create-syllabus.edit",$content->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Delete Syllabus'))
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $content->id }} data-url={{ route("school.exams.create-syllabus.delete") }}><i class='bx bxs-trash'></i></a>
+                                                    @endif
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

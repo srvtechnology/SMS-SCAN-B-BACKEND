@@ -8,7 +8,9 @@ use App\Models\Classes;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\Subject;
+use App\Models\Permission;
 use App\Models\StudentResult;
+use App\Models\PermissionRole;
 use App\Models\StaffAssignClass;
 use App\Models\StudentAttendance;
 use App\Models\ClassAssignSubject;
@@ -244,5 +246,22 @@ function getAttendanceData($class_id,$section_id,$from_date,$to_date)
     }
 
     return $name;
+}
+
+function canHaveRole($permission_name)
+{
+    $permissionData = Permission::where('name',$permission_name)->first();
+    if(!$permissionData)
+    {
+        return false;
+    }
+
+    $permission_role = PermissionRole::where('role_id',Auth::user()->role_id)->where('permission_id',$permissionData->id)->first();
+    if(!$permission_role)
+    {
+        return false;
+    }
+
+    return true;
 }
 ?>

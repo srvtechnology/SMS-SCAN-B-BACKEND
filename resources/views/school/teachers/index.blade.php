@@ -14,8 +14,10 @@
                         <li class="breadcrumb-item active">Teachers</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Staff'))
                 <a href="{{ route('school.teachers.create') }}" class="btn rounded-pill btn-primary text-white">Create
                     Teacher</a>
+                    @endif
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -32,7 +34,9 @@
                                             <th>Image</th>
                                             <th>Name</th>
                                             <th>Designation</th>
+                                            @if(canHaveRole('Edit Staff') OR canHaveRole('Delete Staff') OR canHaveRole('Detail Staff'))
                                             <th>Action</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -46,12 +50,19 @@
                                             </td>
                                             <td>{{ $staff->first_name }} {{ $staff->last_name }}</td>
                                             <td>{{ $staff->designation->name }}</td>
+                                            @if(canHaveRole('Edit Staff') OR canHaveRole('Delete Staff') OR canHaveRole('Detail Staff'))
                                             <td>
-
+                                                @if(canHaveRole('Detail Staff'))
                                                 <a href="{{ route("school.teachers.detail",$staff->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                @endif
+                                                @if(canHaveRole('Edit Staff'))
                                                 <a href="{{ route("school.teachers.edit",$staff->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                @endif
+                                                @if(canHaveRole('Delete Staff'))
                                                 <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $staff->id }} data-url={{ route("school.teachers.delete") }}><i class='bx bxs-trash'></i></a>
+                                                @endif
                                             </td>
+                                            @endif
                                         </tr>
                                         @endforeach
                                         @endif

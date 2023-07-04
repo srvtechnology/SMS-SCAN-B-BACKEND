@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('school.layouts.main')
 
 @section('content')
     <div class="content-wrapper">
@@ -8,12 +8,12 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-style2 mb-0">
                         <li class="breadcrumb-item">
-                            <a href="{{ url('dashboard') }}">Home</a>
+                            <a href="{{ route('school.dashboard') }}">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{ url('roles') }}">Roles</a>
+                            <a href="{{ route('school.roles') }}">Roles</a>
                         </li>
-                        <li class="breadcrumb-item active">Create Role</li>
+                        <li class="breadcrumb-item active">Update Role</li>
                     </ol>
                 </nav>
             </div>
@@ -23,35 +23,37 @@
                         <div class="col-xxl">
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <h5 class="mb-0">Enter role details</h5>
+                                    <h5 class="mb-0">Update role details</h5>
                                 </div>
                                 <div class="card-body">
-                                    <form action="{{ route('create_role') }}" method="POST">
+                                    <form action="{{ route('school.updaterole') }}" method="POST">
                                         @csrf
+                                        <input type="hidden" name="role_id" value="{{ $role->id }}">
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" for="basic-default-name">Role
                                                 Name</label>
                                             <div class="col-sm-10">
                                                 <input type="text" name="role_name" class="form-control"
-                                                    id="basic-default-name" placeholder="Enter role Name" />
+                                                    value="{{ $role->name }}" id="basic-default-name"
+                                                    placeholder="Enter role Name" />
                                             </div>
                                         </div>
                                         <div class="row">
                                             <label for="" class="col-sm-2 col-form-label">
                                                 Permissions
                                             </label>
-                                            <div class="col-md-10">
+                                            <div class="col-md-10 mb-3">
                                                 <div class="d-flex gap-3">
-                                                    @foreach ($permissions as $permission)
-                                                        <div class="form-check  mt-1">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                value="{{ $permission->id }}" id="defaultCheck1"
-                                                                name="permissions[]">
-                                                            <label class="form-check-label" for="defaultCheck1">
-                                                                {{ $permission->name }}
-                                                            </label>
-                                                        </div>
-                                                    @endforeach
+                                                    @php
+                                                        $ids = $role->permissions->pluck('id')->toArray();
+                                                    @endphp
+                                                    <select name="permissions[]" class="form-control select2_custom" multiple id="">
+                                                        @if(count($permissions) > 0)
+                                                        @foreach ($permissions as $permission)
+                                                        <option value="{{ $permission->id }}" @if (in_array($permission->id, $ids)) selected @endif>{{ $permission->name }}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>

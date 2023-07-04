@@ -14,8 +14,10 @@
                         <li class="breadcrumb-item active">Students</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Student'))
                 <a href="{{ route('school.students.create') }}" class="btn rounded-pill btn-primary text-white">Create
                     Student</a>
+                    @endif
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -31,7 +33,9 @@
                                             <th>#</th>
                                             <th>Image</th>
                                             <th>Name</th>
+                                            @if(canHaveRole('Edit Student') OR canHaveRole('Delete Student') OR canHaveRole('Detail Student'))
                                             <th>Action</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -44,12 +48,19 @@
                                                         width="50" height="50" alt="">
                                             </td>
                                             <td>{{ $student->first_name }} {{ $student->last_name }}</td>
+                                            @if(canHaveRole('Edit Student') OR canHaveRole('Delete Student') OR canHaveRole('Detail Student'))
                                             <td>
-
+                                                @if(canHaveRole('Detail Student'))
                                                 <a href="{{ route("school.students.detail",$student->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                @endif
+                                                @if(canHaveRole('Edit Student'))
                                                 <a href="{{ route("school.students.edit",$student->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                @endif
+                                                @if(canHaveRole('Delete Student'))
                                                 <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $student->id }} data-url={{ route("school.students.delete") }}><i class='bx bxs-trash'></i></a>
+                                                @endif
                                             </td>
+                                            @endif
                                         </tr>
                                         @endforeach
                                         @endif

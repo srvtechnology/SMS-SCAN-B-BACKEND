@@ -14,7 +14,9 @@
                         <li class="breadcrumb-item active">Assign Periods</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Assign Period'))
                 <a href="{{ route('school.timetable.assign_periods.create') }}" class="btn rounded-pill btn-primary text-white">Create</a>
+                @endif
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -75,7 +77,9 @@
                                             <th>Period</th>
                                             <th>Class</th>
                                             <th>Section</th>
+                                            @if(canHaveRole('Edit Assign Period') OR canHaveRole('Delete Assign Period'))
                                             <th>Action</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -86,10 +90,16 @@
                                                 <td>{{ $assign_period->period->title }}</td>
                                                 <td>{{ $assign_period->class->name }}</td>
                                                 <td>{{ $assign_period->section->name }}</td>
+                                                @if(canHaveRole('Edit Assign Period') OR canHaveRole('Delete Assign Period'))
                                                 <td>
+                                                    @if(canHaveRole('Edit Assign Period'))
                                                     <a href="{{ route("school.timetable.assign_periods.edit",$assign_period->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Delete Assign Period'))
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $assign_period->id }} data-url={{ route("school.timetable.assign_periods.delete") }}><i class='bx bxs-trash'></i></a>
+                                                    @endif
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

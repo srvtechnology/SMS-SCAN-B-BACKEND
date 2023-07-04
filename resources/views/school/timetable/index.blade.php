@@ -14,7 +14,9 @@
                         <li class="breadcrumb-item active">TimeTable Setting</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Time Range'))
                 <a href="{{ route('school.timetable.setting.create') }}" class="btn rounded-pill btn-primary text-white">Create</a>
+                @endif
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -31,7 +33,9 @@
                                             <th>Class</th>
                                             <th>Time</th>
                                             <th>Days</th>
+                                            @if(canHaveRole('Edit Time Range') OR canHaveRole('Delete Time Range'))
                                             <th>Actions</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -43,10 +47,16 @@
                                                 <td>
                                                     {{ implode(', ', json_decode($timetable_setting->weekdays)) }}
                                                 </td>
+                                                @if(canHaveRole('Edit Time Range') OR canHaveRole('Delete Time Range'))
                                                 <td>
+                                                    @if(canHaveRole('Edit Time Range'))
                                                     <a href="{{ route("school.timetable.setting.edit",$timetable_setting->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Delete Time Range'))
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $timetable_setting->id }} data-url={{ route("school.timetable.setting.delete") }}><i class='bx bxs-trash'></i></a>
+                                                    @endif
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

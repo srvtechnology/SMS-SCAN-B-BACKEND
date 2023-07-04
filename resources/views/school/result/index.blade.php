@@ -80,7 +80,7 @@
                                         </div>
                                         <div class="col-md-4 mb-2">
                                             <div class="form-group">
-                                                <button class="btn btn-primary mt-4 submitBtn">Submit</button>
+                                                <button class="btn btn-primary mt-4 submitBtn">Search</button>
                                             </div>
                                         </div>
                                     </div>
@@ -91,6 +91,7 @@
                 </div>
             </div>
             @if(count($subjects))
+            @if(canHaveRole('Filter Result'))
             <div class="row">
                 <div class="col-md-12">
                     <div class="my-3">
@@ -106,7 +107,7 @@
                                             <div class="form-group">
                                                 <label for="field1">Students:</label>
                                                     <select name="student_id" id="student_id" class="form-control @error('student_id') is-invalid @enderror student_id">
-                                                        <option value="">Select</option>
+                                                        <option value="">All Students</option>
                                                         @if(count($students))
                                                         @foreach($students as $student)
                                                         <option value="{{ $student->student->id }}" @if(request()->student_id == $student->student->id) selected @endif>{{ $student->student->first_name }} {{ $student->student->last_name }}</option>
@@ -120,7 +121,7 @@
                                             <div class="form-group">
                                                 <label for="field1">Subjects:</label>
                                                     <select name="subject_id" id="subject_id" class="form-control @error('subject_id') is-invalid @enderror subject_id">
-                                                        <option value="">Select</option>
+                                                        <option value="">All Subjects</option>
 
                                                     </select>
                                                     <span class="invalid-feedback">ClassField is required</span>
@@ -128,7 +129,7 @@
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <div class="form-group">
-                                                <button type="button" class="btn btn-primary mt-4 submitBtn" onclick="studentFilter()">Submit</button>
+                                                <button type="button" class="btn btn-primary mt-4 submitBtn" onclick="studentFilter()">Filter</button>
                                             </div>
                                         </div>
                                     </div>
@@ -138,6 +139,7 @@
                     </div>
                 </div>
             </div>
+            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="my-3">
@@ -214,6 +216,7 @@
     <script>
         var class_id = $(".class_id").val();
         var curSection = '{{ request()->section_id }}';
+        var curSubject = '{{ request()->subject_id }}';
         $.ajax({
             url: '{{ url('school/time-table/assign-periods/get-all-data-by-class') }}' + '/' + class_id,
             type: 'GET',
@@ -228,9 +231,9 @@
                     $("#section_id").append('<option value="' + element.id + '" '+selected+'>' + element
                         .name + '</option>');
                 });
-                $("#subject_id").append('<option value="">Select</option>');
+                $("#subject_id").append('<option value="">All Subjects</option>');
                 $(response.subjects).each(function(index, element) {
-                    if(curSection == element.id)
+                    if(curSubject == element.id)
                     {
                         var selected = "selected";
                     }

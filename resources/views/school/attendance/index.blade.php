@@ -80,7 +80,7 @@
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <div class="form-group">
-                                                <button class="btn btn-primary mt-4 submitBtn">Submit</button>
+                                                <button class="btn btn-primary mt-4 submitBtn">Search</button>
                                             </div>
                                         </div>
                                     </div>
@@ -91,6 +91,7 @@
                 </div>
             </div>
             @if(count($dateList))
+            @if(canHaveRole('Filter Attendance'))
             <div class="row">
                 <div class="col-md-12">
                     <div class="my-3">
@@ -119,7 +120,7 @@
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <div class="form-group">
-                                                <button type="button" class="btn btn-primary mt-4 submitBtn" onclick="studentFilter()">Submit</button>
+                                                <button type="button" class="btn btn-primary mt-4 submitBtn" onclick="studentFilter()">Filter</button>
                                             </div>
                                         </div>
                                     </div>
@@ -129,6 +130,7 @@
                     </div>
                 </div>
             </div>
+            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="my-3">

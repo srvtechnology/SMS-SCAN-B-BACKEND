@@ -14,7 +14,9 @@
                         <li class="breadcrumb-item active">Periods</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Time Range Period'))
                 <a href="{{ route('school.timetable.periods.create') }}" class="btn rounded-pill btn-primary text-white">Create</a>
+                @endif
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -30,7 +32,9 @@
                                             <th>#</th>
                                             <th>Class</th>
                                             <th>Weekdays</th>
+                                            @if(canHaveRole('Edit Time Range Period') OR canHaveRole('Delete Time Range Period') OR canHaveRole('Detail Time Range Period'))
                                             <th>Actions</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -39,11 +43,19 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $period['class'] }}</td>
                                                 <td>{{ $period['days'] }}</td>
+                                                @if(canHaveRole('Edit Time Range Period') OR canHaveRole('Delete Time Range Period') OR canHaveRole('Detail Time Range Period'))
                                                 <td>
+                                                    @if(canHaveRole('Detail Time Range Period'))
                                                     <a href="{{ route("school.timetable.periods.detail",$period['id']) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Edit Time Range Period'))
                                                     <a href="{{ route("school.timetable.periods.edit",$period['id']) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Delete Time Range Period'))
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $period['id'] }} data-url={{ route("school.timetable.periods.delete") }}><i class='bx bxs-trash'></i></a>
+                                                    @endif
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

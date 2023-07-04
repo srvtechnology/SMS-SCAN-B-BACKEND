@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\School\ExamController;
 use App\Http\Controllers\School\HomeController;
+use App\Http\Controllers\School\RoleController;
+use App\Http\Controllers\School\UserController;
 use App\Http\Controllers\School\ClassController;
 use App\Http\Controllers\School\ParentController;
 use App\Http\Controllers\School\ResultController;
@@ -20,6 +19,7 @@ use App\Http\Controllers\School\Auth\AuthController;
 use App\Http\Controllers\School\TimetableController;
 use App\Http\Controllers\School\AttendanceController;
 use App\Http\Controllers\School\DesignationController;
+use App\Http\Controllers\School\PermissionsController;
 use App\Http\Controllers\School\AssignPeriodController;
 use App\Http\Controllers\School\ExamTimeSheetController;
 use App\Http\Controllers\School\ExamTimeTableController;
@@ -212,5 +212,33 @@ Route::middleware(['school_auth'])->group(function () {
 
     Route::controller(AttendanceController::class)->as('school.')->group(function () {
         Route::get('/attendances/view-attendance','index')->name('attendances.view-attendance');
+    });
+
+
+    Route::controller(RoleController::class)->as('school.')->group(function () {
+        Route::get('roles','index')->name('roles');
+        Route::get('add_role','show_role')->name('add_role');
+        Route::post('create_role','create_role')->name('create_role');
+        Route::post('delete_role','delete')->name('delete_role');
+        Route::get('edit_role/{id}','editrole')->name('edit_role');
+        Route::post('updaterole','updaterole')->name('updaterole');
+    });
+
+    Route::controller(UserController::class)->as('school.')->group(function () {
+        Route::get('users','index')->name('users');
+        Route::get('add_user','add_user')->name('add_user');
+        Route::post('create_user','create_user')->name('create_user');
+        Route::get('edit_user/{id}','edituser')->name('edit_user');
+        Route::post('delete_completeuser','delete_completeuser')->name('delete_completeuser');
+        Route::post('update','updateuser')->name('updateuser');
+    });
+
+    Route::controller(PermissionsController::class)->as('school.')->group(function () {
+        Route::get('permissions','index')->name('permissions');
+        Route::get('add_permission','add_permission')->name('add_permission');
+        Route::post('create_permission','create_permission')->name('create_permission');
+        Route::post('delete','delete')->name('delete_permission');
+        Route::get('edit_permission/{id}','editpermission')->name('edit_permission');
+        Route::post('update_permission','update_permission')->name('update_permission');
     });
 });

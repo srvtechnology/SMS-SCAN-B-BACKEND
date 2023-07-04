@@ -14,7 +14,9 @@
                         <li class="breadcrumb-item active">Student Material</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Study Material'))
                 <a href="{{ route('school.studyMaterial.create-content') }}" class="btn rounded-pill btn-primary text-white">Upload Content</a>
+                @endif
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -31,7 +33,9 @@
                                             <th>Title</th>
                                             <th>Class</th>
                                             <th>Section</th>
-                                            <th>Actions</th>
+                                            @if(canHaveRole('Edit Study Material') OR canHaveRole('Delete Study Material') OR canHaveRole('Detail Study Material'))
+                                            <th>Action</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -41,11 +45,19 @@
                                                 <td>{{ $study_material->title }}</td>
                                                 <td>{{ $study_material->class->name }}</td>
                                                 <td>{{ $study_material->subject->name }}</td>
+                                                @if(canHaveRole('Edit Study Material') OR canHaveRole('Delete Study Material') OR canHaveRole('Detail Study Material'))
                                                 <td>
+                                                    @if(canHaveRole('Detail Study Material'))
                                                     <a href="{{ route("school.studyMaterial.detail-content",$study_material->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Edit Study Material'))
                                                     <a href="{{ route("school.studyMaterial.edit-content",$study_material->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Delete Study Material'))
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $study_material->id }} data-url={{ route("school.studyMaterial.delete-content") }}><i class='bx bxs-trash'></i></a>
+                                                    @endif
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

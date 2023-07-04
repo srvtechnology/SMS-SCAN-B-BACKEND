@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('school.layouts.main')
 
 @section('content')
     <div class="content-wrapper">
@@ -8,12 +8,12 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-style2 mb-0">
                         <li class="breadcrumb-item">
-                            <a href="{{ url('dashboard') }}">Home</a>
+                            <a href="{{ route('school.dashboard') }}">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{ url('permissions') }}">Permissions</a>
+                            <a href="{{ route('school.permissions') }}">Permissions</a>
                         </li>
-                        <li class="breadcrumb-item active">Create Permission</li>
+                        <li class="breadcrumb-item active">Update Permission</li>
                     </ol>
                 </nav>
             </div>
@@ -26,14 +26,16 @@
                                     <h5 class="mb-0">Enter permission details</h5>
                                 </div>
                                 <div class="card-body">
-                                    <form action="{{ route('create_permission') }}" method="POST">
+                                    <form action="{{ route('school.update_permission') }}" method="POST">
                                         @csrf
+                                        <input type="hidden" value="{{ $permission->id }}" name="permission_id">
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" for="basic-default-name">Permission
                                                 Name</label>
                                             <div class="col-sm-10">
                                                 <input type="text" name="permission_name" class="form-control"
-                                                    id="basic-default-name" placeholder="Enter permission Name" />
+                                                    value="{{ $permission->name }}" id="basic-default-name"
+                                                    placeholder="Enter permission Name" />
                                             </div>
                                         </div>
                                         <div class="row justify-content-end">

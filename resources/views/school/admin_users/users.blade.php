@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('school.layouts.main')
 
 @section('content')
     <style>
@@ -13,43 +13,42 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-style2 mb-0">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('permissions') }}">Home</a>
+                            <a href="{{ route('school.dashboard') }}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">Permissions</li>
+                        <li class="breadcrumb-item active">Users</li>
                     </ol>
                 </nav>
-                <a href="{{ route('add_permission') }}" class="btn rounded-pill btn-primary text-white">Create Permissions</a>
+                <a href="{{ route('school.add_user') }}" class="btn rounded-pill btn-primary text-white">Create User</a>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="my-5">
                         <!-- Basic Bootstrap Table -->
                         <div class="card">
-                            <h5 class="card-header">Permissions Detail</h5>
+                            <h5 class="card-header">Users Detail</h5>
                             <div class="table-responsive text-nowrap">
                                 <table id="example" class="table table-striped" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Sr No</th>
                                             <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone no</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($permissions as $key => $permission)
+                                        @foreach ($users as $key => $user)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $permission->name }}</td>
+                                                <td>{{ $user->name }}</td>
+                                                <td>{{ $user->email }}</td>
+                                                <td>{{ $user->phone_number }}</td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <a class=" cus_margin1"
-                                                            href="{{ route('edit_permission', $permission->id) }}"><i
-                                                                class="bx bx-edit-alt me-1"></i>
-                                                        </a>
-                                                        <a class=" cus_margin1"
-                                                            href="{{ route('delete_permission', $permission->id) }}"><i
-                                                                class="bx bx-trash me-1 danger_clr"></i>
-                                                        </a>
+
+                                                        <a href="{{ route('school.edit_user', $user->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $user->id }} data-url={{ route("school.delete_completeuser") }}><i class='bx bxs-trash'></i></a>
                                                     </div>
                                                 </td>
                                             </tr>

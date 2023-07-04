@@ -14,8 +14,10 @@
                         <li class="breadcrumb-item active">Designation</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Designation'))
                 <a href="{{ route('school.designations.create') }}" class="btn rounded-pill btn-primary text-white">Create
                     Designation</a>
+                    @endif
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -30,7 +32,9 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
+                                            @if(canHaveRole('Edit Designation') OR canHaveRole('Delete Designation'))
                                             <th>Actions</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -38,11 +42,16 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $designation->name }}</td>
+                                                @if(canHaveRole('Edit Designation') OR canHaveRole('Delete Designation'))
                                                 <td>
+                                                    @if(canHaveRole('Edit Designation'))
                                                     <a href="{{ route("school.designations.edit",$designation->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Delete Designation'))
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $designation->id }} data-url={{ route("school.designations.delete") }}><i class='bx bxs-trash'></i></a>
-
+                                                    @endif
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

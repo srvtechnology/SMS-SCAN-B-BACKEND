@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('school.layouts.main')
 
 @section('content')
     <style>
@@ -13,52 +13,38 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-style2 mb-0">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('users') }}">Home</a>
+                            <a href="{{ route('school.dashboard') }}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">Users</li>
+                        <li class="breadcrumb-item active">Roles</li>
                     </ol>
                 </nav>
-                <a href="{{ route('add_user') }}" class="btn rounded-pill btn-primary text-white">Create User</a>
+                <a href="{{ route('school.add_role') }}" class="btn rounded-pill btn-primary text-white">Create Roles</a>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="my-5">
                         <!-- Basic Bootstrap Table -->
                         <div class="card">
-                            <h5 class="card-header">Users Detail</h5>
+                            <h5 class="card-header">Roles Detail</h5>
                             <div class="table-responsive text-nowrap">
                                 <table id="example" class="table table-striped" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Sr No</th>
-                                            <th>Image</th>
                                             <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Cell no</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($users as $key => $user)
+                                        @foreach ($roles as $role)
                                             <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td><img src="{{ asset('uploads/' . $user->image) }}" alt=""
-                                                        style="height:auto; width:50px;">
-                                                </td>
-                                                <td>{{ $user->name }}</td>
-                                                <td>{{ $user->email }}</td>
-                                                <td>{{ $user->phone_number }}</td>
+                                                <td>{{ $role->name }}</td>
                                                 <td>
                                                     <div class="d-flex">
-                                                        <a class=" cus_margin1"
-                                                            href="{{ route('edit_user', $user->id) }}"><i
-                                                                class="bx bx-edit-alt me-1"></i>
-                                                        </a>
-                                                        <a class=" cus_margin1"
-                                                            href="{{ route('delete_completeuser', $user->id) }}"><i
-                                                                class="bx bx-trash me-1 danger_clr"></i>
-                                                        </a>
+                                                        <a href="{{ route('school.edit_role', $role->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $role->id }} data-url={{ route("school.delete_role") }}><i class='bx bxs-trash'></i></a>
+
                                                     </div>
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -74,4 +60,7 @@
         <!-- / Content -->
         <div class="content-backdrop fade"></div>
     </div>
+
+    @push('footer-script')
+    @endpush
 @endsection

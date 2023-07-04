@@ -14,7 +14,9 @@
                         <li class="breadcrumb-item active">Exams</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Exam'))
                 <a href="{{ route('school.exams.create-exam.create') }}" class="btn rounded-pill btn-primary text-white">Create Exam</a>
+                @endif
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -31,7 +33,9 @@
                                             <th>Title</th>
                                             <th>Class Range</th>
                                             <th>Date</th>
+                                            @if(canHaveRole('Delete Exam') OR canHaveRole('Edit Exam') OR canHaveRole('Detail Exam'))
                                             <th>Actions</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -41,11 +45,19 @@
                                                 <td>{{ $exam->title }}</td>
                                                 <td>{{ $exam->fromClass->name }}- {{ $exam->toClass->name }}</td>
                                                 <td>{{ date("d/m/Y",strtotime($exam->date)) }}</td>
+                                                @if(canHaveRole('Delete Exam') OR canHaveRole('Edit Exam') OR canHaveRole('Detail Exam'))
                                                 <td>
+                                                    @if(canHaveRole('Detail Exam'))
                                                     <a href="{{ route("school.exams.create-exam.detail",$exam->id) }}" class="btn btn-success btn-sm" title="Detail"><i class='bx bx-detail'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Edit Exam'))
                                                     <a href="{{ route("school.exams.create-exam.edit",$exam->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Delete Exam'))
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $exam->id }} data-url={{ route("school.exams.create-exam.delete") }}><i class='bx bxs-trash'></i></a>
+                                                    @endif
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -14,8 +14,10 @@
                         <li class="breadcrumb-item active">Subjects</li>
                     </ol>
                 </nav>
+                @if(canHaveRole('Add Subject'))
                 <a href="{{ route('school.subjects.create') }}" class="btn rounded-pill btn-primary text-white">Create
                     Subject</a>
+                    @endif
             </div>
             <x-alert></x-alert>
             <div class="row">
@@ -30,7 +32,9 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
+                                            @if(canHaveRole('Edit Subject') OR canHaveRole('Delete Subject'))
                                             <th>Actions</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -38,10 +42,16 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $subject->name }}</td>
+                                                @if(canHaveRole('Edit Subject') OR canHaveRole('Delete Subject'))
                                                 <td>
+                                                    @if(canHaveRole('Edit Subject'))
                                                     <a href="{{ route("school.subjects.edit",$subject->id) }}" class="btn btn-primary btn-sm" title="Edit"><i class='bx bxs-edit'></i></a>
+                                                    @endif
+                                                    @if(canHaveRole('Delete Subject'))
                                                     <a class="btn btn-danger btn-sm text-white deleteBtn" title="Delete" data-id={{ $subject->id }} data-url={{ route("school.subjects.delete") }}><i class='bx bxs-trash'></i></a>
+                                                    @endif
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
