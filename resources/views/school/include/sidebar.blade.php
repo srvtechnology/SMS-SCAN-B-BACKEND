@@ -176,6 +176,21 @@
             </ul>
         </li>
 
+        <li class="menu-item @if(request()->segment(2) == 'attendances') active open @endif">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon bx bx-food-menu'></i>
+                <div data-i18n="Layouts">Attendance</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->segment(3) == 'view-attendance' ? 'active' : '' }}">
+                    <a href="{{ route('school.attendances.view-attendance') }}" class="menu-link">
+                        <div data-i18n="Without menu">View Attendance</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
 
     </ul>
 </aside>

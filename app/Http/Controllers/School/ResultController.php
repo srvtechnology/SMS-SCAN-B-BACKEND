@@ -30,29 +30,8 @@ class ResultController extends Controller
         {
             $subjects = getSubjectsByClass($class_id);
             $students = StudentClassAssign::where('school_id', $school->id)->where('class_id', $class_id)->where('section_id', $section_id)->get();
-            // return $students;
             $student_results = StudentResult::where('school_id',$school->id)->where('class_id', $class_id)->where('section_id', $section_id)->get();
-            // return $student_results;
         }
-        // foreach($examTimeSheet as $examTimeSheetData)
-        // {
-        //     if(!in_array(date('d/m/Y',strtotime($examTimeSheetData->date)),$dateList))
-        //     {
-        //         $dateList[] = date('d/m/Y',strtotime($examTimeSheetData->date));
-        //         $timeSheetsData = ExamTimeSheet::where('school_id',$school->id)->where('exam_id',$exam_id)->where('class_id',$class_id)
-        //         ->where('date',$examTimeSheetData->date)->where('is_deleted','0')->get();
-        //         foreach($timeSheetsData as $timeSheet)
-        //         {
-        //             $timesheets[] = [
-        //                 'subject'   => $timeSheet->subject->name,
-        //                 'date'   =>  date("d/m/Y",strtotime($timeSheet->date)),
-        //                 'start_time'    => $timeSheet->start_time,
-        //                 'end_time' => $timeSheet->end_time,
-        //             ];
-        //         }
-
-        //     }
-        // }
         return view("school.result.index")->with(compact('exams','classes','sections','subjects','students','student_results'));
     }
 }

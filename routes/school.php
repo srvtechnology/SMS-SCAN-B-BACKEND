@@ -18,6 +18,7 @@ use App\Http\Controllers\School\TeacherController;
 use App\Http\Controllers\School\SyllabusController;
 use App\Http\Controllers\School\Auth\AuthController;
 use App\Http\Controllers\School\TimetableController;
+use App\Http\Controllers\School\AttendanceController;
 use App\Http\Controllers\School\DesignationController;
 use App\Http\Controllers\School\AssignPeriodController;
 use App\Http\Controllers\School\ExamTimeSheetController;
@@ -207,6 +208,9 @@ Route::middleware(['school_auth'])->group(function () {
 
     Route::controller(ResultController::class)->as('school.')->group(function () {
         Route::get('/results/view','index')->name('results.index');
+    });
 
+    Route::controller(AttendanceController::class)->as('school.')->group(function () {
+        Route::get('/attendances/view-attendance','index')->name('attendances.view-attendance');
     });
 });

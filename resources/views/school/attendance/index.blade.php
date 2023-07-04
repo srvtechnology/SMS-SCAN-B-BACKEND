@@ -1,5 +1,5 @@
 @extends('school.layouts.main')
-@section('page_title', 'Exam Result/Class-'.getResultData(request()->exam_id,request()->class_id,request()->section_id))
+@section('page_title', 'Attendance Sheet/Class-'.getAttendanceData(request()->class_id,request()->section_id,request()->from_date,request()->to_date))
 @section('content')
 <style>
     table {
@@ -28,7 +28,7 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('school.dashboard') }}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">Result</li>
+                        <li class="breadcrumb-item active">Attendance</li>
                     </ol>
                 </nav>
             </div>
@@ -39,8 +39,8 @@
                             <div class="card-body">
                                 <form id="myForm" action="" method="GET">
                                     <div class="row">
-                                        <h4>Result</h4>
-                                        <div class="col-md-4 mb-2">
+                                        <h4>Attendance</h4>
+                                        <div class="col-md-3 mb-2">
                                             <div class="form-group">
                                                 <label for="field1">Class:</label>
                                                     <select name="class_id" id="class_id" class="form-control @error('class_id') is-invalid @enderror class_id">
@@ -54,7 +54,7 @@
                                                     <span class="invalid-feedback">ClassField is required</span>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-md-3 mb-2">
                                             <div class="form-group">
                                                 <label for="field1">Section:</label>
                                                     <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror section_id">
@@ -64,21 +64,21 @@
                                                     <span class="invalid-feedback">Section is required</span>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-md-3 mb-2">
                                             <div class="form-group">
-                                                <label for="field1">Exam:</label>
-                                                    <select name="exam_id" id="exam_id" class="form-control @error('exam_id') is-invalid @enderror exam_id">
-                                                        <option value="">Select</option>
-                                                        @if(count($exams))
-                                                        @foreach($exams as $exam)
-                                                        <option value="{{ $exam->id }}" @if($exam->id==request()->exam_id) selected @endif>{{ $exam->title }}</option>
-                                                        @endforeach
-                                                        @endif
-                                                    </select>
-                                                    <span class="invalid-feedback">Exam is required</span>
+                                                <label for="field1">From Date:</label>
+                                                <input type="date" class="form-control from_date" name="from_date" id="from_date"  @if(!empty(request()->from_date)) value="{{ request()->from_date }}" @endif>
+                                                    <span class="invalid-feedback">From Date is required</span>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-md-3 mb-2">
+                                            <div class="form-group">
+                                                <label for="field1">To Date:</label>
+                                                    <input type="date" class="form-control to_date" name="to_date" id="to_date" @if(!empty(request()->to_date)) value="{{ request()->to_date }}" @endif>
+                                                    <span class="invalid-feedback">To Date is required</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-2">
                                             <div class="form-group">
                                                 <button class="btn btn-primary mt-4 submitBtn">Submit</button>
                                             </div>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            @if(count($subjects))
+            @if(count($dateList))
             <div class="row">
                 <div class="col-md-12">
                     <div class="my-3">
@@ -99,7 +99,8 @@
                                 <form id="myForm2" action="" method="GET">
                                     <input type="hidden" name="class_id" value="{{ request()->input('class_id') }}">
                                     <input type="hidden" name="section_id" value="{{ request()->input('section_id') }}">
-                                    <input type="hidden" name="exam_id" value="{{ request()->input('exam_id') }}">
+                                    <input type="hidden" name="from_date" value="{{ request()->input('from_date') }}">
+                                    <input type="hidden" name="to_date" value="{{ request()->input('to_date') }}">
                                     <div class="row">
                                         <h4>Filter</h4>
                                         <div class="col-md-3 mb-2">
@@ -112,16 +113,6 @@
                                                         <option value="{{ $student->student->id }}" @if(request()->student_id == $student->student->id) selected @endif>{{ $student->student->first_name }} {{ $student->student->last_name }}</option>
                                                         @endforeach
                                                         @endif
-                                                    </select>
-                                                    <span class="invalid-feedback">ClassField is required</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 mb-2">
-                                            <div class="form-group">
-                                                <label for="field1">Subjects:</label>
-                                                    <select name="subject_id" id="subject_id" class="form-control @error('subject_id') is-invalid @enderror subject_id">
-                                                        <option value="">Select</option>
-
                                                     </select>
                                                     <span class="invalid-feedback">ClassField is required</span>
                                             </div>
@@ -143,40 +134,42 @@
                     <div class="my-3">
                         <div class="card">
                             <div class="card-body">
-                                <table id="myTable">
-                                    <thead>
-                                        <tr>
-                                            <td colspan="20" style="text-align:center !important;"><h4>Exam Result/Class-{{ getResultData(request()->exam_id,request()->class_id,request()->section_id) }}</h4></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Student name</th>
-                                            @if(count($subjects))
-                                                @foreach($subjects as $subject)
-                                                    <th style="text-align:center !important;">
-                                                        {{ $subject['name'] }} <br>
-                                                        Total Marks - {{ getSubjectTotalMarks(request()->exam_id,request()->class_id,request()->section_id,$subject['id']) }}
-                                                    </th>
+                                <div class="table-responsive">
+                                    <table id="myTable">
+                                        <thead>
+                                            <tr>
+                                                <td colspan="100" style="text-align:center !important;"><h4>Attendance Sheet/Class-{{ getAttendanceData(request()->class_id,request()->section_id,request()->from_date,request()->to_date) }}</h4></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Student name</th>
+                                                @if(count($dateList))
+                                                    @foreach($dateList as $dateData)
+                                                        <th style="text-align:center !important;">
+                                                            {{ $dateData['date'] }} <br>
+                                                            {{ $dateData['day'] }}
+                                                        </th>
+                                                    @endforeach
+                                                @endif
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(count($students) > 0)
+                                                @foreach($students as $student)
+                                                    <tr>
+                                                        <td>{{ $student->student->first_name }} {{ $student->student->last_name }}</td>
+                                                        @if(count($dateList))
+                                                            @foreach($dateList as $dateData)
+                                                                <td style="text-align:center !important;">
+                                                                    {{ getStudentAttendance(request()->class_id,request()->section_id,$student->student->id,$dateData['date']) }}
+                                                                </td>
+                                                            @endforeach
+                                                        @endif
+                                                    </tr>
                                                 @endforeach
                                             @endif
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if(count($students) > 0)
-                                            @foreach($students as $student)
-                                                <tr>
-                                                    <td>{{ $student->student->first_name }} {{ $student->student->last_name }}</td>
-                                                    @if(count($subjects))
-                                                        @foreach($subjects as $subject)
-                                                            <td style="text-align:center !important;">
-                                                                {{ getSubjectObtainedMarks(request()->exam_id,request()->class_id,request()->section_id,$subject['id'],$student->student->id) }}
-                                                            </td>
-                                                        @endforeach
-                                                    @endif
-                                                </tr>
-                                            @endforeach
-                                        @endif
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -206,8 +199,18 @@
                 dom: 'Bfrtip',
                 buttons: [
                     'pdfHtml5'
-                ]
+                ],
+                customize: function(doc) {
+                    var textElements = doc.content.filter(function(obj) {
+                        return obj.text !== undefined;
+                    });
+
+                    textElements.forEach(function(obj) {
+                        obj.alignment = 'center';
+                    });
+                }
             });
+
         });
     </script>
 
@@ -219,22 +222,12 @@
             type: 'GET',
             success: function(response) {
                 $("#section_id").html('');
-                $("#subject_id").html('');
                 $(response.sections).each(function(index, element) {
                     if(curSection == element.id)
                     {
                         var selected = "selected";
                     }
                     $("#section_id").append('<option value="' + element.id + '" '+selected+'>' + element
-                        .name + '</option>');
-                });
-                $("#subject_id").append('<option value="">Select</option>');
-                $(response.subjects).each(function(index, element) {
-                    if(curSection == element.id)
-                    {
-                        var selected = "selected";
-                    }
-                    $("#subject_id").append('<option value="' + element.id + '" '+selected+'>' + element
                         .name + '</option>');
                 });
             },
@@ -280,7 +273,7 @@
         function validateForm() {
             var isValid = true;
 
-            $('[id^=class_id], [id^=section_id], [id^=exam_id]').each(function() {
+            $('[id^=class_id], [id^=section_id], [id^=from_date], [id^=to_date]').each(function() {
               var field = $(this);
               isValid = validateField(field) && isValid;
             });
@@ -293,6 +286,7 @@
                 $(this).unbind('submit').submit();
             }
         });
+
         function studentFilter(){
             $.ajax({
                 url: '{{ url('school/attendances/view-attendance') }}',
