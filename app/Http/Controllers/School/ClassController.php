@@ -31,7 +31,6 @@ class ClassController extends Controller
 
     public function store(Request $request)
     {
-        return $request;
         $school = getSchoolInfoByUsername(Auth::user()->username);
         $data = $request->all();
         foreach ($data as $key => $values) {

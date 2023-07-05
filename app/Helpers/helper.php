@@ -101,7 +101,10 @@ function getSchoolInfoByUsername($username)
     if(empty($school))
     {
         $user = User::where('username',$username)->first();
-        $school = School::where('id',$user->school_id)->first();
+        if(!empty($user))
+        {
+            $school = School::where('id',$user->school_id)->first();
+        }
     }
 
     return $school;

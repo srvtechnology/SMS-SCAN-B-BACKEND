@@ -49,9 +49,8 @@
                                                     <div class="sectionError text-danger error-message"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <select class="select2_custom form-control sections_ids" id="section_id1" name="section_id1[]" multiple="multiple">
+                                                    <select class="select2_custom form-control section_id1" id="section_id1" name="section_id1[]" multiple="multiple" onfocus="getSelectAllOption(event)">
                                                         @if(count($sections) > 0)
-                                                        {{--  <option value="all">Select All</option>  --}}
                                                         @foreach($sections as $section)
                                                             <option value="{{ $section->id }}">{{ $section->name }}</option>
                                                             @endforeach
@@ -94,18 +93,40 @@
 
     @push('footer-script')
     {{--  <script>
-        function handleSelectAllOption(selectClass, allValue) {
-            $(selectClass).change(function() {
-                if ($(this).val() != null && $(this).val().includes(allValue)) {
-                    $(this).find('option:not([value="' + allValue + '"])').prop('selected', true);
-                    $(this).find('option[value="' + allValue + '"]').prop('selected', false);
-                } else {
-                    $(this).find('option[value="' + allValue + '"]').prop('selected', false);
+        var $eventSelect = $(".select2_custom_section");
+        $eventSelect.select2();
+        $eventSelect.on("select2:close", function (e) {
+            getSelectAllOption(e);
+         });
+
+        function getSelectAllOption(event)
+        {
+            var classList = event.currentTarget.classList;
+            var className = "";
+            classList.forEach(function(classItem) {
+                if (classItem.startsWith("section_id")) {
+                    className = classItem;
                 }
             });
+
+            var counter = className.replace(/^\D+/g, '');
+            var class_id = $("." + className).val();
+            handleSelectAllOption(className, 'all');
+        }
+        function handleSelectAllOption(selectClass, allValue) {
+            alert(selectClass);
+            var className = $("."+ selectClass);
+            var classValue = className.val();
+            if (classValue != null && classValue.includes(allValue)) {
+
+                className.find('option:not([value="' + allValue + '"])').prop('selected', true);
+                className.find('option[value="' + allValue + '"]').prop('selected', false);
+            } else {
+                className.find('option[value="' + allValue + '"]').prop('selected', false);
+            }
         }
 
-        handleSelectAllOption('.sections_ids', 'all');
+
     </script>  --}}
     <script>
         var fieldIndex = 2; // Initial field index
@@ -128,9 +149,8 @@
                     <div class="sectionError text-danger error-message"></div>
                 </div>
                 <div class="form-group">
-                    <select class="select2_custom form-control" name="section_id${fieldIndex}[]" multiple="multiple">
+                    <select class="select2_custom form-control section_id${fieldIndex}" name="section_id${fieldIndex}[]" multiple="multiple">
                         @if(count($sections) > 0)
-                        {{--  <option value="all">Select All</option>  --}}
                         @foreach($sections as $section)
                             <option value="{{ $section->id }}">{{ $section->name }}</option>
                             @endforeach

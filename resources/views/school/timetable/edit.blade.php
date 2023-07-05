@@ -97,8 +97,9 @@
                                                 <label for="field1">Days:</label>
                                             </div>
                                             <div class="form-group">
-                                                <select class="select2_custom form-control" name="weekdays[]" multiple="multiple">
+                                                <select class="select2_custom form-control weekdays" name="weekdays[]" multiple="multiple">
                                                     @if(count($weekdays) > 0)
+                                                    <option value="all">Select All</option>
                                                     @foreach($weekdays as $weekday)
                                                         <option value="{{ $weekday }}" {{ in_array($weekday, json_decode($timetable_setting->weekdays)) ? 'selected' : '' }}>{{ $weekday }}</option>
                                                         @endforeach
@@ -140,6 +141,19 @@
             $(".submitBtn").on("click", function(){
                 loader();
             });
+
+            function handleSelectAllOption(selectClass, allValue) {
+                $(selectClass).change(function() {
+                    if ($(this).val() != null && $(this).val().includes(allValue)) {
+                        $(this).find('option:not([value="' + allValue + '"])').prop('selected', true);
+                        $(this).find('option[value="' + allValue + '"]').prop('selected', false);
+                    } else {
+                        $(this).find('option[value="' + allValue + '"]').prop('selected', false);
+                    }
+                });
+            }
+
+            handleSelectAllOption('.weekdays', 'all');
         </script>
     @endpush
 @endsection

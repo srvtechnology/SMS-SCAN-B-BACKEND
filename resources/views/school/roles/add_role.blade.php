@@ -47,8 +47,9 @@
                                             </label>
                                             <div class="col-md-10 mb-3">
                                                 <div class="d-flex gap-3">
-                                                    <select name="permissions[]" class="form-control select2_custom @error('permissions') is-invalid @enderror" multiple id="">
+                                                    <select name="permissions[]" class="form-control permissions select2_custom @error('permissions') is-invalid @enderror" multiple id="">
                                                         @if(count($permissions) > 0)
+                                                        <option value="all">Select All</option>
                                                         @foreach ($permissions as $permission)
                                                         <option value="{{ $permission->id }}">{{ $permission->name }}</option>
                                                         @endforeach
@@ -79,4 +80,21 @@
         <!-- / Content -->
         <div class="content-backdrop fade"></div>
     </div>
+    @push('footer-script')
+    <script>
+        function handleSelectAllOption(selectClass, allValue) {
+            $(selectClass).change(function() {
+                if ($(this).val() != null && $(this).val().includes(allValue)) {
+                    $(this).find('option:not([value="' + allValue + '"])').prop('selected', true);
+                    $(this).find('option[value="' + allValue + '"]').prop('selected', false);
+                } else {
+                    $(this).find('option[value="' + allValue + '"]').prop('selected', false);
+                }
+            });
+        }
+
+    handleSelectAllOption('.permissions', 'all');
+    </script>
+    @endpush
 @endsection
+
