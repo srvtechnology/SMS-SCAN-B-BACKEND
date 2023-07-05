@@ -108,9 +108,9 @@
                                                 <label for="field1">Students:</label>
                                                     <select name="student_id" id="student_id" class="form-control @error('student_id') is-invalid @enderror student_id">
                                                         <option value="">All Students</option>
-                                                        @if(count($students))
-                                                        @foreach($students as $student)
-                                                        <option value="{{ $student->student->id }}" @if(request()->student_id == $student->student->id) selected @endif>{{ $student->student->first_name }} {{ $student->student->last_name }}</option>
+                                                        @if(count($allStudents))
+                                                        @foreach($allStudents as $allStudent)
+                                                        <option value="{{ $allStudent->student->id }}" @if(request()->student_id == $allStudent->student->id) selected @endif>{{ $allStudent->student->first_name }} {{ $allStudent->student->last_name }}</option>
                                                         @endforeach
                                                         @endif
                                                     </select>
@@ -145,6 +145,14 @@
                     <div class="my-3">
                         <div class="card">
                             <div class="card-body">
+                                <form action="{{ route('school.attendances.downloadResultPDF') }}" method="get">
+                                    <input type="hidden" name="class_id" value="{{ request()->class_id }}">
+                                    <input type="hidden" name="section_id" value="{{ request()->section_id }}">
+                                    <input type="hidden" name="exam_id" value="{{ request()->exam_id }}">
+                                    <input type="hidden" name="subject_id" value="{{ request()->subject_id }}">
+                                    <input type="hidden" name="student_id" value="{{ request()->student_id }}">
+                                    <button class="btn btn btn-secondary">PDF</button>
+                                </form>
                                 <table id="myTable">
                                     <thead>
                                         <tr>
@@ -205,10 +213,6 @@
                 paging: false,
                 searching: false,
                 ordering: false,
-                dom: 'Bfrtip',
-                buttons: [
-                    'pdfHtml5'
-                ]
             });
         });
     </script>

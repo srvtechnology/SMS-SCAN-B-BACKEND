@@ -42,7 +42,7 @@ class ProjectSetup extends Seeder
         }
 
         $role = new Role();
-        $role->name = 'SchoolAdmin';
+        $role->name = 'School Admin';
         $role->save();
 
 

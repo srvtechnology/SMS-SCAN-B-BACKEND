@@ -29,6 +29,46 @@
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $exam->id }}">
                                     <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <div class="form-group">
+                                                <label for="field1">From Class:</label>
+                                                <select name="from_class" id="from_class"
+                                                    class="form-control @error('from_class') is-invalid @enderror">
+                                                    <option value="">Select</option>
+                                                    @if (count($classes))
+                                                        @foreach ($classes as $class)
+                                                            <option value="{{ $class->id }}" @if($exam->from_class == $class->id) selected @endif>{{ $class->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            @error('from_class')
+                                                <div class="text-danger">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <div class="form-group">
+                                                <label for="field1">To Class:</label>
+                                                <select name="to_class" id="to_class"
+                                                    class="form-control @error('to_class') is-invalid @enderror">
+                                                    <option value="">Select</option>
+                                                    @if (count($classes))
+                                                        @foreach ($classes as $class)
+                                                            <option value="{{ $class->id }}"  @if($exam->to_class == $class->id) selected @endif>{{ $class->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            @error('to_class')
+                                                <div class="text-danger">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="field1">Title:</label>
@@ -36,26 +76,6 @@
                                                     name="title" value="{{ old('title',$exam->title) }}">
                                             </div>
                                             @error('title')
-                                                <div class="text-danger">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-6 mb-2">
-                                            <div class="form-group">
-                                                <label for="field1">Class Range:</label>
-                                                <select name="class_range" id="class_range" class="form-control @error('class_range') is-invalid @enderror">
-                                                    <option value="">Select</option>
-                                                    @if (count($class_ranges))
-                                                                    @foreach ($class_ranges as $class_range)
-                                                                        <option value="{{ $class_range->fromClass->id }}-{{ $class_range->toClass->id }}" @if($exam->from_class.'-'.$exam->to_class == $class_range->fromClass->id.'-'.$class_range->toClass->id) selected @endif>{{ $class_range->fromClass->name }}-{{ $class_range->toClass->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                @endif
-                                                </select>
-                                            </div>
-                                            @error('class_range')
                                                 <div class="text-danger">
                                                     {{ $message }}
                                                 </div>

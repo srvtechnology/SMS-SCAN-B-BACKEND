@@ -90,7 +90,7 @@ class StudentController extends Controller
         $existUser = User::where('username',$username)->first();
         if(!$existUser)
         {
-            $role = Role::where('name','SchoolAdmin')->first();
+            $role = Role::where('name','School Admin')->first();
             $existUser = User::create([
                 'name'  => $request->first_name.' '.$request->last_name,
                 'username' => $username,

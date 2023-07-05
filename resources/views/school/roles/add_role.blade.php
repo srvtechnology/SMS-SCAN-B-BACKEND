@@ -32,8 +32,13 @@
                                             <label class="col-sm-2 col-form-label" for="basic-default-name">Role
                                                 Name</label>
                                             <div class="col-sm-10">
-                                                <input type="text" name="role_name" class="form-control"
+                                                <input type="text" name="role_name" class="form-control @error('role_name') is-invalid @enderror"
                                                     id="basic-default-name" placeholder="Enter role Name" />
+                                                    @error('role_name')
+                                                     <div class="text-danger">
+                                                         {{ $message }}
+                                                     </div>
+                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="row">
@@ -42,14 +47,20 @@
                                             </label>
                                             <div class="col-md-10 mb-3">
                                                 <div class="d-flex gap-3">
-                                                    <select name="permissions[]" class="form-control select2_custom" multiple id="">
+                                                    <select name="permissions[]" class="form-control select2_custom @error('permissions') is-invalid @enderror" multiple id="">
                                                         @if(count($permissions) > 0)
                                                         @foreach ($permissions as $permission)
                                                         <option value="{{ $permission->id }}">{{ $permission->name }}</option>
                                                         @endforeach
                                                         @endif
                                                     </select>
+
                                                 </div>
+                                                @error('permissions')
+                                                     <div class="text-danger">
+                                                         {{ $message }}
+                                                     </div>
+                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="row justify-content-end">

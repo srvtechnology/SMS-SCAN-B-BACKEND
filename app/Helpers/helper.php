@@ -98,10 +98,12 @@ function getSubjectStatus($school_id)
 function getSchoolInfoByUsername($username)
 {
     $school = School::where('username',$username)->first();
-    // if(!$school)
-    // {
-    //     dd("back to login");
-    // }
+    if(empty($school))
+    {
+        $user = User::where('username',$username)->first();
+        $school = School::where('id',$user->school_id)->first();
+    }
+
     return $school;
 }
 
@@ -199,6 +201,22 @@ function calculateDatesBetween($start_date, $end_date) {
         $date = $start_date->format('Y-m-d');
         $day = $start_date->format('l');
         $dates_between[] = array('date' => $date, 'day' => $day);
+        $start_date->modify('+1 day'); // Increment the date by one day
+    }
+
+    return $dates_between;
+}
+
+function calculateDatesBetweenNew($start_date, $end_date) {
+    $start_date = new DateTime($start_date);
+    $end_date = new DateTime($end_date);
+
+    $dates_between = array();
+
+    while ($start_date <= $end_date) {
+        $date = $start_date->format('Y-m-d');
+        $day = $start_date->format('l');
+        $dates_between[] = ['date' => $date, 'day' => $day];
         $start_date->modify('+1 day'); // Increment the date by one day
     }
 

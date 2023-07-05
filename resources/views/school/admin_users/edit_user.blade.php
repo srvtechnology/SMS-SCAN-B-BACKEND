@@ -34,31 +34,52 @@
                                         <div class="row">
                                             <div class="mb-3 col-md-6">
                                                 <label for="firstName" class="form-label">Name</label>
-                                                <input class="form-control" type="text" id="firstName" name="Name"
-                                                    value="{{ $user->name }}" required autofocus />
+                                                <input class="form-control @error('Name') is-invalid @enderror" type="text" id="firstName" name="Name"
+                                                    value="{{ $user->name }}"  autofocus />
+                                                    @error('Name')
+                                                     <div class="text-danger">
+                                                         {{ $message }}
+                                                     </div>
+                                                 @enderror
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="email" class="form-label">E-mail</label>
-                                                <input class="form-control" type="text" id="email" name="email"
-                                                    value="{{ $user->email }}" required />
+                                                <input class="form-control @error('email') is-invalid @enderror" type="text" id="email" name="email"
+                                                    value="{{ $user->email }}"  />
+                                                    @error('email')
+                                                     <div class="text-danger">
+                                                         {{ $message }}
+                                                     </div>
+                                                 @enderror
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label" for="phoneNumber">Phone Number</label>
                                                 <div class="input-group input-group-merge">
-                                                    <input type="text" id="phoneNumber" name="phoneNumber" required
-                                                        value="{{ $user->phone_number }}" class="form-control"
+                                                    <input type="text" id="phoneNumber" name="phoneNumber"
+                                                        value="{{ $user->phone_number }}" class="form-control @error('phoneNumber') is-invalid @enderror"
                                                         placeholder="202 555 0111" />
+
+                                                        @error('phoneNumber')
+                                                     <div class="text-danger">
+                                                         {{ $message }}
+                                                     </div>
+                                                 @enderror
                                                 </div>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="defaultSelect" class="form-label">Select Role</label>
-                                                <select id="defaultSelect" class="form-select" name="role_id">
+                                                <select id="defaultSelect" class="form-select @error('role_id') is-invalid @enderror" name="role_id">
                                                     <option>Default select</option>
                                                     @foreach ($roles as $role)
                                                         <option @if ($role->id == $user->role_id) selected @endif
                                                             value="{{ $role->id }}">{{ $role->name }}</option>
                                                     @endforeach
                                                 </select>
+                                                @error('role_id')
+                                                     <div class="text-danger">
+                                                         {{ $message }}
+                                                     </div>
+                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="mt-2">

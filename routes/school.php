@@ -208,10 +208,12 @@ Route::middleware(['school_auth'])->group(function () {
 
     Route::controller(ResultController::class)->as('school.')->group(function () {
         Route::get('/results/view','index')->name('results.index');
+        Route::get('/results/download-results-pdf','downloadPDF')->name('attendances.downloadResultPDF');
     });
 
     Route::controller(AttendanceController::class)->as('school.')->group(function () {
         Route::get('/attendances/view-attendance','index')->name('attendances.view-attendance');
+        Route::get('/attendances/download-pdf','downloadPDF')->name('attendances.downloadPDF');
     });
 
 

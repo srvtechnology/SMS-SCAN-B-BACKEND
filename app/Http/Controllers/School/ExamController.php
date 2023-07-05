@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\School;
 
 use App\Models\Exam;
+use App\Models\Classes;
 use Illuminate\Http\Request;
 use App\Models\TimeTableSetting;
 use App\Http\Controllers\Controller;
@@ -24,7 +25,8 @@ class ExamController extends Controller
         $school = getSchoolInfoByUsername(Auth::user()->username);
         $class_ranges = TimeTableSetting::where('school_id', $school->id)->where('is_deleted','0')
         ->distinct()->get(['from_class','to_class']);
-        return view("school.exams.create")->with(compact('class_ranges'));
+        $classes = Classes::where('school_id', $school->id)->where('is_deleted','0')->get();
+        return view("school.exams.create")->with(compact('class_ranges','classes'));
     }
 
     public function store(Request $request)
@@ -32,21 +34,24 @@ class ExamController extends Controller
         // return $request;
         $validator = Validator::make($request->all(), [
             'title' =>'required',
-            'class_range' =>'required',
+            'from_class' =>'required',
+            'to_class' =>'required',
             'date' =>'required',
          ],[
             'title.required' => 'Title is required',
-            'class_range.required' => 'Class Range is required',
          ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        $explode = explode('-',$request->class_range);
+        if($request->from_class > $request->to_class)
+        {
+            return back()->with('error','Kindly select correct class range');
+        }
         $school = getSchoolInfoByUsername(Auth::user()->username);
         $count = Exam::where([
             'school_id' => $school->id,'title' => $request->title,
-            'from_class' => $explode[0], 'to_class' => $explode[1],
+            'from_class' => $request->from_class, 'to_class' => $request->to_class,
             'date'   => $request->date,'is_deleted' => '0'])
         ->count();
         if($count > 0)
@@ -56,8 +61,8 @@ class ExamController extends Controller
         $exam = new Exam;
         $exam ->school_id = $school->id;
         $exam->title = $request->title;
-        $exam->from_class = $explode[0];
-        $exam->to_class = $explode[1];
+        $exam->from_class = $request->from_class;
+        $exam->to_class = $request->to_class;
         $exam->date = $request->date;
         $exam->created_by = Auth::user()->id;
         $exam->save();
@@ -71,7 +76,8 @@ class ExamController extends Controller
         $class_ranges = TimeTableSetting::where('school_id', $school->id)->where('is_deleted','0')
         ->distinct()->get(['from_class','to_class']);
         $exam = Exam::findOrFail($id);
-        return view("school.exams.edit")->with(compact('class_ranges','exam'));
+        $classes = Classes::where('school_id', $school->id)->where('is_deleted','0')->get();
+        return view("school.exams.edit")->with(compact('class_ranges','exam','classes'));
     }
 
     public function update(Request $request)
@@ -79,21 +85,25 @@ class ExamController extends Controller
         // return $request;
         $validator = Validator::make($request->all(), [
             'title' =>'required',
-            'class_range' =>'required',
+            'from_class' =>'required',
+            'to_class' =>'required',
             'date' =>'required',
          ],[
             'title.required' => 'Title is required',
-            'class_range.required' => 'Class Range is required',
          ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        $explode = explode('-',$request->class_range);
+        if($request->from_class > $request->to_class)
+        {
+            return back()->with('error','Kindly select correct class range');
+        }
+
         $school = getSchoolInfoByUsername(Auth::user()->username);
         $count = Exam::where([
             'school_id' => $school->id,'title' => $request->title,
-            'from_class' => $explode[0], 'to_class' => $explode[1],
+            'from_class' => $request->from_class, 'to_class' => $request->to_class,
             'date'   => $request->date,'is_deleted' => '0'])
         ->where('id','!=',$request->id)
         ->count();
@@ -104,8 +114,8 @@ class ExamController extends Controller
         $exam = Exam::find($request->id);
         $exam ->school_id = $school->id;
         $exam->title = $request->title;
-        $exam->from_class = $explode[0];
-        $exam->to_class = $explode[1];
+        $exam->from_class = $request->from_class;
+        $exam->to_class = $request->to_class;
         $exam->date = $request->date;
         $exam->created_by = Auth::user()->id;
         $exam->save();

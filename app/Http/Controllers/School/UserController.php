@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -24,6 +25,16 @@ class UserController extends Controller
         return view('school.admin_users.add_users',compact('roles'));
     }
     public function create_user(Request $req){
+        $validator = Validator::make($req->all(), [
+            'Name' =>'required',
+            'email' =>'required',
+            'phoneNumber'   =>'required',
+            'role_id' =>'required'
+         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
         $school = getSchoolInfoByUsername(Auth::user()->username);
         $user = new User();
         $username = $this->generateUserName();
@@ -69,7 +80,16 @@ class UserController extends Controller
         return redirect()->route('school.users');
     }
     public function updateuser(Request $req){
+        $validator = Validator::make($req->all(), [
+            'Name' => 'required',
+            'email' => 'required|unique:users,email,' . $req->user_id,
+            'phoneNumber' => 'required',
+            'role_id' => 'required'
+        ]);
 
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
         $user =  User::find($req->user_id);
         $user->name = $req->Name;
         $user->email = $req->email;

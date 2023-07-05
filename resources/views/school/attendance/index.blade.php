@@ -32,6 +32,7 @@
                     </ol>
                 </nav>
             </div>
+            <x-alert></x-alert>
             <div class="row">
                 <div class="col-md-12">
                     <div class="my-3">
@@ -108,10 +109,10 @@
                                             <div class="form-group">
                                                 <label for="field1">Students:</label>
                                                     <select name="student_id" id="student_id" class="form-control @error('student_id') is-invalid @enderror student_id">
-                                                        <option value="">Select</option>
-                                                        @if(count($students))
-                                                        @foreach($students as $student)
-                                                        <option value="{{ $student->student->id }}" @if(request()->student_id == $student->student->id) selected @endif>{{ $student->student->first_name }} {{ $student->student->last_name }}</option>
+                                                        <option value="">All Student</option>
+                                                        @if(count($allStudents))
+                                                        @foreach($allStudents as $allStudent)
+                                                        <option value="{{ $allStudent->student->id }}" @if(request()->student_id == $allStudent->student->id) selected @endif>{{ $allStudent->student->first_name }} {{ $allStudent->student->last_name }}</option>
                                                         @endforeach
                                                         @endif
                                                     </select>
@@ -136,6 +137,14 @@
                     <div class="my-3">
                         <div class="card">
                             <div class="card-body">
+                                <form action="{{ route('school.attendances.downloadPDF') }}" method="get">
+                                    <input type="hidden" name="class_id" value="{{ request()->class_id }}">
+                                    <input type="hidden" name="section_id" value="{{ request()->section_id }}">
+                                    <input type="hidden" name="from_date" value="{{ request()->from_date }}">
+                                    <input type="hidden" name="to_date" value="{{ request()->to_date }}">
+                                    <input type="hidden" name="student_id" value="{{ request()->student_id }}">
+                                    <button class="btn btn btn-secondary">PDF</button>
+                                </form>
                                 <div class="table-responsive">
                                     <table id="myTable">
                                         <thead>
@@ -198,19 +207,7 @@
                 paging: false,
                 searching: false,
                 ordering: false,
-                dom: 'Bfrtip',
-                buttons: [
-                    'pdfHtml5'
-                ],
-                customize: function(doc) {
-                    var textElements = doc.content.filter(function(obj) {
-                        return obj.text !== undefined;
-                    });
 
-                    textElements.forEach(function(obj) {
-                        obj.alignment = 'center';
-                    });
-                }
             });
 
         });

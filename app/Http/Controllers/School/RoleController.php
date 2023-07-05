@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\PermissionRole;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
@@ -20,6 +21,16 @@ class RoleController extends Controller
         return view('school.roles.add_role',compact('permissions'));
     }
     public function create_role(Request $req){
+        // return $req;
+        $validator = Validator::make($req->all(), [
+            'role_name' => 'required|unique:roles,name',
+            'permissions' => 'required|array',
+
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
         $school = getSchoolInfoByUsername(Auth::user()->username);
         $role = new Role();
         $role->school_id = $school->id;
@@ -47,7 +58,15 @@ class RoleController extends Controller
         return view('school.roles.edit_role',compact('role','permissions','role_permissions'));
     }
     public function updaterole(Request $req){
+        $validator = Validator::make($req->all(), [
+            'role_name' => 'required|unique:roles,name,'.$req->role_id,
+            'permissions' => 'required|array',
 
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
         $role = Role::find($req->role_id);
         $role_permissions = PermissionRole::where('role_id','=',$role->id)->get();
       foreach ($role_permissions as $key => $value) {
