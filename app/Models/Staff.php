@@ -55,4 +55,14 @@ class Staff extends Model
     {
         return $this->hasMany(StaffAssignSubject::class,'staff_id');
     }
+
+    public function assign_class_teacher_class()
+    {
+        return $this->belongsTo(Classes::class,'assign_class_to_class_teacher','id');
+    }
+
+    public function assign_class_teacher_section()
+    {
+        return $this->belongsTo(Section::class,'assign_section_to_class_teacher','id');
+    }
 }

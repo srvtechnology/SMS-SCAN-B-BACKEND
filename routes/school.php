@@ -143,6 +143,10 @@ Route::middleware(['school_auth'])->group(function () {
         Route::get('/teachers/{id}/edit', 'edit')->name('teachers.edit');
         Route::post('/teachers/update', 'update')->name('teachers.update');
         Route::post('/teachers/delete', 'delete')->name('teachers.delete');
+        Route::get('/teachers/get-class/{id}', 'getClass');
+        Route::get('/teachers/get-class-section/{id}/{staff_id}', 'getClassSection');
+        Route::post('/teachers/assign-class-teacher', 'assignClassTeacher')->name('teachers.assign_class_teacher');
+        Route::post('/teachers/update-assign-class-teacher', 'updateAssignClassTeacher')->name('teachers.update_assign_class_teacher');
     });
 
     Route::controller(StudentController::class)->as('school.')->group(function () {

@@ -48,8 +48,9 @@ class TeacherController extends Controller
         $existUser = User::where('username',$username)->first();
         if(!$existUser)
         {
-            $role = Role::where('name','SchoolAdmin')->first();
+            $role = Role::where('name','School Admin')->first();
             $existUser = User::create([
+                'school_id' => $school->id,
                 'name'  => $request->first_name.' '.$request->last_name,
                 'username' => $username,
                 'email' => $request->email,
@@ -233,6 +234,7 @@ class TeacherController extends Controller
     {
         $data = $request->except('_token');
         $staff = Staff::find($request->staff_id);
+        $school = getSchoolInfoByUsername(Auth::user()->username);
         if($request->hasFile('image'))
         {
             $image = $request->file('image');
@@ -274,6 +276,7 @@ class TeacherController extends Controller
             $existUser = User::where('email',$request->email)->first();
             if(!$existUser)
             {
+                $existUser->school_id = $school->id;
                 $existUser->name = $request->first_name.' '.$request->last_name;
                 $existUser->email = $request->email;
                 $existUser->save();
@@ -363,5 +366,87 @@ class TeacherController extends Controller
         $staff->save();
 
         return back()->with('success','Teacher Deleted Successfully');
+    }
+
+    public function getClass($id)
+    {
+        $school = getSchoolInfoByUsername(Auth::user()->username);
+        $classNames = StaffAssignClass::with('sections')
+            ->where('school_id',$school->id)
+            ->where('staff_id',$id)
+            ->groupBy('class_id')
+            ->get(['class_id']);
+
+        $response = [];
+        foreach ($classNames as $key => $className) {
+            $response[$key]['class_id'] = $className->class->id;
+            $response[$key]['class_name'] = $className->class->name;
+            // $sections = StaffAssignClass::where('class_id', $className->class_id)
+            //     ->where('school_id',$school->id)
+            //     ->where('staff_id',$id)
+            //     ->get();
+
+            //     foreach($sections as $index => $section) {
+            //         $response[$key]['sections'][$index]['section_id'] = $section->section->id;
+            //         $response[$key]['sections'][$index]['section_name'] = $section->section->name;
+            //     }
+        }
+
+        return $response;
+    }
+
+    public function getClassSection($id,$staff_id)
+    {
+        $school = getSchoolInfoByUsername(Auth::user()->username);
+        $className = StaffAssignClass::with('sections')
+            ->where('school_id',$school->id)
+            ->where('class_id',$id)
+            ->where('staff_id',$staff_id)
+            ->first();
+        $response = [];
+        $sections = StaffAssignClass::where('class_id', $className->class_id)
+                ->where('school_id',$school->id)
+                ->where('class_id',$id)
+                ->where('staff_id',$staff_id)
+                ->get();
+
+                foreach($sections as $index => $section) {
+                    $response[$index]['section_id'] = $section->section->id;
+                    $response[$index]['section_name'] = $section->section->name;
+                }
+
+        return $response;
+    }
+
+    public function assignClassTeacher(Request $request)
+    {
+        $staff = Staff::find($request->staff_id);
+        $school = getSchoolInfoByUsername(Auth::user()->username);
+        $count = Staff::where('school_id',$school->id)->where('assign_class_to_class_teacher',$request->class_id)->where('assign_section_to_class_teacher',$request->section_id)->count();
+        if($count > 0)
+        {
+            return back()->with('error','This Class and Section have already assigned');
+        }
+        $staff->assign_class_to_class_teacher = $request->class_id;
+        $staff->assign_section_to_class_teacher = $request->section_id;
+        $staff->save();
+
+        return back()->with('success','Class and Section have been assigned');
+    }
+
+    public function updateAssignClassTeacher(Request $request)
+    {
+        $staff = Staff::find($request->staff_id);
+        $school = getSchoolInfoByUsername(Auth::user()->username);
+        $count = Staff::where('school_id',$school->id)->where('id','!=',$request->staff_id)->where('assign_class_to_class_teacher',$request->class_id)->where('assign_section_to_class_teacher',$request->section_id)->count();
+        if($count > 0)
+        {
+            return back()->with('error','This Class and Section have already assigned');
+        }
+        $staff->assign_class_to_class_teacher = $request->class_id;
+        $staff->assign_section_to_class_teacher = $request->section_id;
+        $staff->save();
+
+        return back()->with('success','Class and Section have been assigned');
     }
 }

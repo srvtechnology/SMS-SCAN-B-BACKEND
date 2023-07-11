@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\UserController;
 use App\Http\Controllers\API\StudyMaterialController;
+use App\Http\Controllers\API\Teacher\TeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,7 @@ use App\Http\Controllers\API\StudyMaterialController;
 // });
 
 Route::controller(UserController::class)->group(function () {
+    Route::post('/check-school', 'checkSchool');
     Route::post('/login', 'login');
     Route::post('/forgot-password', 'forgotPassword');
     Route::post('/reset-password', 'resetPassword');
@@ -32,6 +34,10 @@ Route::middleware('auth:api')->as('api.school.')->group(function () {
         Route::post('/study-material/get-subjects-by-class', 'getSubjectsByClass');
         Route::post('/study-material/store', 'store');
         Route::get('/study-material/view-all-content', 'viewAllContent');
+    });
+
+    Route::controller(TeacherController::class)->group(function () {
+        Route::get('/teacher/detail', 'detail');
     });
 
     Route::controller(UserController::class)->group(function () {

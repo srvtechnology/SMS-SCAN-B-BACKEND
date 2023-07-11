@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Auth;
 use Validator;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\School;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,11 +17,11 @@ use Illuminate\Support\Facades\Password;
 
 class UserController extends Controller
 {
-    public function login(Request $request)
+    public function checkSchool(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required',
-            'password' => 'required',
+            'code' => 'required',
+            'type' => 'required',
         ]);
 
         if($validator->fails()){
@@ -30,23 +31,105 @@ class UserController extends Controller
             ],401);
         }
 
-        if (filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        $school = School::where('username',$request->code)->where('is_deleted','0')->first();
+        if($school)
+        {
+            if($school->status == "active")
+            {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'School is valid'
+                ],401);
+            }
+            else
+            {
+                if($school->status == "pending")
+                {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'School is not verified Yet'
+                    ],401);
+                }
+                else
+                {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'School is blocked'
+                    ],401);
+                }
+
+            }
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'School Not Found'
+            ],404);
+        }
+    }
+
+
+
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code' => 'required',
+            'password' => 'required',
+            'school_code' => 'required',
+            'type' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()
+            ],401);
+        }
+
+        $school = getSchoolInfoByUsername($request->school_code);
+        if(!$school)
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'School Not Found'
+            ],404);
+        }
+        if (filter_var($request->code, FILTER_VALIDATE_EMAIL)) {
+            if (Auth::attempt(['email' => $request->code, 'password' => $request->password,'status' => 'active','is_deleted' => '0'])) {
                 $user = Auth::user();
                 $token = $user->createToken('MyAppToken')->accessToken;
             }
+            else
+            {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid Code or Password'
+                ],401);
+            }
         } else {
-            if (Auth::attempt(['username' => $request->email, 'password' => $request->password])) {
+            if (Auth::attempt(['username' => $request->code, 'password' => $request->password,'status' => 'active','is_deleted' => '0'])) {
                 $user = Auth::user();
                 $token = $user->createToken('MyAppToken')->accessToken;
+            }
+            else
+            {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid Code or Password'
+                ],401);
             }
         }
         if(!empty($token))
         {
+            $data = [
+                'user' => $user,
+                'school' => $school
+            ];
             return response()->json([
                 'status' => 'success',
                 'token' => $token,
-                'data' => $user,
+                'data' => $data,
             ],200);
         }
 
