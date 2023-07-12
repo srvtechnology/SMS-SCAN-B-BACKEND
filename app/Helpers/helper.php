@@ -239,7 +239,19 @@ function getStudentAttendance($class_id,$section_id,$student_id,$date)
 
     if(!empty($student_attendance))
     {
-        $attendance = $student_attendance->attendance == 1 ? 'P' :'A';
+        if($student_attendance->attendance == 0)
+        {
+            $attendance_bit = "A";
+        }
+        else if($student_attendance->attendance == 1)
+        {
+            $attendance_bit = "P";
+        }
+        else
+        {
+            $attendance_bit = "L";
+        }
+        $attendance = $attendance_bit;
     }
     else
     {

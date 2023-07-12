@@ -235,6 +235,13 @@
         </li>
         @endif
 
+        <li class="menu-item {{ request()->segment(2) == 'leave-applications' ? 'active' : '' }}">
+            <a href="{{ route('school.leave-applications') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Leave Applications</div>
+            </a>
+        </li>
+
         @if(canHaveRole('List of Roles') OR canHaveRole('List of Admin Users'))
         <li class="menu-item @if(request()->segment(2) == 'roles') active open @endif">
             <a href="javascript:void(0);" class="menu-link menu-toggle">

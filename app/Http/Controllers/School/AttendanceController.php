@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\School;
 
+use PDF;
 use App\Models\Classes;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use App\Models\LeaveApplication;
 use App\Models\StudentAttendance;
 use App\Models\StudentClassAssign;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use PDF;
 
 class AttendanceController extends Controller
 {
@@ -90,6 +91,14 @@ class AttendanceController extends Controller
         $pdf = PDF::loadView('school.attendance.pdf', compact('count','classes','sections','students','student_attendances','dateList'))->setPaper('a4', 'portrait');
         // return $pdf->stream("sadas.pdf");
         return $pdf->download('Attendance Sheet/Class-'.getAttendanceData(request()->class_id,request()->section_id,request()->from_date,request()->to_date).'.pdf');
+    }
+
+    public function viewLeaveApplication()
+    {
+        $school = getSchoolInfoByUsername(Auth::user()->username);
+        $leave_applications = LeaveApplication::where('school_id',$school->id)->paginate(10);
+
+        return view("school.attendance.leave_applications")->with(compact('school','leave_applications'));
     }
 
 }

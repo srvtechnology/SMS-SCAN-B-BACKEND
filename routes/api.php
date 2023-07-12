@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\UserController;
 use App\Http\Controllers\API\StudyMaterialController;
 use App\Http\Controllers\API\Teacher\TeacherController;
+use App\Http\Controllers\API\Teacher\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,14 @@ Route::middleware('auth:api')->as('api.school.')->group(function () {
 
     Route::controller(TeacherController::class)->group(function () {
         Route::get('/teacher/detail', 'detail');
+    });
+
+    Route::controller(AttendanceController::class)->group(function () {
+        Route::post('/teacher/attendance/view-all-students', 'viewStudents');
+        Route::post('/teacher/attendance/student-list', 'studentList');
+        Route::post('/teacher/attendance/add-student-attendance', 'addStudentAttendance');
+
+        Route::post('/teacher/attendance/apply-leave', 'applyLeave');
     });
 
     Route::controller(UserController::class)->group(function () {

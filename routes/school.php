@@ -218,6 +218,8 @@ Route::middleware(['school_auth'])->group(function () {
     Route::controller(AttendanceController::class)->as('school.')->group(function () {
         Route::get('/attendances/view-attendance','index')->name('attendances.view-attendance');
         Route::get('/attendances/download-pdf','downloadPDF')->name('attendances.downloadPDF');
+
+        Route::get('/leave-applications','viewLeaveApplication')->name('leave-applications');
     });
 
 

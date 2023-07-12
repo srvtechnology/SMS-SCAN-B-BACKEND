@@ -39,6 +39,11 @@ class TeacherController extends Controller
                 foreach($sections as $index => $section) {
                     $response[$key]['sections'][$index]['section_id'] = $section->section->id;
                     $response[$key]['sections'][$index]['section_name'] = $section->section->name;
+                    $response[$key]['sections'][$index]['class_teacher'] = 0;
+                    if(!empty($staff->assign_class_to_class_teacher) AND !empty($staff->assign_section_to_class_teacher) AND ($className->class->id == $staff->assign_class_to_class_teacher) AND ($section->section->id == $staff->assign_section_to_class_teacher))
+                    {
+                        $response[$key]['sections'][$index]['class_teacher'] = 1;
+                    }
                 }
         }
         $subjects = null;
