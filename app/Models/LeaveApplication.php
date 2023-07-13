@@ -13,4 +13,9 @@ class LeaveApplication extends Model
     {
         return $this->belongsTo(Staff::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

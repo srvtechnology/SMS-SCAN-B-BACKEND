@@ -39,14 +39,36 @@ Route::middleware('auth:api')->as('api.school.')->group(function () {
 
     Route::controller(TeacherController::class)->group(function () {
         Route::get('/teacher/detail', 'detail');
+
+        //Teacher Leave
+        Route::post('/teacher/attendance/apply-leave', 'applyLeave');
+        Route::get('/teacher/view-leave-applications', 'viewLeaveApplication');
+
+        //HomeWork
+        Route::post('/teacher/home-work/create', 'createHomeWork');
+        Route::post('/teacher/home-work/view', 'viewHomeWork');
+        Route::post('/teacher/home-work/edit', 'editHomeWork');
+        Route::post('/teacher/home-work/delete', 'deleteHomeWork');
+        Route::post('/teacher/home-work/change-status', 'changeStatusHomeWork');
+
+        //Syllabus
+        Route::post('/teacher/syllabus/create', 'createSyllabus');
+        Route::post('/teacher/syllabus/view', 'viewSyllabus');
+        Route::post('/teacher/syllabus/edit', 'editSyllabus');
+        Route::post('/teacher/syllabus/delete', 'deleteSyllabus');
+
+        //Resources
+        Route::post('/teacher/resources/view', 'viewResources');
+        Route::post('/teacher/resources/detail', 'detailResources');
+
+        //TimeTable
+        Route::post('/teacher/time-table/view', 'viewTimeTable');
     });
 
     Route::controller(AttendanceController::class)->group(function () {
         Route::post('/teacher/attendance/view-all-students', 'viewStudents');
         Route::post('/teacher/attendance/student-list', 'studentList');
         Route::post('/teacher/attendance/add-student-attendance', 'addStudentAttendance');
-
-        Route::post('/teacher/attendance/apply-leave', 'applyLeave');
     });
 
     Route::controller(UserController::class)->group(function () {
