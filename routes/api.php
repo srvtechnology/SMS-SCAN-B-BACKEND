@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\API\Auth\UserController;
 use App\Http\Controllers\API\StudyMaterialController;
 use App\Http\Controllers\API\Teacher\TeacherController;
@@ -35,6 +36,16 @@ Route::middleware('auth:api')->as('api.school.')->group(function () {
         Route::post('/study-material/get-subjects-by-class', 'getSubjectsByClass');
         Route::post('/study-material/store', 'store');
         Route::get('/study-material/view-all-content', 'viewAllContent');
+    });
+
+    Route::controller(StudentController::class)->group(function () {
+        Route::post("/student/attendance/view","viewAttendance");
+        Route::get('/student/home-work/view', 'viewHomeWork');
+        Route::get('/student/syllabus/view', 'viewSyllabus');
+        Route::get('/student/resources/view', 'viewResources');
+        Route::get('/student/time-table/view', 'viewTimeTable');
+        Route::post('/student/attendance/apply-leave', 'applyLeave');
+        Route::get('/student/view-leave-applications', 'viewLeaveApplication');
     });
 
     Route::controller(TeacherController::class)->group(function () {

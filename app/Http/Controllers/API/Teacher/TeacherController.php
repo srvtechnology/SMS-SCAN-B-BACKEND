@@ -20,16 +20,6 @@ use Illuminate\Support\Facades\Validator;
 
 class TeacherController extends Controller
 {
-    // private $user;
-    // private $school;
-    // private $staff;
-
-    // public function __construct()
-    // {
-    //     $this->user = User::where('id', Auth::user()->id)->first();
-    //     $this->school = $this->user->school;
-    //     $this->staff = Staff::where('username', Auth::user()->username)->first();
-    // }
 
     public function detail()
     {
@@ -913,6 +903,10 @@ class TeacherController extends Controller
                 'message' => $validator->errors()
             ],401);
         }
+
+        $user = User::where('id',Auth::user()->id)->first();
+        $school = $user->school;
+        $staff = Staff::where('username',Auth::user()->username)->first();
 
         $resource = StudyMaterial::where('school_id',$school->id)->where('is_deleted','0')
         ->where('id',$request->resource_id)->first();

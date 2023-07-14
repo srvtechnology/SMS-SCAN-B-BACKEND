@@ -52,7 +52,7 @@
 							"formdata": [
 								{
 									"key": "code",
-									"value": "ZOqNeasF",
+									"value": "YuARxyaq",
 									"type": "text"
 								},
 								{
@@ -67,7 +67,7 @@
 								},
 								{
 									"key": "type",
-									"value": "teacher",
+									"value": "student",
 									"description": "use : \"teacher\",\"student\",\"parent\"",
 									"type": "text"
 								}
@@ -534,244 +534,1001 @@
 							"response": []
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "Teachers",
-			"item": [
-				{
-					"name": "Attendance",
-					"item": [
-						{
-							"name": "View All Students",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/attendance/view-all-students",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"attendance",
-										"view-all-students"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Attendance Student List",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										},
-										{
-											"key": "date",
-											"value": "2023-07-12",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/attendance/student-list",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"attendance",
-										"student-list"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add Student Attendance",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										},
-										{
-											"key": "student_id",
-											"value": "3",
-											"type": "text"
-										},
-										{
-											"key": "date",
-											"value": "2023-07-12",
-											"description": "date send with time",
-											"type": "text"
-										},
-										{
-											"key": "attendance",
-											"value": "2",
-											"description": "use 0=Absent,1=Present,2=Leave",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/attendance/add-student-attendance",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"attendance",
-										"add-student-attendance"
-									]
-								}
-							},
-							"response": []
-						}
-					]
 				},
 				{
-					"name": "Leave Application",
+					"name": "Teachers",
 					"item": [
 						{
-							"name": "Apply Leave Application",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "message",
-											"value": "I need a Leave for two days",
-											"type": "text"
+							"name": "Attendance",
+							"item": [
+								{
+									"name": "View All Students",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
 										},
-										{
-											"key": "file",
-											"type": "file",
-											"src": []
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/attendance/view-all-students",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"attendance",
+												"view-all-students"
+											]
 										}
-									]
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{URL}}/teacher/attendance/apply-leave",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"attendance",
-										"apply-leave"
-									]
+								{
+									"name": "Attendance Student List",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												},
+												{
+													"key": "date",
+													"value": "2023-07-12",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/attendance/student-list",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"attendance",
+												"student-list"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add Student Attendance",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												},
+												{
+													"key": "student_id",
+													"value": "3",
+													"type": "text"
+												},
+												{
+													"key": "date",
+													"value": "2023-07-14",
+													"description": "date send with time",
+													"type": "text"
+												},
+												{
+													"key": "attendance",
+													"value": "0",
+													"description": "use 0=Absent,1=Present,2=Leave",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/attendance/add-student-attendance",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"attendance",
+												"add-student-attendance"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						},
 						{
-							"name": "View Leave Application",
+							"name": "Leave Application",
+							"item": [
+								{
+									"name": "Apply Leave Application",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "message",
+													"value": "I need a Leave for two days",
+													"type": "text"
+												},
+												{
+													"key": "file",
+													"type": "file",
+													"src": []
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/attendance/apply-leave",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"attendance",
+												"apply-leave"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "View Leave Application",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": []
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/view-leave-applications",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"view-leave-applications"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Home Work",
+							"item": [
+								{
+									"name": "Create HomeWork",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "Hello this is home work",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Hello",
+													"type": "text"
+												},
+												{
+													"key": "files[0]",
+													"type": "file",
+													"src": "/C:/Users/DELL/Downloads/131689166411.png"
+												},
+												{
+													"key": "due_date",
+													"value": "2023-07-14",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/home-work/create",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"home-work",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "View HomeWork",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/home-work/view",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"home-work",
+												"view"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Edit HomeWork",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												},
+												{
+													"key": "home_work_id",
+													"value": "1",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "Hello this is home work 2",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Hello",
+													"type": "text"
+												},
+												{
+													"key": "files[0]",
+													"type": "file",
+													"src": []
+												},
+												{
+													"key": "due_date",
+													"value": "2023-07-14",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/home-work/edit",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"home-work",
+												"edit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete HomeWork",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												},
+												{
+													"key": "id",
+													"value": "1",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/home-work/delete",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"home-work",
+												"delete"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Change HomeWork Status",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												},
+												{
+													"key": "home_work_id",
+													"value": "1",
+													"type": "text"
+												},
+												{
+													"key": "status",
+													"value": "submitted",
+													"description": "use \"pending,submitted\"",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/home-work/change-status",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"home-work",
+												"change-status"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Syllabus",
+							"item": [
+								{
+									"name": "Create Syllabus",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "Hello this is Syllabus",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Hello",
+													"type": "text"
+												},
+												{
+													"key": "files[0]",
+													"type": "file",
+													"src": "/C:/Users/DELL/Downloads/131689166411.png"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/syllabus/create",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"syllabus",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "View Syllabus",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/syllabus/view",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"syllabus",
+												"view"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Edit Syllabus",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												},
+												{
+													"key": "syllabus_id",
+													"value": "3",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "Hello this is Syllabus",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Hello",
+													"type": "text"
+												},
+												{
+													"key": "files[0]",
+													"type": "file",
+													"src": []
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/syllabus/edit",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"syllabus",
+												"edit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Syllabus",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												},
+												{
+													"key": "id",
+													"value": "3",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/syllabus/delete",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"syllabus",
+												"delete"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Resources",
+							"item": [
+								{
+									"name": "View Resources",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "subject_id",
+													"value": "8",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/resources/view",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"resources",
+												"view"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Detail Resources",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "resource_id",
+													"value": "1",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/resources/detail",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"resources",
+												"detail"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "TimeTable",
+							"item": [
+								{
+									"name": "View TimeTable",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "class_id",
+													"value": "7",
+													"type": "text"
+												},
+												{
+													"key": "section_id",
+													"value": "4",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/teacher/time-table/view",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"teacher",
+												"time-table",
+												"view"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Teacher Detail",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -799,673 +1556,12 @@
 									"formdata": []
 								},
 								"url": {
-									"raw": "{{URL}}/teacher/view-leave-applications",
+									"raw": "{{URL}}/teacher/detail",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
 										"teacher",
-										"view-leave-applications"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Home Work",
-					"item": [
-						{
-							"name": "Create HomeWork",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										},
-										{
-											"key": "title",
-											"value": "Hello this is home work",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "Hello",
-											"type": "text"
-										},
-										{
-											"key": "files[0]",
-											"type": "file",
-											"src": "/C:/Users/DELL/Downloads/131689166411.png"
-										},
-										{
-											"key": "due_date",
-											"value": "2023-07-14",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/home-work/create",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"home-work",
-										"create"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "View HomeWork",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/home-work/view",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"home-work",
-										"view"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Edit HomeWork",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										},
-										{
-											"key": "home_work_id",
-											"value": "1",
-											"type": "text"
-										},
-										{
-											"key": "title",
-											"value": "Hello this is home work 2",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "Hello",
-											"type": "text"
-										},
-										{
-											"key": "files[0]",
-											"type": "file",
-											"src": []
-										},
-										{
-											"key": "due_date",
-											"value": "2023-07-14",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/home-work/edit",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"home-work",
-										"edit"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete HomeWork",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										},
-										{
-											"key": "id",
-											"value": "1",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/home-work/delete",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"home-work",
-										"delete"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Change HomeWork Status",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										},
-										{
-											"key": "home_work_id",
-											"value": "1",
-											"type": "text"
-										},
-										{
-											"key": "status",
-											"value": "submitted",
-											"description": "use \"pending,submitted\"",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/home-work/change-status",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"home-work",
-										"change-status"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Syllabus",
-					"item": [
-						{
-							"name": "Create Syllabus",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										},
-										{
-											"key": "title",
-											"value": "Hello this is Syllabus",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "Hello",
-											"type": "text"
-										},
-										{
-											"key": "files[0]",
-											"type": "file",
-											"src": "/C:/Users/DELL/Downloads/131689166411.png"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/syllabus/create",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"syllabus",
-										"create"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "View Syllabus",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/syllabus/view",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"syllabus",
-										"view"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Edit Syllabus",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										},
-										{
-											"key": "syllabus_id",
-											"value": "3",
-											"type": "text"
-										},
-										{
-											"key": "title",
-											"value": "Hello this is Syllabus",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "Hello",
-											"type": "text"
-										},
-										{
-											"key": "files[0]",
-											"type": "file",
-											"src": []
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/syllabus/edit",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"syllabus",
-										"edit"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete Syllabus",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "section_id",
-											"value": "4",
-											"type": "text"
-										},
-										{
-											"key": "id",
-											"value": "3",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/syllabus/delete",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"syllabus",
-										"delete"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Resources",
-					"item": [
-						{
-							"name": "View Resources",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "class_id",
-											"value": "7",
-											"type": "text"
-										},
-										{
-											"key": "subject_id",
-											"value": "8",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/resources/view",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"resources",
-										"view"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Detail Resources",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "resource_id",
-											"value": "1",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL}}/teacher/resources/detail",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"teacher",
-										"resources",
 										"detail"
 									]
 								}
@@ -1475,8 +1571,198 @@
 					]
 				},
 				{
-					"name": "TimeTable",
+					"name": "Students",
 					"item": [
+						{
+							"name": "Home Work",
+							"item": [
+								{
+									"name": "View HomeWork",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": []
+										},
+										"url": {
+											"raw": "{{URL}}/student/home-work/view",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"student",
+												"home-work",
+												"view"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "View Syllabus",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": []
+										},
+										"url": {
+											"raw": "{{URL}}/student/syllabus/view",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"student",
+												"syllabus",
+												"view"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Leave Application",
+							"item": [
+								{
+									"name": "Apply Leave Application",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "message",
+													"value": "I need a Leave for two days",
+													"type": "text"
+												},
+												{
+													"key": "file",
+													"type": "file",
+													"src": []
+												},
+												{
+													"key": "date",
+													"value": "2023-07-14",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{URL}}/student/attendance/apply-leave",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"student",
+												"attendance",
+												"apply-leave"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "View Leave Application",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": []
+										},
+										"url": {
+											"raw": "{{URL}}/student/view-leave-applications",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"student",
+												"view-leave-applications"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
 						{
 							"name": "View TimeTable",
 							"request": {
@@ -1490,6 +1776,41 @@
 										}
 									]
 								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/student/time-table/view",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"student",
+										"time-table",
+										"view"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View Attendance",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
@@ -1502,25 +1823,67 @@
 									"mode": "formdata",
 									"formdata": [
 										{
-											"key": "class_id",
-											"value": "7",
+											"key": "from_date",
+											"value": "2023-07-01",
 											"type": "text"
 										},
 										{
-											"key": "section_id",
-											"value": "4",
+											"key": "to_date",
+											"value": "2023-07-14",
 											"type": "text"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{URL}}/teacher/time-table/view",
+									"raw": "{{URL}}/student/attendance/view",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"teacher",
-										"time-table",
+										"student",
+										"attendance",
+										"view"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View Resources",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{URL}}/student/resources/view",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"student",
+										"resources",
 										"view"
 									]
 								}
@@ -1528,47 +1891,6 @@
 							"response": []
 						}
 					]
-				},
-				{
-					"name": "Teacher Detail",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
-						"url": {
-							"raw": "{{URL}}/teacher/detail",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"teacher",
-								"detail"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		}

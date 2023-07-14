@@ -169,6 +169,7 @@ class AttendanceController extends Controller
                 ->where('section_id',$request->section_id)
                 ->where('staff_id',$staff->id)
                 ->where('student_id',$student->id)
+                ->whereDate('date',date("Y-m-d",strtotime($request->date)))
                 ->first();
                 if(!$student_attendance)
                 {
